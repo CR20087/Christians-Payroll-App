@@ -1,0 +1,5 @@
+*.pdf
+*.env
+test code/test.css
+test code/test.html
+test code/test.py
