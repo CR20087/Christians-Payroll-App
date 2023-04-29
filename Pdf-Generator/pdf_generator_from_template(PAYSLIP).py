@@ -1,4 +1,5 @@
 def pdf_generator_from_template():
+    import os
     import jinja2
     import pdfkit
     from datetime import datetime
@@ -72,7 +73,10 @@ def pdf_generator_from_template():
     template = template_env.get_template("PaySliptemplate.html")
     output_text = template.render(context)
 
-    config = pdfkit.configuration(wkhtmltopdf=r"C:\Users\chris\Downloads\wkhtmltopdf\bin\wkhtmltopdf.exe")
+    config = pdfkit.configuration(wkhtmltopdf=rf"{os.getcwd()}\Pdf-Generator\wkhtmltopdf\bin\wkhtmltopdf.exe")
     pdfkit.from_string(output_text, 'pdf_generated.pdf', configuration=config, css='PaySliptemplate.css')
 
     return receiver
+
+if __name__=='__main__':
+    pdf_generator_from_template()
