@@ -2,6 +2,8 @@ ol{margin:0;padding:0}
 table td,table th{padding:0}
 .column {float:left;width:50%;}
 .column2 {float:right;width:20%;}
+.column3 {float:right;width:60%;}
+.blank {font-size: 0pt;}
 .tar{text-align: right;}
 .c0{padding-top:0pt;padding-bottom:0pt;line-height:1.5;orphans:2;widows:2;text-align:left;margin-right:-18pt}
 .c1{color:#000000;font-weight:400;text-decoration:none;vertical-align:baseline;font-size:10pt;font-family:"Arial";font-style:normal}
