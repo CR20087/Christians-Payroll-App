@@ -1,10 +1,14 @@
 ol{margin:0;padding:0}
 table td,table th{padding:0}
-.column {float:left;width:50%;}
-.column2 {float:right;width:20%;}
-.column3 {float:right;width:60%;}
-.blank {font-size: 0pt;}
-.tar{text-align: right;}
+.column{float:left;width:50%;}
+.column2{float:right;width:20%;}
+.column3{float:right;width:60%;}
+.hr1{margin-right:80pt;}
+.hr2{margin-left:120pt;}
+hr{margin-right:-34.5pt;}
+.alignleft{float:left;}
+.alignright{float:right;}
+.aligncenter{text-align: center;}
 .c0{padding-top:0pt;padding-bottom:0pt;line-height:1.5;orphans:2;widows:2;text-align:left;margin-right:-18pt}
 .c1{color:#000000;font-weight:400;text-decoration:none;vertical-align:baseline;font-size:10pt;font-family:"Arial";font-style:normal}
 .c2{font-size:10pt;font-weight:700}
@@ -24,6 +28,9 @@ table td,table th{padding:0}
 .c16{background-color:#ffffff;max-width:451.3pt;padding:72pt 72pt 72pt 72pt}
 .c17{padding-top:0pt;padding-bottom:0pt;line-height:1.0;orphans:2;widows:2;text-align:left;margin-right:-34.5pt}
 .c18{margin-left:279pt}
+.c19{margin-left: 20pt;}
+.c20{padding-right: 10%;}
+.c21{padding-top: 1%;}
 .title{padding-top:0pt;color:#000000;font-size:26pt;padding-bottom:3pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}
 .subtitle{padding-top:0pt;color:#666666;font-size:15pt;padding-bottom:16pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}
 li{color:#000000;font-size:11pt;font-family:"Arial"}

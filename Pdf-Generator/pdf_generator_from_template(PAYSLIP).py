@@ -70,11 +70,11 @@ def pdf_generator_from_template():
     template_loader = jinja2.FileSystemLoader('./')
     template_env = jinja2.Environment(loader=template_loader)
 
-    template = template_env.get_template("PaySliptemplate.html")
+    template = template_env.get_template('PaySliptemplate.html')
     output_text = template.render(context)
 
-    config = pdfkit.configuration(wkhtmltopdf=rf"{os.getcwd()}\Pdf-Generator\wkhtmltopdf\bin\wkhtmltopdf.exe")
-    pdfkit.from_string(output_text, 'pdf_generated.pdf', configuration=config, css='PaySliptemplate.css')
+    config = pdfkit.configuration(wkhtmltopdf=rf"{os.getcwd()}\wkhtmltopdf.exe")
+    pdfkit.from_string(output_text, 'pdf_generated.pdf', configuration=config, css=f'{os.getcwd()}\PaySliptemplate.css')
 
     return receiver
 
