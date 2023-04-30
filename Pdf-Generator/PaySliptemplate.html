@@ -43,8 +43,10 @@
             <p class="c4 c10">
                 <span class="c2 c8"></span>
             </p>
+        <div class="column">
             <p class="c11">
-                <span class="c2">Period End&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="c1">{{pay_period_end}}</span>
+                <span class="c2">Period End&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
+                <span class="c1">{{pay_period_end}}</span>
             </p>
             <hr>
             <p class="c11 c10">
@@ -55,15 +57,14 @@
                 <span class="c1">{{pay_date}}</span>
             </p>
             <hr>
-            <p class="c11 c10">
-                <span class="c1"></span>
-            </p>
+        </div>
+        <div class="column">
             <p class="c4 c7">
                 <span class="c2">Tax Code&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span class="c1">{{tax_code}}</span>
             </p>
             <hr>
-            <p class="c4 c7 c10">
+            <p class="c11 c10">
                 <span class="c1"></span>
             </p>
             <p class="c4 c7">
@@ -71,14 +72,23 @@
                 <span class="c1">{{ird_num}}</span>
             </p>
             <hr>
+        </div>
             <p class="c4 c7 c10">
                 <span class="c1"></span>
             </p>
             <p class="c4">
-                <span class="c6 c2">Payments&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Type&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Rate&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Hours&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Amount</span>
+                <span class="c6 c2 column2">Amount</span>
+                <span class="c6 c2 column2">Hours</span>
+                <span class="c6 c2 column2">Rate</span>
+                <span class="c6 c2 column2">Type</span>
+                <span class="c6 c2 column2">Payments</span>
             </p>
             <p class="c4">
-                <span class="c1">{{payments}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{pay_type}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{pay_rate}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{pay_time_length}}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{pay_amt}}</span>
+                <span class="c1 column2">{{pay_amt}}</span>
+                <span class="c1 column2">{{pay_time_length}}</span>
+                <span class="c1 column2">{{pay_rate}}</span>
+                <span class="c1 column2">{{pay_type}}</span>
+                <span class="c1 column2">{{payments}}</span> 
             </p>
             <p class="c4">
                 <span class="c2">Total Ordinary Payment</span>
@@ -91,6 +101,7 @@
             <p class="c4">
                 <span class="c2 c14">Summary&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
             </p>
+        <div class="column">
             <p class="c0">
                 <span class="c2">Normal Pay &amp; Leave&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span class="c1">{{total_pay}}</span>
@@ -119,6 +130,8 @@
                 <span class="c2">Year To Date&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span class="c1">{{summary_year_to_date}}</span>
             </p>
+        </div>
+        <div class="column">
             <p class="c0 c12">
                 <span class="c2">Deductions&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span class="c1">{{summary_deductions}}</span>
@@ -147,6 +160,7 @@
                 <span class="c2">Benefits&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>
                 <span class="c1">{{summary_benefits}}</span>
             </p>
+        </div>
             <p class="c10 c15"><span class="c2 c6"></span>
             </p>
             <p class="c4">
