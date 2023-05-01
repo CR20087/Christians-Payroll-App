@@ -3,8 +3,8 @@ table td,table th{padding:0}
 .column{float:left;width:50%;}
 .column2{float:right;width:20%;}
 .column3{float:right;width:60%;}
-.hr1{margin-right:80pt;}
-.hr2{margin-left:120pt;}
+.hr1{margin-right:120pt;}
+.hr2{margin-left:160pt;}
 hr{margin-right:-34.5pt;}
 .alignleft{float:left;}
 .alignright{float:right;}
@@ -25,12 +25,12 @@ hr{margin-right:-34.5pt;}
 .c13{padding-top:0pt;padding-bottom:0pt;line-height:1.5;orphans:2;widows:2;text-align:right;margin-right:-34.5pt}
 .c14{background-color:#999999}
 .c15{padding-top:0pt;padding-bottom:0pt;line-height:0.5;orphans:2;widows:2;text-align:left;margin-right:-34.5pt}
-.c16{background-color:#ffffff;max-width:451.3pt;padding:72pt 72pt 72pt 72pt}
+.c16{background-color:#ffffff;max-width:620pt;padding:10pt 2pt 16pt 2pt}
 .c17{padding-top:0pt;padding-bottom:0pt;line-height:1.0;orphans:2;widows:2;text-align:left;margin-right:-34.5pt}
 .c18{margin-left:279pt}
-.c19{margin-left: 20pt;}
-.c20{padding-right: 10%;}
-.c21{padding-top: 1%;}
+.c19{margin-left: 60pt;}
+.c20{padding-right: 60pt;}
+.c21{padding-right: 2.5%;}
 .title{padding-top:0pt;color:#000000;font-size:26pt;padding-bottom:3pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}
 .subtitle{padding-top:0pt;color:#666666;font-size:15pt;padding-bottom:16pt;font-family:"Arial";line-height:1.15;page-break-after:avoid;orphans:2;widows:2;text-align:left}
 li{color:#000000;font-size:11pt;font-family:"Arial"}
