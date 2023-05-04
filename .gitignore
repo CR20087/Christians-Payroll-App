@@ -1,6 +1,5 @@
 *.pdf
 *.env
-<<<<<<< HEAD
 src/components/Payslip-Generator/test code/test.css
 src/components/Payslip-Generator/test code/test.html
 src/components/Payslip-Generator/test code/test.py
@@ -16,23 +15,6 @@ src/components/Payslip-Generator/test code/test.py
 
 # production
 /build
-=======
-React App/src/components/Payslip-Generator/test code/test.css
-React App/src/components/Payslip-Generator/test code/test.html
-React App/src/components/Payslip-Generator/test code/test.py
-
-
-# dependencies
-React App/node_modules
-React App/.pnp
-React App/.pnp.js
-
-# testing
-React App/coverage
-
-# production
-React App/build
->>>>>>> 0207602ce132edd8eb2fff99cf40a0b94e0c4384
 
 # misc
 .DS_Store
