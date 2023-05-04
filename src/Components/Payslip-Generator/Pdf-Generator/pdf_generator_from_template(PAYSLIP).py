@@ -24,7 +24,7 @@ def pdf_generator_from_template():
             self.bank_account_num = 'test'
             self.tax_code = 'test'
             self.ird_num = 'test'
-            self.leave_weekly_ammount = 'test'
+
     # Payment(s)
     class Payment():
         def __init__(self):
@@ -37,7 +37,47 @@ def pdf_generator_from_template():
             self.pay_date = datetime.today().strftime("%d %b, %Y")
             self.total_time_length = 'test'
             self.total_py = 'test'
+    
+    #Leave
+    class Leave():
+        def __init__(self):
+            self.leave_weekly_ammount = 'test'
+            self.leave_taken_hours = 'test'
+            self.leave_take_days = 'test'
+            self.leave_start_date = 'test'
+            self.leave_end_date = 'test'
+            self.leave_type = 'test'
+            self.leave_ammount_paid = 'test'
 
+        def html(self,f):
+            if f: 
+                return f"""<p class="c4 c14">
+                <span class="c6 c66 c2 column4 alignright">Amount</span>
+                <span class="c6 c2 column4">Days</span>
+                <span class="c6 c2 column4">Duration</span>
+                <span class="c6 c2 column4">To Date</span>
+                <span class="c6 c2 column4">From Date</span>
+                <span class="c6 c2 column2">Leave</span>
+            </p>
+            <p class="c4">
+                <span class="c66 column4 alignright">{self.leave_ammount_paid}</span>
+                <span class="c1 column4">{self.leave_take_days}</span>
+                <span class="c1 column4">{self.leave_taken_hours}</span>
+                <span class="c1 column4">{self.leave_start_date}</span>
+                <span class="c1 column4">{self.leave_end_date}</span>
+                <span class="c1 column2 alignleft">{self.leave_type}</span>
+            </p>
+            <hr>
+            <p class="c4">
+                <span class="c2 c66 alignright">{self.leave_ammount_paid}</span>
+                <span class="alignleft c2">Total Leave</span>
+            </p>
+            <p><span>&nbsp;</span></p>
+            <p><span>&nbsp;</span></p>
+            </p>
+"""
+            else:
+                return ''
 
     # Summary
     class Summary():
@@ -61,11 +101,15 @@ def pdf_generator_from_template():
     receiver = Receiver()
     payment = Payment()
     summary = Summary()
+    leave = Leave()
+    html_leave_insertion = '<p class="c2"><span>testing testing testing 123</span></p>'
+
 
     context = {'entity_name':entity.entity_name,'business_name':entity.business_name,'entity_address_line_1':entity.address_line_1,'entity_address_line_2':entity.address_line_2,
-            'last_name':receiver.last_name,'first_name':receiver.first_name,'initials':receiver.initials,'receiver_address_line_1':receiver.address_line_1,'receiver_address_line_2':receiver.address_line_2,'post_code':receiver.post_code,'bank_account_num':receiver.bank_account_num,'tax_code':receiver.tax_code,'ird_num':receiver.ird_num,'leave_weekly_ammount':receiver.leave_weekly_ammount,
+            'last_name':receiver.last_name,'first_name':receiver.first_name,'initials':receiver.initials,'receiver_address_line_1':receiver.address_line_1,'receiver_address_line_2':receiver.address_line_2,'post_code':receiver.post_code,'bank_account_num':receiver.bank_account_num,'tax_code':receiver.tax_code,'ird_num':receiver.ird_num,'leave_weekly_ammount':leave.leave_weekly_ammount,
                 'payments':payment.payments,'pay_type':payment.pay_type,'pay_rate':payment.pay_rate,'pay_time_length':payment.pay_time_length,'pay_amt':payment.pay_amt,'pay_period_end':payment.pay_period_end,'pay_date':payment.pay_date,'total_time_length':payment.total_time_length,'total_py':payment.total_py,
-                'total_pay':summary.total_pay,'summary_tax_allowance':summary.summary_tax_allowance,'summ_non_tax_allowance':summary.summ_non_tax_allowance,'summary_one_off_pay':summary.summary_one_off_pay,'summary_final_pay':summary.summary_final_pay,'summary_gross_pay':summary.summary_gross_pay,'summary_year_to_date':summary.summary_year_to_date,'summary_deductions':summary.summary_deductions,'summary_paye':summary.summary_paye,'summary_student_loan':summary.summary_student_loan,'summary_child_support':summary.summary_child_support,'summary_tax_credit':summary.summary_tax_credit,'pay_net':summary.pay_net,'summary_benefits':summary.summary_benefits }
+                'total_pay':summary.total_pay,'summary_tax_allowance':summary.summary_tax_allowance,'summ_non_tax_allowance':summary.summ_non_tax_allowance,'summary_one_off_pay':summary.summary_one_off_pay,'summary_final_pay':summary.summary_final_pay,'summary_gross_pay':summary.summary_gross_pay,'summary_year_to_date':summary.summary_year_to_date,'summary_deductions':summary.summary_deductions,'summary_paye':summary.summary_paye,'summary_student_loan':summary.summary_student_loan,'summary_child_support':summary.summary_child_support,'summary_tax_credit':summary.summary_tax_credit,'pay_net':summary.pay_net,'summary_benefits':summary.summary_benefits,
+                 'leave_insert':leave.html(False) }
 
     template_loader = jinja2.FileSystemLoader('./')
     template_env = jinja2.Environment(loader=template_loader)
