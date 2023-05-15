@@ -21,7 +21,7 @@ function Landing() {
                 <br></br>
                 <Payslips>
                 <h4>Payslips</h4>
-                <iframe src="pdf_generated.pdf" allowFullScreen='' ></iframe>
+                <iframe src="Website_Payslip_example.pdf" title="Payslip Example PDF"></iframe>
                 <p>Payslips Text </p>
                 </Payslips>
             </Info>
