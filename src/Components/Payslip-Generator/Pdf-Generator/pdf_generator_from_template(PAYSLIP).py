@@ -1,5 +1,4 @@
 def pdf_generator_from_template():
-    import os
     import jinja2
     import pdfkit
     from datetime import datetime
@@ -102,23 +101,21 @@ def pdf_generator_from_template():
     payment = Payment()
     summary = Summary()
     leave = Leave()
-    html_leave_insertion = '<p class="c2"><span>testing testing testing 123</span></p>'
-
 
     context = {'entity_name':entity.entity_name,'business_name':entity.business_name,'entity_address_line_1':entity.address_line_1,'entity_address_line_2':entity.address_line_2,
             'last_name':receiver.last_name,'first_name':receiver.first_name,'initials':receiver.initials,'receiver_address_line_1':receiver.address_line_1,'receiver_address_line_2':receiver.address_line_2,'post_code':receiver.post_code,'bank_account_num':receiver.bank_account_num,'tax_code':receiver.tax_code,'ird_num':receiver.ird_num,'leave_weekly_ammount':leave.leave_weekly_ammount,
                 'payments':payment.payments,'pay_type':payment.pay_type,'pay_rate':payment.pay_rate,'pay_time_length':payment.pay_time_length,'pay_amt':payment.pay_amt,'pay_period_end':payment.pay_period_end,'pay_date':payment.pay_date,'total_time_length':payment.total_time_length,'total_py':payment.total_py,
                 'total_pay':summary.total_pay,'summary_tax_allowance':summary.summary_tax_allowance,'summ_non_tax_allowance':summary.summ_non_tax_allowance,'summary_one_off_pay':summary.summary_one_off_pay,'summary_final_pay':summary.summary_final_pay,'summary_gross_pay':summary.summary_gross_pay,'summary_year_to_date':summary.summary_year_to_date,'summary_deductions':summary.summary_deductions,'summary_paye':summary.summary_paye,'summary_student_loan':summary.summary_student_loan,'summary_child_support':summary.summary_child_support,'summary_tax_credit':summary.summary_tax_credit,'pay_net':summary.pay_net,'summary_benefits':summary.summary_benefits,
-                 'leave_insert':leave.html(False) }
+                 'leave_insert':leave.html(True) }
 
     template_loader = jinja2.FileSystemLoader('./')
     template_env = jinja2.Environment(loader=template_loader)
 
-    template = template_env.get_template('PaySliptemplate.html')
+    template = template_env.get_template('/src/Components/Payslip-Generator/Pdf-generator/PaySliptemplate.html')
     output_text = template.render(context)
 
-    config = pdfkit.configuration(wkhtmltopdf=rf"{os.getcwd()}\wkhtmltopdf.exe")
-    pdfkit.from_string(output_text, 'pdf_generated.pdf', configuration=config, css=f'{os.getcwd()}\PaySliptemplate.css')
+    config = pdfkit.configuration(wkhtmltopdf="./src/Components/Payslip-Generator/Pdf-generator/wkhtmltopdf.exe")
+    pdfkit.from_string(output_text, './src/Components/Payslip-Generator/Pdf-generator/Generated_PDF.pdf', configuration=config, css='./src/Components/Payslip-Generator/Pdf-generator/PaySliptemplate.css')
 
     return receiver
 
