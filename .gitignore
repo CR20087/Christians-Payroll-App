@@ -1,4 +1,5 @@
 *.pdf
+!Website_Payslip_Example.pdf
 *.env
 src/components/Payslip-Generator/test code/test.css
 src/components/Payslip-Generator/test code/test.html
