@@ -1,5 +1,4 @@
-def email_sender(file,recipient,manager):
-    import os
+def email_sender(recipient,manager):
     import datetime
     from email.mime.application import MIMEApplication
     from email.mime.multipart import MIMEMultipart
@@ -33,7 +32,7 @@ def email_sender(file,recipient,manager):
 
     msg.attach(MIMEText(message, "plain"))
 
-    with open(os.getcwd() + f'{file}.pdf', "rb") as f:
+    with open('src\Components\Payslip-Generator\Pdf_Generator\Generated_PDF.pdf', "rb") as f:
         attach = MIMEApplication(f.read(),_subtype="pdf")
         attach.add_header('Content-Disposition','attachment',filename=str(f'PAYSLIP {datetime.datetime.strftime(datetime.datetime.today(),"%d%b%Y")}.pdf'))
         msg.attach(attach)
