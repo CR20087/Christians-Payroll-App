@@ -65,6 +65,7 @@ p {
 
 const LoginButton = styled(Link)`
 padding: 1rem 1rem;
+height: 20%;
 text-decoration: none;
 font-family: 'Comic-Sans';
 color: #313131;

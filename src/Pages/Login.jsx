@@ -1,17 +1,37 @@
 import styled from "styled-components";
 import {useState} from 'react';
 import { BiArrowBack } from 'react-icons/bi'
-import { Link } from "react-router-dom";
+import { Link, useNavigate} from "react-router-dom";
 
 function Login() {
+  const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
   const [UserName, setUserName] = useState("")
   const [Password, setPassword] = useState("")
   const [isAuthorised, setIsAuthorised] = useState(false)
  
   function FetchLogin() {
+
     setIsLoading(true)
-    setIsAuthorised(false)
+
+    if (UserName === 'CReid' & Password === 'dev') {
+
+      setIsAuthorised('border-green')
+      
+      function randomString(length, chars) {
+        var result = '';
+        for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+        return result;
+      }
+
+      const authKey = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+
+      navigate('/Dashbord/' + authKey )      
+    } else {
+      setIsAuthorised('border-red')
+    }
+    
+    setIsLoading(false)
   }
 
   return (
@@ -22,10 +42,10 @@ function Login() {
       </GoBack>
       <Window >
         <Head>
-          <img src="./Christian-Payroll-App-Logo.png" alt="logo" width={150} />
+          <img src="./Christian-Payroll-App-Logo.png" alt="logo" />
             <p>Christian's Payroll App</p>
         </Head>
-        <div className={isAuthorised ? 'border-black' : 'border-red'}>
+        <div className={isAuthorised} >
           <p>User Name:</p>
             <input 
               onChange={(e) => setUserName(e.target.value)}
@@ -62,8 +82,6 @@ p {
 `
 
 const Window = styled.button`
-margin-bottom: 15%;
-margin-top: 10%;
   justify-self: center;
   display: grid;
   justify-content: center;
@@ -85,13 +103,13 @@ margin-top: 10%;
       text-align: center;
     }
    }
-  .border-black {
+  .border-red {
   input {
-    border: 2px solid black;
+    border: 1.5px solid red;
   }}
   .border-green {
   input {
-    border: 2px solid green;
+    border: 1.5px solid green;
   }}
   button {
     width: 5rem;
@@ -148,6 +166,10 @@ const Head = styled.div`
 
   p {
   padding-top: 2rem;
+  }
+  img {
+    width: 35%;
+    height: 80%
   }
 `
 export default Login
