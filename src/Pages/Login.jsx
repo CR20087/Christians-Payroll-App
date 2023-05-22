@@ -6,16 +6,16 @@ import { Link, useNavigate} from "react-router-dom";
 function Login() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
-  const [UserName, setUserName] = useState("")
-  const [Password, setPassword] = useState("")
-  const [isAuthorised, setIsAuthorised] = useState(false)
+  const [userName, setUserName] = useState("")
+  const [password, setPassword] = useState("")
+  const [isAuthorised, setIsAuthorised] = useState("")
  
   function FetchLogin() {
 
     setIsLoading(true)
 
-    if (UserName === 'CReid' & Password === 'dev') {
-
+    if (userName === 'CReid' & password === 'dev') { //Testing purposes
+      const userID = userName //Testing purposes
       setIsAuthorised('border-green')
       
       function randomString(length, chars) {
@@ -25,8 +25,11 @@ function Login() {
       }
 
       const authKey = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+      sessionStorage.clear()
+      sessionStorage.setItem('authKey',authKey)
+      sessionStorage.setItem('userID', userID)
 
-      navigate('/Dashbord/' + authKey )      
+      navigate('/Portal/' + userID )      
     } else {
       setIsAuthorised('border-red')
     }
@@ -52,7 +55,7 @@ function Login() {
               type="text"
               spellCheck= "true"
               placeholder="Enter Username" 
-              value={UserName}
+              value={userName}
             />
           <p>Password:</p>
             <input 
@@ -60,7 +63,7 @@ function Login() {
               type="password"
               spellCheck= "true"
               placeholder="Enter Password" 
-              value={Password}
+              value={password}
             />
         </div>
         <button onClick={FetchLogin}>Login</button>
