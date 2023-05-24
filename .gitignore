@@ -1,6 +1,7 @@
 *.pdf
 !Website_Payslip_Example.pdf
 *.env
+*.pyc
 src/components/Payslip-Generator/test code/test.css
 src/components/Payslip-Generator/test code/test.html
 src/components/Payslip-Generator/test code/test.py
