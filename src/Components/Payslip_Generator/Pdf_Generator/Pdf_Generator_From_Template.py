@@ -111,11 +111,11 @@ def pdf_generator_from_template():
     template_loader = jinja2.FileSystemLoader('./')
     template_env = jinja2.Environment(loader=template_loader)
 
-    template = template_env.get_template('./src/Components/Payslip-Generator/Pdf_Generator/PaySliptemplate.html')
+    template = template_env.get_template('./src/Components/Payslip_Generator/Pdf_Generator/PaySliptemplate.html')
     output_text = template.render(context)
 
-    config = pdfkit.configuration(wkhtmltopdf="./src/Components/Payslip-Generator/Pdf_Generator/wkhtmltopdf.exe")
-    pdfkit.from_string(output_text, './src/Components/Payslip-Generator/Pdf_Generator/Generated_PDF.pdf', configuration=config, css='./src/Components/Payslip-Generator/Pdf_Generator/PaySliptemplate.css')
+    config = pdfkit.configuration(wkhtmltopdf="./src/Components/Payslip_Generator/Pdf_Generator/wkhtmltopdf.exe")
+    pdfkit.from_string(output_text, './src/Components/Payslip_Generator/Pdf_Generator/Generated_PDF.pdf', configuration=config, css='./src/Components/Payslip_Generator/Pdf_Generator/PaySliptemplate.css')
 
     return receiver
 

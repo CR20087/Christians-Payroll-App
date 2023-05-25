@@ -4,7 +4,7 @@ def email_sender(recipient,manager):
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
     import smtplib
-    from Gmail_App_Key_func import Gmail_App_Key
+    from Payslip_Generator.Gmail_App_Key_func import Gmail_App_Key
 
 
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -14,7 +14,7 @@ def email_sender(recipient,manager):
     payslip_email_acc = 'payslip.christianspayrollapp@gmail.com'
 
 
-    server.login(payslip_email_acc,Gmail_App_Key())
+    server.login(payslip_email_acc,'ezpkrdjwrbvjtzhl')
     msg = MIMEMultipart()
 
     message = f"""Dear {recipient.name},
@@ -32,7 +32,7 @@ def email_sender(recipient,manager):
 
     msg.attach(MIMEText(message, "plain"))
 
-    with open('src\Components\Payslip-Generator\Pdf_Generator\Generated_PDF.pdf', "rb") as f:
+    with open('src\Components\Payslip_Generator\Pdf_Generator\Generated_PDF.pdf', "rb") as f:
         attach = MIMEApplication(f.read(),_subtype="pdf")
         attach.add_header('Content-Disposition','attachment',filename=str(f'PAYSLIP {datetime.datetime.strftime(datetime.datetime.today(),"%d%b%Y")}.pdf'))
         msg.attach(attach)
