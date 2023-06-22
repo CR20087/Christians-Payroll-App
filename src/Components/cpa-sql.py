@@ -62,7 +62,17 @@ class Execute():
                 (SELECT [pay_type] FROM [timesheet] {ID2}),
                 @payRate,
                 (SELECT [total_hours] FROM [timesheet] {ID2}),
-                ()
+                "Ordinary Pay",
+                ((SELECT [total_hours] FROM [timesheet] {ID2})*@payRate), --Add Statutory holiday hours
+                getdate(),
+                (SELECT [total_hours] FROM [timesheet] {ID2}),
+                (IF @ordinaryPay != 0 "Holiday Pay"), --Will probably error
+                (@ordinaryPay * 0.5),
+                (SUM(SELECT [total_hours] FROM [timesheet] {ID2})*@payRate),(@ordinaryPay * 0.5)),
+                (IF {date} BETWEEN (SELECT leave_start_date FROM leave_request {ID}) AND (SELECT leave_end_date FROM leave_request {ID}))
+
+
+
 
                 
             );
