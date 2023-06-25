@@ -18,6 +18,10 @@ class Execute():
             f"""
             DECLARE @payRate AS DECIMAL(18,2) = (SELECT [pay_rate] FROM [pay_detail]s {ID} )
             DECLARE @ordinaryPay AS BIT = (SELECT [alternative_hours] FROM [timesheet] {ID2})
+            DECLARE @leaveTaken AS VARCHAR(5) = (IF (SELECT COUNT(*) FROM leave_request {ID} AND {date} >= leave_start_date AND {date} <= leave_end_date AND status = 'approved' GROUP BY leave_entry_id) > 0 SELECT 'true' ELSE SELECT 'false')
+            DECLARE @leaveStartDate AS DATE = (IF @leaveTaken = 'true' (SELECT leave_start_date FROM leave_request {ID} AND {date} >= leave_start_date AND {date} <= leave_end_date AND status = 'approved' GROUP BY leave_entry_id) ELSE null),               
+            DECLARE @leaveEndDate AS DATE = (IF @leaveTaken = 'true' (SELECT leave_end_date FROM leave_request {ID} AND {date} >= leave_start_date AND {date} <= leave_end_date AND status = 'approved' GROUP BY leave_entry_id) ELSE null),
+
 
             INSERT INTO [payslip_data](
                 [username],
@@ -69,7 +73,12 @@ class Execute():
                 (IF @ordinaryPay != 0 "Holiday Pay"), --Will probably error
                 (@ordinaryPay * 0.5),
                 (SUM(SELECT [total_hours] FROM [timesheet] {ID2})*@payRate),(@ordinaryPay * 0.5)),
-                (IF {date} BETWEEN (SELECT leave_start_date FROM leave_request {ID}) AND (SELECT leave_end_date FROM leave_request {ID}))
+                @leaveTaken,
+                @leaveStartDate,
+                @leaveEndDate,
+                (IF @leaveTaken = 'true' (SELECT DATEDIFF(day,@leaveStartDate,@leaveEndDate)) ELSE null ),
+                
+
 
 
 
