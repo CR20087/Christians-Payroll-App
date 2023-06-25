@@ -1,8 +1,12 @@
-from flask import Flask, jsonify
+from flask import Flask, jsonify, render_template
 from Payslip_Generator.Payslip_Script import Payslip_Script
 app = Flask(__name__)
 
-@app.route(f"/sql/test")
+@app.route('/')
+def index():
+    return render_template('./index.html')
+
+@app.route("/sql/test")
 def sql_test():
     return jsonify(message="Successfully reached thus url")
 
