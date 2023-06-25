@@ -1,4 +1,4 @@
-def Payslip_Script():
+def Payslip_Script(email):
     from Payslip_Generator.Email_Sender import email_sender
     from collections import namedtuple
     from Payslip_Generator.Pdf_Generator.Pdf_Generator_From_Template import pdf_generator_from_template
@@ -7,7 +7,7 @@ def Payslip_Script():
     # Email Send
     Recipient = namedtuple('Recipient',['name','email'])
     Manager = namedtuple('Manager',['name','email'])
-    recipient =Recipient('Bowen','christian.reid007@gmail.com')
+    recipient =Recipient('Bowen',email)
     manager = Manager('Dr Splwhetz','splwhetz@gmail.com')
     email_sender(recipient,manager)
     return 'Success'
