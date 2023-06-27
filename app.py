@@ -1,6 +1,6 @@
 from flask import Flask, jsonify, render_template
-from Payslip_Generator.Payslip_Script import Payslip_Script
-app = Flask(__name__, template_folder='templates')
+from src.Flask.Payslip_Generator import Payslip_Script
+app = Flask(__name__, template_folder='src/Flask/templates')
 
 @app.route('/')
 def index():
