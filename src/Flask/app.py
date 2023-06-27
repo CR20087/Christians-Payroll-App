@@ -1,10 +1,10 @@
 from flask import Flask, jsonify, render_template
 from Payslip_Generator.Payslip_Script import Payslip_Script
-app = Flask(__name__)
+app = Flask(__name__, template_folder='templates')
 
 @app.route('/')
 def index():
-    return render_template('./index.html')
+    return render_template('index.html')
 
 @app.route("/sql/test")
 def sql_test():
