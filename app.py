@@ -1,14 +1,18 @@
 from flask import Flask, jsonify, render_template
 from src.Flask.Payslip_Generator import Payslip_Script
+from src.Flask import cpa_sql
+
 app = Flask(__name__, template_folder='src/Flask/templates')
 
 @app.route('/')
 def index():
     return render_template('index.html')
 
-@app.route("/sql/test")
-def sql_test():
-    return jsonify(message="Successfully reached thus url")
+@app.route("/login/<string:userName>/<string:password>")
+def login_verify(userName: str,password: str):
+    result = cpa_sql.login_verify(userName,password)
+
+    return jsonify(match=str(result))
 
 @app.route(f"/sendpayslip/<string:email>")
 def sendpayslip(email: str):

@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import { BiArrowBack } from 'react-icons/bi'
 import { Link, useNavigate} from "react-router-dom";
 
@@ -9,13 +9,25 @@ function Login() {
   const [userName, setUserName] = useState("")
   const [password, setPassword] = useState("")
   const [isAuthorised, setIsAuthorised] = useState("")
+  var [data,setData] = useState([])
  
   function FetchLogin() {
 
     setIsLoading(true)
 
-    if (userName === 'CReid' & password === 'dev') { //Testing purposes
-      const userID = userName //Testing purposes
+    useEffect(() => {
+      fetch('/login/'+{userName}+'/'+{password}).then(
+        res => res.json()
+      ).then(
+        data => {
+          setData(data)
+          console.log(data)
+        }
+      )
+    }, [])
+
+    if (data.match === 'True') { 
+      const userID = userName 
       setIsAuthorised('border-green')
       
       function randomString(length, chars) {
@@ -30,10 +42,11 @@ function Login() {
       sessionStorage.setItem('userID', userID)
 
       navigate('/Portal/' + userID )      
-    } else {
+    } else if (data.match === 'False') {
       setIsAuthorised('border-red')
+      console.log('Incorrect login details')
     }
-    
+
     setIsLoading(false)
   }
 

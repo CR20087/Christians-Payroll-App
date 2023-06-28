@@ -1,20 +1,20 @@
 import pyodbc 
 
-database = 'CPA'
-server = 'cpa-server.database.windows.net'
-username = 'CReid' 
-password = 'iKErTyTZupa789@' 
-driver='{ODBC Driver 18 for SQL Server}'
-    
-conn = pyodbc.connect('DRIVER='+driver+';SERVER='+server+';DATABASE='+database+';ENCRYPT=yes;UID='+username+';PWD='+ password)
-cur = conn.cursor()
+def init():
+    database = 'CPA'
+    server = 'cpa-server.database.windows.net'
+    username = 'CReid' 
+    password = 'iKErTyTZupa789@' 
+    driver='{ODBC Driver 18 for SQL Server}'
+        
+    conn = pyodbc.connect('DRIVER='+driver+';SERVER='+server+';DATABASE='+database+';ENCRYPT=yes;UID='+username+';PWD='+ password)
+    cur = conn.cursor()
+    return cur
 
-
-class Execute():
-    def payslip(self, username, date):
-        ID = f"WHERE [username] = {username}"
-        ID2 = f"WHERE [username] = {username} AND [period_end] = {date}"
-        return (
+def payslip(username, date):
+    ID = f"WHERE [username] = {username}"
+    ID2 = f"WHERE [username] = {username} AND [period_end] = {date}"
+    return (
             f"""
             DECLARE @payRate AS DECIMAL(18,2) = (SELECT [pay_rate] FROM [pay_detail]s {ID} )
             DECLARE @ordinaryPay AS BIT = (SELECT [alternative_hours] FROM [timesheet] {ID2})
@@ -76,16 +76,14 @@ class Execute():
                 @leaveTaken,
                 @leaveStartDate,
                 @leaveEndDate,
-                (IF @leaveTaken = 'true' (SELECT DATEDIFF(day,@leaveStartDate,@leaveEndDate)) ELSE null ),
-                
-
-
-
-
-
-                
+                (IF @leaveTaken = 'true' (SELECT DATEDIFF(day,@leaveStartDate,@leaveEndDate)) ELSE null ),    
             );
             """
-            )
+    )
+
+def login_verify(username,password):
+    cur = init()
+    cur.execute(f"SELECT username,password FROM login WHERE username = {username} AND password = {password}")
+    return bool(cur.fetchone())
 
 
