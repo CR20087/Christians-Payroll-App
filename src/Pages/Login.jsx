@@ -1,30 +1,39 @@
 import styled from "styled-components";
 import {useState, useEffect} from 'react';
 import { BiArrowBack } from 'react-icons/bi'
-import { Link, useNavigate} from "react-router-dom";
+import { Await, Link, useNavigate} from "react-router-dom";
 
 function Login() {
   const navigate = useNavigate()
   const [isLoading, setIsLoading] = useState(false)
-  const [userName, setUserName] = useState("")
-  const [password, setPassword] = useState("")
+  const [userName, setUserName] = useState()
+  const [password, setPassword] = useState()
   const [isAuthorised, setIsAuthorised] = useState("")
-  var [data,setData] = useState([])
- 
-  function FetchLogin() {
+  const [data,setData] = useState([{}])
+  const [props,setProps] = useState([{}])
+  
 
-    setIsLoading(true)
-
-    useEffect(() => {
-      fetch('/login/'+{userName}+'/'+{password}).then(
-        res => res.json()
+  useEffect(() => {
+    fetch(`/login/'${props.userName}'/'${props.password}'`).then(
+      res => res.json()
       ).then(
         data => {
           setData(data)
           console.log(data)
+          console.log(props.userName+' '+props.password)
         }
       )
-    }, [])
+    }, [props]
+  )
+
+  function FetchLogin() {
+
+    setIsLoading(true)
+
+    setProps({
+      userName:userName,
+      password:password
+    })
 
     if (data.match === 'True') { 
       const userID = userName 
