@@ -8,30 +8,24 @@ function LoginForm() {
     const [userName, setUserName] = useState()
     const [password, setPassword] = useState()
     const [isAuthorised, setIsAuthorised] = useState("")
-    const [data,setData] = useState([{}])
     const [props,setProps] = useState([{}])
   
 
-    const FetchLogin = (e) => {
-        e.preventDefault()
-  
+    const FetchLogin = async (e) => {
+      
+      e.preventDefault()
+      
       setIsLoading(true)
-
       setProps({
         userName:userName,
         password:password
       })
 
-      const getLoginMatch = async (props) =>  {
-        const res = await fetch(`/login/'${props.userName}'/'${props.password}'`)
-        const data = await res.json()
-            setData(data)
-            console.log(data)
-            console.log(props.userName+' '+props.password)
-        }
-    
-        getLoginMatch(props);
-  
+      const res = await fetch(`/login/'${props.userName}'/'${props.password}'`)
+      const data = await res.json()
+      console.log(data)
+      console.log(props.userName+' '+props.password)
+
       if (data.match === 'True') { 
         const userID = userName 
         setIsAuthorised('border-green')
