@@ -83,7 +83,12 @@ def payslip(username, date):
 
 def login_verify(username,password):
     cur = init()
-    cur.execute(f"SELECT username,password FROM login WHERE username = {username} AND password = {password}")
-    return bool(cur.fetchone())
+    cur.execute(f"SELECT role FROM login WHERE username = {username} AND password = {password};")
+    role = cur.fetchone()[0][0]
+    if bool(cur.fetchone()):
+        cur.execute(f"UPDATE login SET last_login = CURRENT_TIMESTAMP WHERE username = {username};")
+        cur.commit()
+
+    return [bool(cur.fetchone()),role]
 
 

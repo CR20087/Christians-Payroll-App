@@ -12,7 +12,7 @@ def index():
 def login_verify(userName: str,password: str):
     result = cpa_sql.login_verify(userName,password)
 
-    return jsonify(match=f'{result}')
+    return jsonify(match=str(result[0]),role=str(result[1]))
 
 @app.route(f"/sendpayslip/<string:email>")
 def sendpayslip(email: str):
