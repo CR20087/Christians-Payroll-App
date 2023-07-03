@@ -1,10 +1,9 @@
-def email_sender(recipient,manager):
+def email_sender(username,recipient,manager):
     import datetime
     from email.mime.application import MIMEApplication
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
     import smtplib
-    from Payslip_Generator.Gmail_App_Key_func import Gmail_App_Key
 
 
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -21,7 +20,7 @@ def email_sender(recipient,manager):
 
     Please find attached your payslip for the period ending {datetime.datetime.strftime(datetime.datetime.today(),"%d/%m/%Y")}.
 
-    If you have any queries please contact {manager.name} ({manager.email}).
+    If you have any queries please contact {manager.name} ({manager.contact}).
 
     PLEASE DO NOT REPLY DIRECTLY TO THIS EMAIL MESSAGE AS IT HAS BEEN SENT FROM AN AUTOMATED ACCOUNT AND IS NOT MONITORED.
 
@@ -34,7 +33,7 @@ def email_sender(recipient,manager):
 
     with open('src\Flask\Payslip_Generator\Pdf_Generator\Generated_PDF.pdf', "rb") as f:
         attach = MIMEApplication(f.read(),_subtype="pdf")
-        attach.add_header('Content-Disposition','attachment',filename=str(f'PAYSLIP {datetime.datetime.strftime(datetime.datetime.today(),"%d%b%Y")}.pdf'))
+        attach.add_header('Content-Disposition','attachment',filename=str(f'PAYSLIP {username} {datetime.datetime.strftime(datetime.datetime.today(),"%d%b%Y")}.pdf'))
         msg.attach(attach)
         
         server.send_message(msg)
