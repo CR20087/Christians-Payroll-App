@@ -4,6 +4,7 @@ import { Route, Routes, useLocation } from 'react-router-dom';
 import Login from '../Pages/Login'
 import Support from '../Pages/Support';
 import Portal from '../Pages/Portal';
+import Register from '../Pages/Register';
 
 function Pages() {
   const location = useLocation();
@@ -13,6 +14,7 @@ function Pages() {
         <Route path="/login" element={<Login/>} />
         <Route path="/support" element={<Support/>} />
         <Route path="/Portal/:userID" element={<Portal/>} />
+        <Route path="/Register" element={<Register/>} />
     </Routes>
   );
 }
