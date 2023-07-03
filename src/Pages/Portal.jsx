@@ -10,8 +10,8 @@ function Portal() {
         <Logo>
             <img src="./Christian-Payroll-App-Logo.png" alt="logo" width={150} />
             <p>Christian's Payroll App</p>
-            <h1>M<br></br>E<br></br>N<br></br>U<br></br></h1>
         </Logo>
+        <h1>M<br></br>E<br></br>N<br></br>U<br></br></h1>
       </SideBar>
   </Dashboard>
   )
@@ -30,14 +30,18 @@ const Logo = styled.div`
   }
 `
 const SideBar = styled.div`
-  width: 7%;
+display: flex;
+justify-content: center;
+  width: 5%;
   transition: 1s;
   background-color: black ;
+  flex-direction: column-reverse;
+  align-items: center;
   p {
     visibility: hidden;
   }
   h1{
-    opacity:1;
+    visibility: visible;
     color: white;
   }
   img {
@@ -45,7 +49,7 @@ const SideBar = styled.div`
     }
   :hover{
     background-color:green ;
-    width:25%;
+    width:18%;
     p {
     visibility: visible;
   }
@@ -53,7 +57,10 @@ const SideBar = styled.div`
       visibility: visible;
     }
     h1{
-    opacity:0;
+      visibility: hidden;
+      width: 0%;
+      height:0%
+      
   }
   }
 `

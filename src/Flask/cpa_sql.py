@@ -14,8 +14,9 @@ def init():
 def payslip(username, date):
     ID = f"WHERE [username] = {username}"
     ID2 = f"WHERE [username] = {username} AND [period_end] = {date}"
-    return (
-            f"""
+    cur = init()
+    
+    cur.execute(f"""
             DECLARE @payRate AS DECIMAL(18,2) = (SELECT [pay_rate] FROM [pay_detail]s {ID} )
             DECLARE @ordinaryPay AS BIT = (SELECT [alternative_hours] FROM [timesheet] {ID2})
             DECLARE @leaveTaken AS VARCHAR(5) = (IF (SELECT COUNT(*) FROM leave_request {ID} AND {date} >= leave_start_date AND {date} <= leave_end_date AND status = 'approved' GROUP BY leave_entry_id) > 0 SELECT 'true' ELSE SELECT 'false')
@@ -80,6 +81,10 @@ def payslip(username, date):
             );
             """
     )
+    result = cur.fetchone()[0]
+    cur.close()
+
+    return result
 
 def login_verify(username,password):
     cur = init()
@@ -88,7 +93,27 @@ def login_verify(username,password):
     if bool(cur.fetchone()):
         cur.execute(f"UPDATE login SET last_login = CURRENT_TIMESTAMP WHERE username = {username};")
         cur.commit()
+        cur.close()
 
     return [bool(role),role[0][0]]
+
+def email_payslip_details(username):
+    cur = init()
+    cur.execute(f"""
+        SELECT employee.email AS employee_email,
+        CONCAT(employee.first_name,' ',employee.last_name) AS employee_name,
+        CONCAT(manager.first_name,' ',manager.last_name) AS manager_name,
+        (case when manager.contact_method = 'phone' then manager.phone ELSE manager.email end) AS manager_contact
+        FROM employee_manager 
+        INNER JOIN employee 
+        ON employee_manager.employee = employee.username 
+        INNER JOIN manager
+        ON employee_manager.manager = manager.username
+        WHERE employee.username = {username}""")
+    
+    result = cur.fetchone()[0]
+    cur.close()
+
+    return result
 
 

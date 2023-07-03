@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useForm } from 'react-hook-form';
 
 function LoginForm() {
     const navigate = useNavigate()
@@ -8,24 +10,20 @@ function LoginForm() {
     const [userName, setUserName] = useState()
     const [password, setPassword] = useState()
     const [isAuthorised, setIsAuthorised] = useState("")
-    const [props,setProps] = useState([{}])
+    const { register, handleSubmit, formState: { errors } } = useForm();
   
 
-    const FetchLogin = async (e) => {
-      
-      e.preventDefault()
-      
-      setIsLoading(true)
-      setProps({
-        userName:userName,
-        password:password
-      })
+    const FetchLogin = async (information) => {
 
-      const res = await fetch(`/login/'${props.userName}'/'${props.password}'`)
+      setIsLoading(true)
+
+      console.log(information)
+
+      const res = await fetch(`/login/'${information.username}'/'${information.password}'`)
       const data = await res.json()
       console.log(data)
-      console.log(props.userName+' '+props.password)
-
+      console.log(information.username+' '+information.password)
+    
       if (data.match === 'True') { 
         const userID = userName 
         setIsAuthorised('border-green')
@@ -49,9 +47,11 @@ function LoginForm() {
   
       setIsLoading(false)
     }
+
+    
   
     return (
-        <Window onSubmit={FetchLogin}>
+        <Window onSubmit={handleSubmit(FetchLogin)}>
           <Head>
             <img src="./Christian-Payroll-App-Logo.png" alt="logo" />
               <p>Christian's Payroll App</p>
@@ -61,31 +61,34 @@ function LoginForm() {
               <input 
                 onChange={(e) => setUserName(e.target.value)}
                 type="text"
-                spellCheck= "true"
                 placeholder="Enter Username" 
                 value={userName}
-              />
+                {...register("username", { required: true })}
+              />{errors.email && <p>Email is required</p>}
             <p>Password:</p>
               <input 
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
-                spellCheck= "true"
                 placeholder="Enter Password" 
                 value={password}
-              />
+                {...register("password", { required: true })}
+              />{errors.password && <p>Password is required</p>}
           </div>
-          <button onClick={FetchLogin}>Login</button>
+          <button type="submit">Login</button>
           <div>{isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> }</div>
+          <Signup to={"/Register"}>Signup/Register</Signup>
         </Window>      
     )  
   }
   
 
   
-  const Window = styled.button`
+  const Window = styled.form`
     justify-self: center;
     display: grid;
     justify-content: center;
+    align-items: end;
+    justify-items: center;
     width: 35rem;
     height: 40rem;
     color: #313131;
@@ -129,7 +132,6 @@ function LoginForm() {
   
   
   const Loading = styled.div `
-    margin-left: 45%;
     width: 40px;
     height: 40px;
     border: 3px solid #f3f3f3;
@@ -146,7 +148,11 @@ function LoginForm() {
     }
   
   `
-  
+  const Signup = styled(Link)`
+    text-decoration: none;
+    color: #313131;
+    font-weight: 700;
+  `
   const Head = styled.div`
     display: flex;
   
