@@ -89,27 +89,24 @@ def payslip(username, date):
 def login_verify(username,password):
     cur = init()
     cur.execute(f"SELECT role FROM login WHERE username = {username} AND password = {password};")
-    role = cur.fetchone()
-    if bool(cur.fetchone()):
-        cur.execute(f"UPDATE login SET last_login = CURRENT_TIMESTAMP WHERE username = {username};")
-        cur.commit()
-        cur.close()
+    try:
+        role = cur.fetchone()
+        if bool(role):
+            cur.execute(f"UPDATE login SET last_login = CURRENT_TIMESTAMP WHERE username = {username};")
+            cur.commit()
+            cur.close()
+    except:
+        return [False,'n/a']
 
     return [bool(role),role[0][0]]
 
 def email_payslip_details(username):
     cur = init()
     cur.execute(f"""
-        SELECT employee.email AS employee_email,
-        CONCAT(employee.first_name,' ',employee.last_name) AS employee_name,
-        CONCAT(manager.first_name,' ',manager.last_name) AS manager_name,
-        (case when manager.contact_method = 'phone' then manager.phone ELSE manager.email end) AS manager_contact
-        FROM employee_manager 
-        INNER JOIN employee 
-        ON employee_manager.employee = employee.username 
-        INNER JOIN manager
-        ON employee_manager.manager = manager.username
-        WHERE employee.username = {username}""")
+        SELECT [employee_email]
+      ,[employee_name]
+      ,[manager_name]
+      ,[manager_contact] FROM email_details""")
     
     result = cur.fetchone()[0]
     cur.close()
