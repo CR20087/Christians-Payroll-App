@@ -11,11 +11,6 @@ function LoginForm() {
     const [password, setPassword] = useState()
     const [isAuthorised, setIsAuthorised] = useState("")
     const { register, handleSubmit, formState: { errors } } = useForm();
-    const requestOptions = {
-      method: 'POST',
-      headers: {    
-          'Access-Control-Allow-Origin': '*' }}
-  
 
     const FetchLogin = async (information) => {
 
@@ -23,12 +18,12 @@ function LoginForm() {
 
       console.log(information)
 
-      const res = await fetch(`https://cpa-flask.azurewebsites.net/login/'${information.userName}'/'${information.password}'`,requestOptions)
+      const res = await fetch(`https://cpa-flask.azurewebsites.net/login/'${information.userName}'/'${information.password}'`, { mode: 'no-cors'})
       const data = await res.json()
       console.log(data)
       console.log(information.userName+' '+information.password)
     
-      if ((data.match === 'True' && data.role === 'employee' && data.setup ==='True') || (data.match == 'True' && data.role == 'manager')) { 
+      if ((data.match === 'True' && data.role === 'employee' && data.setup ==='True') || (data.match === 'True' && data.role === 'manager')) { 
         const userID = userName 
         setIsAuthorised('border-green')
         
@@ -46,7 +41,7 @@ function LoginForm() {
         navigate('/Portal/' +data.role + '/'+ userID )      
       } else if(data.match === 'False') {
         setIsAuthorised('border-red')
-      } else if (data.setup == 'False') {
+      } else if (data.setup === 'False') {
         setIsAuthorised('border-red')
         alert("Please see the Register menu as your account has not yet been registered, thankyou.")
     }
