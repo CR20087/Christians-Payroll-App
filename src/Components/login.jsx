@@ -11,6 +11,10 @@ function LoginForm() {
     const [password, setPassword] = useState()
     const [isAuthorised, setIsAuthorised] = useState("")
     const { register, handleSubmit, formState: { errors } } = useForm();
+    const requestOptions = {
+      method: 'POST',
+      headers: {    
+          'Access-Control-Allow-Origin': '*' }}
   
 
     const FetchLogin = async (information) => {
@@ -19,7 +23,7 @@ function LoginForm() {
 
       console.log(information)
 
-      const res = await fetch(`https://cpa-flask.azurewebsites.net/login/'${information.userName}'/'${information.password}'`)
+      const res = await fetch(`https://cpa-flask.azurewebsites.net/login/'${information.userName}'/'${information.password}'`,requestOptions)
       const data = await res.json()
       console.log(data)
       console.log(information.userName+' '+information.password)
