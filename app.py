@@ -12,7 +12,7 @@ def index():
 def login_verify(userName: str,password: str):
     result = cpa_sql.login_verify(userName,password)
 
-    return jsonify(match=str(result[0]),role=str(result[1]))
+    return jsonify(match=str(result[0]),role=str(result[1]),setup=str(result[2]))
 
 @app.route("/register/<string:userName>/<string:password>")
 def register_check(userName: str,password: str):

@@ -19,12 +19,12 @@ function LoginForm() {
 
       console.log(information)
 
-      const res = await fetch(`/login/'${information.username}'/'${information.password}'`)
+      const res = await fetch(`/login/'${information.userName}'/'${information.password}'`)
       const data = await res.json()
       console.log(data)
-      console.log(information.username+' '+information.password)
+      console.log(information.userName+' '+information.password)
     
-      if (data.match === 'True') { 
+      if ((data.match === 'True' && data.role === 'employee' && data.setup ==='True') || (data.match == 'True' && data.role == 'manager')) { 
         const userID = userName 
         setIsAuthorised('border-green')
         
@@ -39,11 +39,13 @@ function LoginForm() {
         sessionStorage.setItem('authKey',authKey)
         sessionStorage.setItem('userID', userID)
   
-        navigate('/Portal/' + userID )      
-      } else if (data.match === 'False') {
+        navigate('/Portal/' +data.role + '/'+ userID )      
+      } else if(data.match === 'False') {
         setIsAuthorised('border-red')
-        console.log('Incorrect login details')
-      }
+      } else if (data.setup == 'False') {
+        setIsAuthorised('border-red')
+        alert("Please see the Register menu as your account has not yet been registered, thankyou.")
+    }
   
       setIsLoading(false)
     }
@@ -63,8 +65,8 @@ function LoginForm() {
                 type="text"
                 placeholder="Enter Username" 
                 value={userName}
-                {...register("username", { required: true })}
-              />{errors.username && <h6>Username is required</h6>}
+                {...register("userName", { required: true })}
+              />{errors.userName && <h6>Username is required</h6>}
             <p>Password:</p>
               <input 
                 onChange={(e) => setPassword(e.target.value)}

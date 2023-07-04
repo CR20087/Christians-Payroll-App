@@ -89,16 +89,18 @@ def payslip(username, date):
 def login_verify(username,password):
     cur = init()
     cur.execute(f"SELECT role FROM login WHERE username = {username} AND password = {password};")
-    try:
-        role = cur.fetchone()
-        if bool(role):
-            cur.execute(f"UPDATE login SET last_login = CURRENT_TIMESTAMP WHERE username = {username};")
-            cur.commit()
-            cur.close()
+    role = cur.fetchone()
+    if bool(role):
+        cur.execute(f"UPDATE login SET last_login = CURRENT_TIMESTAMP WHERE username = {username};")
+        cur.commit()
+            
+        cur.execute(f"SELECT * FROM employee where username = {username}")
+        setup = bool(cur.fetchone())
+        cur.close()
 
-        return [bool(role),role[0][0]]
-    except:
-        return [False,'n/a']
+        return [bool(role),role[0],setup]
+    else:
+        return [False,'n/a','n/a'] 
     
 def register_check(username,password):
     cur = init()
@@ -113,7 +115,8 @@ def register_check(username,password):
 
 def register_account(userName,firstName,lastName,email,address,suburb,postCode,phone):
     cur = init()
-    cur.execute(f"""INSERT INTO employee(
+    try:
+        cur.execute(f"""INSERT INTO employee(
         [username]
       ,[first_name]
       ,[last_name]
@@ -122,7 +125,10 @@ def register_account(userName,firstName,lastName,email,address,suburb,postCode,p
       ,[address_2]
       ,[post_code]
       ,[phone]) VALUES ({userName},{firstName},{lastName},{email},{address},{suburb},{postCode},{phone})""")
-    cur.commit()
+        cur.commit()
+    except:
+        cur.close()
+        return 'Failed'
     cur.close()
 
     return 'Success'

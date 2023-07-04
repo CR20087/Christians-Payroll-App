@@ -13,7 +13,7 @@ function Pages() {
         <Route path="/" element={<Landing />} />
         <Route path="/Login" element={<Login/>} />
         <Route path="/Support" element={<Support/>} />
-        <Route path="/Portal/:userID" element={<Portal/>} />
+        <Route path="/Portal/:role/:userID" element={<Portal/>} />
         <Route path="/Register/:pagenum" element={<Register/>} />
     </Routes>
   );
