@@ -11,8 +11,8 @@ function Pages() {
   return (
     <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Landing />} />
-        <Route path="/login" element={<Login/>} />
-        <Route path="/support" element={<Support/>} />
+        <Route path="/Login" element={<Login/>} />
+        <Route path="/Support" element={<Support/>} />
         <Route path="/Portal/:userID" element={<Portal/>} />
         <Route path="/Register/:pagenum" element={<Register/>} />
     </Routes>

@@ -12,8 +12,8 @@ function Landing() {
                     <p>Christian's Payroll App</p>
                 </Logo>
                 <Hyperlinks> 
-                    <Support to={"/support"}>Support & Doccumentation</Support>
-                    <LoginButton to={"/login"}>Login<CiLock size={20}/></LoginButton>
+                    <Support to={"/Support"}>Support & Doccumentation</Support>
+                    <LoginButton to={"/Login"}>Login<CiLock size={20}/></LoginButton>
                 </Hyperlinks>
             </Nav>
             <Info>

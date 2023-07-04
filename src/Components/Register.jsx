@@ -29,13 +29,14 @@ function RegisterForm() {
 
       console.log(information)
 
-      const res = await fetch(`/Register/'${information.username}'/'${information.password}'`)
+      const res = await fetch(`/Register/'${information.userName}'/'${information.password}'`)
       const data = await res.json()
       console.log(data)
-      console.log(information.username+' '+information.password)
+      console.log(information.userName+' '+information.password)
     
       if (data.match === 'True' && data.config === 'False') { 
         
+        sessionStorage.setItem('userName',information.userName)
         navigate('/Register/' + (parseInt(params.pagenum)+1).toString()  )
 
       } else if (data.match === 'False') {
@@ -70,7 +71,7 @@ function RegisterForm() {
       setIsLoading(true)
 
       const res = await 
-        fetch(`/RegisterAccount/${sessionStorage.getItem('firstName')}/${sessionStorage.getItem('lastName')}/${sessionStorage.getItem('email')}/${sessionStorage.getItem('address')}/${sessionStorage.getItem('suburb')}/${sessionStorage.getItem('postCode')}/${sessionStorage.getItem('phone')}`)
+        fetch(`/registerAccount/${sessionStorage.getItem('userName')}/${sessionStorage.getItem('firstName')}/${sessionStorage.getItem('lastName')}/${sessionStorage.getItem('email')}/${sessionStorage.getItem('address')}/${sessionStorage.getItem('suburb')}/${sessionStorage.getItem('postCode')}/${sessionStorage.getItem('phone')}`)
       const data = await res.json()
       console.log(data)
 
@@ -96,7 +97,7 @@ function RegisterForm() {
                 placeholder="Enter Username" 
                 value={userName}
                 {...register("username", { required: true })}
-              />{errors.username && <h6>Username is required</h6>}
+              />{errors.userName && <h6>Username is required</h6>}
             <p>Password:</p>
               <input 
                 onChange={(e) => setPassword(e.target.value)}
@@ -216,7 +217,7 @@ function RegisterForm() {
 
           <div>{(isLoading && formPage==='4') || (formPage==='5') ? <button type="submit" hidden >Next</button> : <button type="submit">Next</button>}</div><br></br>
           <div>{isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> }</div>
-          <Signup to={"/login"}>Go to Login Page</Signup>
+          <Signup to={"/Login"}>Go to Login Page</Signup>
         </Window>      
     )  
   }
