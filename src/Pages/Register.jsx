@@ -1,14 +1,46 @@
-import React from 'react';
-import ReactDOM from 'react-dom/client';
+import styled from "styled-components";
+import { BiArrowBack } from 'react-icons/bi'
+import { Link } from "react-router-dom";
+import RegisterForm from "../Components/Register";
 
-class Register extends React.Component {
-  render() {
-    return <h2>Hi, I am a Car!</h2>;
-  }
+function Login() {
+
+  return (
+    <Page>
+      <GoBack to={'/'} >
+        <BiArrowBack size={50}></BiArrowBack>
+        <p>Go Home</p>
+      </GoBack>
+      <RegisterForm/>
+    </Page> 
+  )  
 }
 
-const container = document.getElementById('root');
-const root = ReactDOM.createRoot(container);
-root.render(<Register />);
 
-export default Register
+ const Page = styled.div`
+  display: grid;
+  background: grey;
+p {
+  font-family: sans-serif;
+  font-size: 20pt;
+}
+
+`
+
+const GoBack = styled(Link)`
+  display: flex;
+  color: white;
+  text-decoration: none;
+  justify-self: left;
+  svg {
+  color: white;
+  padding-top: 1rem;
+  }
+  transition: 1s;
+  opacity: 0.5;
+  :hover {
+        opacity: 1;
+  }
+`
+
+export default Login
