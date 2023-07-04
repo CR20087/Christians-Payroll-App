@@ -14,11 +14,17 @@ def login_verify(userName: str,password: str):
 
     return jsonify(match=str(result[0]),role=str(result[1]))
 
-@app.route("/Register/<string:userName>/<string:password>")
+@app.route("/register/<string:userName>/<string:password>")
 def register_check(userName: str,password: str):
     result = cpa_sql.register_check(userName,password)
 
     return jsonify(match=str(result[0]),config=str(result[1]))
+
+@app.route("/registerAccount/<string:userName>/<string:firstName>/<string:lastName>/<string:email>/<string:address>/<string:suburb>/<string:postCode>/<string:phone>")
+def register_account(userName: str,firstName: str,lastName: str,email: str,address: str,suburb: str,postCode: str,phone: str):
+    result = cpa_sql.register_account(userName,firstName,lastName,email,address,suburb,postCode,phone)
+
+    return jsonify(success=str(result)) 
 
 @app.route(f"/sendpayslip/<string:username>")
 def sendpayslip(username: str):

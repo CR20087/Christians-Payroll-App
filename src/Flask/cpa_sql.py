@@ -111,6 +111,23 @@ def register_check(username,password):
 
     return [login_made,config]
 
+def register_account(userName,firstName,lastName,email,address,suburb,postCode,phone):
+    cur = init()
+    cur.execute(f"""INSERT INTO employee(
+        [username]
+      ,[first_name]
+      ,[last_name]
+      ,[email]
+      ,[address_1]
+      ,[address_2]
+      ,[post_code]
+      ,[phone]) VALUES ({userName},{firstName},{lastName},{email},{address},{suburb},{postCode},{phone})""")
+    cur.commit()
+    cur.close()
+
+    return 'Success'
+
+
 def email_payslip_details(username):
     cur = init()
     cur.execute(f"""
@@ -119,7 +136,7 @@ def email_payslip_details(username):
       ,[manager_name]
       ,[manager_contact] FROM email_details WHERE username = {username}""")
     
-    result = cur.fetchone()[0]
+    result = cur.fetchone()
     cur.close()
 
     return result
