@@ -64,7 +64,7 @@ function LoginForm() {
                 placeholder="Enter Username" 
                 value={userName}
                 {...register("username", { required: true })}
-              />{errors.email && <p>Email is required</p>}
+              />{errors.username && <h6>Username is required</h6>}
             <p>Password:</p>
               <input 
                 onChange={(e) => setPassword(e.target.value)}
@@ -72,11 +72,11 @@ function LoginForm() {
                 placeholder="Enter Password" 
                 value={password}
                 {...register("password", { required: true })}
-              />{errors.password && <p>Password is required</p>}
+              />{errors.password && <h6>Password is required</h6>}
           </div>
           <button type="submit">Login</button>
           <div>{isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> }</div>
-          <Signup to={"/Register"}>Signup/Register</Signup>
+          <Signup to={"/Register/1"}>Signup/Register</Signup>
         </Window>      
     )  
   }
@@ -97,6 +97,9 @@ function LoginForm() {
     font-weight: 600;
     transition: 1s;
     opacity: 0.92;
+    h6 {
+      color: red;
+    }
     :hover {
           opacity: 1;
           width: 37rem;
@@ -157,7 +160,8 @@ function LoginForm() {
     display: flex;
   
     p {
-    padding-top: 2rem;
+      padding-top: 1rem;
+    text-align:center;
     }
     img {
       width: 35%;

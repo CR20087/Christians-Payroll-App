@@ -8,7 +8,7 @@ function Portal() {
     <Dashboard>
       <SideBar>
         <Logo>
-            <img src="./Christian-Payroll-App-Logo.png" alt="logo" width={150} />
+            <img src="/Christian-Payroll-App-Logo.png" alt="logo" width={150} />
             <p>Christian's Payroll App</p>
         </Logo>
         <h1>M<br></br>E<br></br>N<br></br>U<br></br></h1>

@@ -1,7 +1,7 @@
 def Payslip_Script(username):
-    from Payslip_Generator.Email_Sender import email_sender
-    from Payslip_Generator.Pdf_Generator.Pdf_Generator_From_Template import pdf_generator_from_template
-    from Flask.cpa_sql import email_payslip_details
+    from Email_Sender import email_sender
+    from Pdf_Generator.Pdf_Generator_From_Template import pdf_generator_from_template
+    from ..cpa_sql import email_payslip_details
 
     #Payslip Generate
 
@@ -23,11 +23,18 @@ def Payslip_Script(username):
             self.contact = results[3]
 
     #send the email
-   
-    email_sender(username,recipient=recipient(),manager=manager())
+    recipient=recipient()
+    manager=manager()
+
+    print(recipient.email)
+    print(recipient.name)
+    print(manager.name)
+    print(manager.contact)
+
+    email_sender(username,recipient,manager)
     return 'Success'
     
      
 
 if __name__ == "__main__":
-    Payslip_Script()
+    Payslip_Script('employee')
