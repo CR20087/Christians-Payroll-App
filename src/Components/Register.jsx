@@ -29,7 +29,7 @@ function RegisterForm() {
 
       console.log(information)
 
-      const res = await fetch(`/Register/'${information.userName}'/'${information.password}'`)
+      const res = await fetch(`/register/'${information.userName}'/'${information.password}'`)
       const data = await res.json()
       console.log(data)
       console.log(information.userName+' '+information.password)
@@ -59,7 +59,7 @@ function RegisterForm() {
       navigate('/Register/' + (parseInt(params.pagenum)+1).toString()  )
     }
     if (formPage === '3') {
-      sessionStorage.setItem('phone',information.email)
+      sessionStorage.setItem('email',information.email)
       sessionStorage.setItem('address',information.address)
       sessionStorage.setItem('suburb',information.suburb)
       sessionStorage.setItem('postCode',information.postCode)
@@ -71,14 +71,22 @@ function RegisterForm() {
       setIsLoading(true)
 
       const res = await 
-        fetch(`/registerAccount/${sessionStorage.getItem('userName')}/${sessionStorage.getItem('firstName')}/${sessionStorage.getItem('lastName')}/${sessionStorage.getItem('email')}/${sessionStorage.getItem('address')}/${sessionStorage.getItem('suburb')}/${sessionStorage.getItem('postCode')}/${sessionStorage.getItem('phone')}`)
+        fetch(`/registerAccount/'${sessionStorage.getItem('userName')}'/'${sessionStorage.getItem('firstName')}'/'${sessionStorage.getItem('lastName')}'/'${sessionStorage.getItem('email')}'/'${sessionStorage.getItem('address')}'/'${sessionStorage.getItem('suburb')}'/'${sessionStorage.getItem('postCode')}'/'${sessionStorage.getItem('phone')}'`)
       const data = await res.json()
       console.log(data)
 
-      if (data.success=== 'True') {
+      if (data.success=== 'Success') {
         navigate('/Register/' + (parseInt(params.pagenum)+1).toString()  )
+        sessionStorage.removeItem('userName')
+        sessionStorage.removeItem('firstName')
+        sessionStorage.removeItem('lastName')
+        sessionStorage.removeItem('email')
+        sessionStorage.removeItem('address')
+        sessionStorage.removeItem('suburb')
+        sessionStorage.removeItem('postCode')
+        sessionStorage.removeItem('phone')
       } else {
-        alert("Registering failed unexpectedley.")
+        alert("Registering failed unexpectedley. Please Try again.")
       }
 
       
@@ -96,7 +104,7 @@ function RegisterForm() {
                 type="text"
                 placeholder="Enter Username" 
                 value={userName}
-                {...register("username", { required: true })}
+                {...register("userName", { required: true })}
               />{errors.userName && <h6>Username is required</h6>}
             <p>Password:</p>
               <input 
@@ -179,8 +187,8 @@ function RegisterForm() {
                 type="text"
                 placeholder="Phone..." 
                 value={phone}
-                {...register("phone")}
-            />
+                {...register("phone", { required: true })}
+                />{errors.phone && <h6>Phone is required</h6>}
             
             </div>
             <br></br>
