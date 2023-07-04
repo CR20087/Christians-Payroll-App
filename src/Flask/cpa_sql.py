@@ -102,18 +102,14 @@ def login_verify(username,password):
     
 def register_check(username,password):
     cur = init()
-    cur.execute(f"SELECT username FROM login WHERE login.username = {username} AND login.password = {password};")
-    try:
-        login_made = bool(cur.fetchone())
-        try:
-            cur.execute("Select * FROM employee where username = {username}")
-            config = bool(cur.fetchone())
-        except:
-            return [login_made,False]
-        cur.close()
-        return [login_made,config]
-    except:
-        return [False,False]
+    cur.execute(f"SELECT username FROM login WHERE login.username = 'employee' AND login.password = 'dev';")
+    login_made = bool(cur.fetchone())
+    cur.execute("Select * FROM employee where username = 'employee'")
+    config = bool(cur.fetchone())
+
+    cur.close()
+
+    return [login_made,config]
 
 def email_payslip_details(username):
     cur = init()
