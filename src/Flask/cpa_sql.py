@@ -99,6 +99,21 @@ def login_verify(username,password):
         return [bool(role),role[0][0]]
     except:
         return [False,'n/a']
+    
+def register_check(username,password):
+    cur = init()
+    cur.execute(f"SELECT username FROM login WHERE login.username = {username} AND login.password = {password};")
+    try:
+        login_made = bool(cur.fetchone())
+        try:
+            cur.execute("Select * FROM employee where username = {username}")
+            config = bool(cur.fetchone())
+        except:
+            return [login_made,False]
+        cur.close()
+        return [login_made,config]
+    except:
+        return [False,False]
 
 def email_payslip_details(username):
     cur = init()
