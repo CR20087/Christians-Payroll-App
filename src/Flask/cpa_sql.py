@@ -95,10 +95,10 @@ def login_verify(username,password):
             cur.execute(f"UPDATE login SET last_login = CURRENT_TIMESTAMP WHERE username = {username};")
             cur.commit()
             cur.close()
+
+        return [bool(role),role[0][0]]
     except:
         return [False,'n/a']
-
-    return [bool(role),role[0][0]]
 
 def email_payslip_details(username):
     cur = init()
@@ -106,7 +106,7 @@ def email_payslip_details(username):
         SELECT [employee_email]
       ,[employee_name]
       ,[manager_name]
-      ,[manager_contact] FROM email_details""")
+      ,[manager_contact] FROM email_details WHERE username = {username}""")
     
     result = cur.fetchone()[0]
     cur.close()
