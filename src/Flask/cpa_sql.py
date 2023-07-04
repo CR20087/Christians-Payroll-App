@@ -102,9 +102,9 @@ def login_verify(username,password):
     
 def register_check(username,password):
     cur = init()
-    cur.execute(f"SELECT username FROM login WHERE login.username = 'employee' AND login.password = 'dev';")
+    cur.execute(f"SELECT username FROM login WHERE login.username = {username} AND login.password = {password};")
     login_made = bool(cur.fetchone())
-    cur.execute("Select * FROM employee where username = 'employee'")
+    cur.execute(f"Select * FROM employee where username = {username}")
     config = bool(cur.fetchone())
 
     cur.close()
