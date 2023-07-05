@@ -117,7 +117,5 @@ def pdf_generator_from_template():
     config = pdfkit.configuration(wkhtmltopdf="./src/Flask/Payslip_Generator/Pdf_Generator/wkhtmltopdf.exe")
     pdfkit.from_string(output_text, './src/Flask/Payslip_Generator/Pdf_Generator/Generated_PDF.pdf', configuration=config, css='./src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.css')
 
-    return receiver
-
 if __name__=='__main__':
     pdf_generator_from_template()
