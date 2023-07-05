@@ -3,7 +3,6 @@ def pdf_generator_from_template():
     import pdfkit
     from datetime import datetime
     import os
-    import wkhtmltopdf
 
     # Business details
     class Entity():
