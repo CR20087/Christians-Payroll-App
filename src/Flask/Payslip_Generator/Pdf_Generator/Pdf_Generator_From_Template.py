@@ -2,6 +2,11 @@ def pdf_generator_from_template():
     import jinja2
     import pdfkit
     from datetime import datetime
+    import os
+
+    file_path = os.path.join(os.getcwd(), 'PaySliptemplate.html')
+
+    print("File Path:", file_path)
 
     # Business details
     class Entity():
@@ -111,7 +116,7 @@ def pdf_generator_from_template():
     template_loader = jinja2.FileSystemLoader('/')
     template_env = jinja2.Environment(loader=template_loader)
 
-    template = template_env.get_template('/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.html')
+    template = template_env.get_template('./src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.html')
     output_text = template.render(context)
 
     config = pdfkit.configuration(wkhtmltopdf='/src/Flask/Payslip_Generator/Pdf_Generator/wkhtmltopdf/bin/wkhtmltopdf.exe')  # Adjust the path to wkhtmltopdf
