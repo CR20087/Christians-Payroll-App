@@ -112,7 +112,7 @@ def pdf_generator_from_template():
     template_loader = jinja2.FileSystemLoader('/')
     template_env = jinja2.Environment(loader=template_loader)
 
-    template = template_env.get_template(os.path.join(os.getcwd(), 'PaySliptemplate.html'))
+    template = template_env.get_template(os.getcwd()+'src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.html')
     output_text = template.render(context)
 
     config = pdfkit.configuration(wkhtmltopdf='/src/Flask/Payslip_Generator/Pdf_Generator/wkhtmltopdf/bin/wkhtmltopdf.exe')  # Adjust the path to wkhtmltopdf
