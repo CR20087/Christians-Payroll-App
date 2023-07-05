@@ -111,13 +111,24 @@ def pdf_generator_from_template():
 #    Render the template with the context variables
     rendered_template = render_template('PaySliptemplate.html', **context)
 
+    print(rendered_template)
+
+    options = {
+    'quiet': '',
+    'page-size': 'Letter',
+    'margin-top': '0mm',
+    'margin-right': '0mm',
+    'margin-bottom': '0mm',
+    'margin-left': '0mm',
+}
+
     # Generate the PDF using wkhtmltopdf and pdfkit
-    pdf = pdfkit.from_string(rendered_template, False)
+    pdf = pdfkit.from_string(rendered_template, False, options=options)
 
     # Create a response with the PDF file
     response = make_response(pdf)
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'attachment; filename=Generated_PDF.pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=output.pdf'
 
     print(response)
    
