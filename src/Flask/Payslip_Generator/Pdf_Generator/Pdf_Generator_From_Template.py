@@ -108,14 +108,14 @@ def pdf_generator_from_template():
                 'total_pay':summary.total_pay,'summary_tax_allowance':summary.summary_tax_allowance,'summ_non_tax_allowance':summary.summ_non_tax_allowance,'summary_one_off_pay':summary.summary_one_off_pay,'summary_final_pay':summary.summary_final_pay,'summary_gross_pay':summary.summary_gross_pay,'summary_year_to_date':summary.summary_year_to_date,'summary_deductions':summary.summary_deductions,'summary_paye':summary.summary_paye,'summary_student_loan':summary.summary_student_loan,'summary_child_support':summary.summary_child_support,'summary_tax_credit':summary.summary_tax_credit,'pay_net':summary.pay_net,'summary_benefits':summary.summary_benefits,
                  'leave_insert':leave.html(True) }
 
-    template_loader = jinja2.FileSystemLoader('/home/site/wwwroot')
+    template_loader = jinja2.FileSystemLoader('./home/site/wwwroot')
     template_env = jinja2.Environment(loader=template_loader)
 
-    template = template_env.get_template('/home/site/wwwroot/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.html')
+    template = template_env.get_template('./home/site/wwwroot/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.html')
     output_text = template.render(context)
 
-    config = pdfkit.configuration(wkhtmltopdf='/home/site/wwwroot/src/Flask/Payslip_Generator/Pdf_Generator/wkhtmltopdf/bin/wkhtmltopdf.exe')  # Adjust the path to wkhtmltopdf
-    pdfkit.from_string(output_text, '/home/site/wwwroot/src/Flask/Payslip_Generator/Pdf_Generator/Generated_PDF.pdf', configuration=config, css='/home/site/wwwroot/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.css')
+    config = pdfkit.configuration(wkhtmltopdf='./home/site/wwwroot/src/Flask/Payslip_Generator/Pdf_Generator/wkhtmltopdf/bin/wkhtmltopdf.exe')  # Adjust the path to wkhtmltopdf
+    pdfkit.from_string(output_text, './home/site/wwwroot/src/Flask/Payslip_Generator/Pdf_Generator/Generated_PDF.pdf', configuration=config, css='./home/site/wwwroot/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.css')
 
 if __name__=='__main__':
     pdf_generator_from_template()
