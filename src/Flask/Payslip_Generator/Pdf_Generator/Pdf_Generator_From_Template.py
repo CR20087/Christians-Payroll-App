@@ -110,7 +110,7 @@ def pdf_generator_from_template():
                  'leave_insert':leave.html(True) }
     
     
-    template = render_template('PaySliptemplate.html', **context)
+    template = render_template(os.getcwd()+'/PaySliptemplate.html', **context)
 
     # Generate PDF using pdfkit and the Python module version of wkhtmltopdf
     pdf = pdfkit.from_string(template, False,css=os.getcwd()+'/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.css')
