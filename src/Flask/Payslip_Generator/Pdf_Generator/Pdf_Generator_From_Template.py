@@ -1,7 +1,6 @@
 def pdf_generator_from_template():
     import pdfkit
     from datetime import datetime
-    import os
     from flask import make_response,render_template
 
     # Business details
@@ -109,11 +108,11 @@ def pdf_generator_from_template():
                 'total_pay':summary.total_pay,'summary_tax_allowance':summary.summary_tax_allowance,'summ_non_tax_allowance':summary.summ_non_tax_allowance,'summary_one_off_pay':summary.summary_one_off_pay,'summary_final_pay':summary.summary_final_pay,'summary_gross_pay':summary.summary_gross_pay,'summary_year_to_date':summary.summary_year_to_date,'summary_deductions':summary.summary_deductions,'summary_paye':summary.summary_paye,'summary_student_loan':summary.summary_student_loan,'summary_child_support':summary.summary_child_support,'summary_tax_credit':summary.summary_tax_credit,'pay_net':summary.pay_net,'summary_benefits':summary.summary_benefits,
                  'leave_insert':leave.html(True) }
     
-    
-    template = render_template('PaySliptemplate.html', **context)
+#    Render the template with the context variables
+    rendered_template = render_template('PaySliptemplate.html', **context)
 
-    # Generate PDF using pdfkit and the Python module version of wkhtmltopdf
-    pdf = pdfkit.from_string(template, False,css=os.getcwd()+'/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.css')
+    # Generate the PDF using wkhtmltopdf and pdfkit
+    pdf = pdfkit.from_string(rendered_template, False)
 
     # Create a response with the PDF file
     response = make_response(pdf)

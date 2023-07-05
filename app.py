@@ -3,6 +3,7 @@ from src.Flask.Payslip_Generator import Payslip_Script
 from src.Flask import cpa_sql
 
 app = Flask(__name__, template_folder='src/Flask/templates')
+app.config['WKHTMLTOPDF_PATH'] = '/usr/bin/wkhtmltopdf' 
 
 @app.route('/')
 def index():
