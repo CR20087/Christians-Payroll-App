@@ -71,7 +71,7 @@ function RegisterForm() {
       setIsLoading(true)
 
       const res = await 
-        fetch(`/registerAccount/'${sessionStorage.getItem('userName')}'/'${sessionStorage.getItem('firstName')}'/'${sessionStorage.getItem('lastName')}'/'${sessionStorage.getItem('email')}'/'${sessionStorage.getItem('address')}'/'${sessionStorage.getItem('suburb')}'/'${sessionStorage.getItem('postCode')}'/'${sessionStorage.getItem('phone')}'`)
+        fetch(`https://cpa-flask.azurewebsites.net/registerAccount/'${sessionStorage.getItem('userName')}'/'${sessionStorage.getItem('firstName')}'/'${sessionStorage.getItem('lastName')}'/'${sessionStorage.getItem('email')}'/'${sessionStorage.getItem('address')}'/'${sessionStorage.getItem('suburb')}'/'${sessionStorage.getItem('postCode')}'/'${sessionStorage.getItem('phone')}'`)
       const data = await res.json()
       console.log(data)
 
