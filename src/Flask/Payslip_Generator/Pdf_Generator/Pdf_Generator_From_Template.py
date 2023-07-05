@@ -1,8 +1,8 @@
 def pdf_generator_from_template():
-    import jinja2
     import pdfkit
     from datetime import datetime
     import os
+    from flask import make_response,render_template
 
     # Business details
     class Entity():
@@ -108,15 +108,20 @@ def pdf_generator_from_template():
                 'payments':payment.payments,'pay_type':payment.pay_type,'pay_rate':payment.pay_rate,'pay_time_length':payment.pay_time_length,'pay_amt':payment.pay_amt,'pay_period_end':payment.pay_period_end,'pay_date':payment.pay_date,'total_time_length':payment.total_time_length,'total_payments':payment.total_py,
                 'total_pay':summary.total_pay,'summary_tax_allowance':summary.summary_tax_allowance,'summ_non_tax_allowance':summary.summ_non_tax_allowance,'summary_one_off_pay':summary.summary_one_off_pay,'summary_final_pay':summary.summary_final_pay,'summary_gross_pay':summary.summary_gross_pay,'summary_year_to_date':summary.summary_year_to_date,'summary_deductions':summary.summary_deductions,'summary_paye':summary.summary_paye,'summary_student_loan':summary.summary_student_loan,'summary_child_support':summary.summary_child_support,'summary_tax_credit':summary.summary_tax_credit,'pay_net':summary.pay_net,'summary_benefits':summary.summary_benefits,
                  'leave_insert':leave.html(True) }
+    
+    
+    template = render_template('PaySliptemplate.html', **context)
 
-    template_loader = jinja2.FileSystemLoader('/')
-    template_env = jinja2.Environment(loader=template_loader)
+    # Generate PDF using pdfkit and the Python module version of wkhtmltopdf
+    pdf = pdfkit.from_string(template, False,css=os.getcwd()+'/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.css')
 
-    template = template_env.get_template(os.getcwd()+'/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.html')
-    output_text = template.render(context)
+    # Create a response with the PDF file
+    response = make_response(pdf)
+    response.headers['Content-Type'] = 'application/pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=Generated_PDF.pdf'
 
-    config = pdfkit.configuration(wkhtmltopdf=os.getcwd()+'/antenv/lib/python3.9/site-packages/wkhtmltopdf')
-    pdfkit.from_string(output_text,os.getcwd()+'/src/Flask/Payslip_Generator/Pdf_Generator/Generated_PDF.pdf', configuration=config, css=os.getcwd()+'/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.css')
+    print(response)
+   
 
 if __name__=='__main__':
     pdf_generator_from_template()
