@@ -113,10 +113,10 @@ def pdf_generator_from_template():
     template_loader = jinja2.FileSystemLoader('/')
     template_env = jinja2.Environment(loader=template_loader)
 
-    template = template_env.get_template(wkhtmltopdf)
+    template = template_env.get_template(os.getcwd()+'/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.html')
     output_text = template.render(context)
 
-    config = pdfkit.configuration(wkhtmltopdf=os.getcwd()+'/wkhtmltopdf')
+    config = pdfkit.configuration('/usr/bin/wkhtmltopdf')
     pdfkit.from_string(output_text,os.getcwd()+'/src/Flask/Payslip_Generator/Pdf_Generator/Generated_PDF.pdf', configuration=config, css=os.getcwd()+'/src/Flask/Payslip_Generator/Pdf_Generator/PaySliptemplate.css')
 
 if __name__=='__main__':
