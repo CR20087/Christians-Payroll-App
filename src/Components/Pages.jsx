@@ -3,7 +3,9 @@ import Landing from '../Pages/Landing'
 import { Route, Routes, useLocation } from 'react-router-dom';
 import Login from '../Pages/Login'
 import Support from '../Pages/Support';
-import Portal from '../Pages/Portal';
+import EmployeePortal from '../Pages/EmployeePortal';
+import ManagerPortal from '../Pages/ManagerPortal';
+import ManagerSettings from '../Pages/ManagerSettings';
 import Register from '../Pages/Register';
 
 function Pages() {
@@ -13,7 +15,9 @@ function Pages() {
         <Route path="/" element={<Landing />} />
         <Route path="/Login" element={<Login/>} />
         <Route path="/Support" element={<Support/>} />
-        <Route path="/Portal/:role/:userID" element={<Portal/>} />
+        <Route path="/Portal/manager/:userID" element={<ManagerPortal/>} />
+        <Route path="/Portal/manager/:userID/settings" element={<ManagerSettings/>} />
+        <Route path="/Portal/employee/:userID" element={<EmployeePortal/>} />
         <Route path="/Register/:pagenum" element={<Register/>} />
     </Routes>
   );
