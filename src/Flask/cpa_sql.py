@@ -150,7 +150,7 @@ def email_payslip_details(username):
 def get_manager_settings(username):
     cur = init()
     cur.execute(f"""
-        SELECT login.[username]
+        SELECT [login].[username]
       ,[login].[password]
       ,[first_name]
       ,[last_name]
@@ -163,7 +163,7 @@ def get_manager_settings(username):
       ,[phone]
     FROM [dbo].[manager] 
     INNER JOIN login ON login.username = manager.username 
-    WHERE username = {username}""")
+    WHERE [login].[username] = {username}""")
     
     result = cur.fetchone()
     cur.close()
