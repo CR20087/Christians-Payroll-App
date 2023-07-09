@@ -32,6 +32,11 @@ def sendpayslip(username: str):
     Payslip_Script.Payslip_Script(username)
     return jsonify(message="Payslip delivered succesfully")
 
+@app.route("/settings/manager/<string:userName>")
+def register_check(userName: str):
+    result = cpa_sql.get_manager_settings(userName)
+
+    return jsonify(userName=str(result[0]),password=str(result[1]),firstName=str(result[2]),lastName=str(result[3]),email=str(result[4]),address=str(result[5]),suburb=str(result[6]),contactMethod=str(result[7]),businessName=str(result[8]),entityName=str(result[9]),phone=str(result[10]))
 
 if __name__ == "__main__":
     app.run(debug=True)
