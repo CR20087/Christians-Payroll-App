@@ -126,12 +126,12 @@ def register_account(userName,firstName,lastName,email,address,suburb,postCode,p
       ,[post_code]
       ,[phone]) VALUES ({userName},{firstName},{lastName},{email},{address},{suburb},{postCode},{phone})""")
         cur.commit()
-    except:
+    except Exception as e:
         cur.close()
-        return 'Failed'
+        return 'Failed',e
     cur.close()
 
-    return 'Success'
+    return 'Success','n/a'
 
 
 def email_payslip_details(username):
@@ -168,6 +168,30 @@ def get_manager_settings(username):
     result = cur.fetchone()
     cur.close()
 
-    return result
+def update_manager_settings(username_old,username,password,firstname,lastname,email,phone,address,suburb,contact_method,business_name,entity_name):
+    cur = init()
+    try:
+        cur.execute(f"""Update login
+            SET username = {username}
+                ,password = {password}
+            WHERE username = {username_old};""")
+
+        cur.commit()
+        cur.execute(f"""Update manager
+            SET first_name={firstname}
+                ,last_name = {lastname}
+                ,email = {email}
+                ,phone = {phone}
+                ,contact_method = {contact_method}
+                ,business_name = {business_name}
+                ,entity_name = {entity_name}
+                ,business_address_1 = {address}
+                ,business_address_2 = {suburb}""")
+        cur.commit()
+        cur.close()
+    except Exception as e:
+        cur.close()
+        return 'Failed',e
+    return 'Success','n/a'
 
 
