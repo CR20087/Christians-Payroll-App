@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { BiArrowBack } from 'react-icons/bi'
 import { Link } from "react-router-dom";
-import RegisterForm from "../Components/ManagerRegister";
+import ManagerRegisterForm from "../Components/ManagerRegister";
 
 function ManagerRegister() {
 
@@ -11,7 +11,7 @@ function ManagerRegister() {
         <BiArrowBack size={50}></BiArrowBack>
         <p>Go Home</p>
       </GoBack>
-      <RegisterForm/>
+      <ManagerRegisterForm/>
     </Page> 
   )  
 }

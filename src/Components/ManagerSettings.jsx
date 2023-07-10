@@ -6,7 +6,7 @@ function ManagerSettingsForm() {
     const [isLoading, setIsLoading] = useState(false)
     const [inputValues, setInputValues] = useState({
         userName: '',og_userName: '',
-        password: '',og_assword: '',
+        password: '',og_password: '',
         email: '',og_email: '',
         lastName: '',og_lastName: '',
         firstName: '',og_firstName: '',
@@ -69,6 +69,7 @@ function ManagerSettingsForm() {
             if (data.success === 'Success') {
                 alert("Changes updated successfully")
                 setIsAuthorised('border-green')
+                sessionStorage.setItem('userID',getInputValue('userName'))
             } else {
                 alert(`An error occured please check information and try again\n\n\n\n${data.error}`)
                 setIsAuthorised('border-red')
