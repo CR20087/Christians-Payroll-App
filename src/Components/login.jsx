@@ -24,7 +24,7 @@ function LoginForm() {
       console.log(information.userName+' '+information.password)
     
       if ((data.match === 'True' && data.role === 'employee' && data.setup ==='True') || (data.match === 'True' && data.role === 'manager')) { 
-        const userID = userName 
+        const userID = information.userName
         setIsAuthorised('border-green')
         
         function randomString(length, chars) {
@@ -37,6 +37,7 @@ function LoginForm() {
         sessionStorage.clear()
         sessionStorage.setItem('authKey',authKey)
         sessionStorage.setItem('userID', userID)
+        sessionStorage.setItem('role',data.role)
   
         navigate('/Portal/' +data.role + '/'+ userID )      
       } else if(data.match === 'False') {
