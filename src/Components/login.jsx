@@ -77,8 +77,10 @@ function LoginForm() {
               />{errors.password && <h6>Password is required</h6>}
           </div>
           <button type="submit">Login</button>
+          <br></br>
           <div>{isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> }</div>
           <Signup to={"/Register/1"}>Signup/Register</Signup>
+          <Signup to={"/Register/manager/1"}>Manager Register</Signup>
         </Window>      
     )  
   }

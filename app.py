@@ -43,5 +43,11 @@ def update_manager_settings(userNameOld: str,userName: str,password: str,firstNa
     result = cpa_sql.update_manager_settings(userNameOld,userName,password,firstName,lastName,email,phone,address,suburb,contactMethod,businessName,entityName)
 
     return jsonify(success=str(result[0]),error=str(result[1]))
+
+@app.route("/registerAccount/manager/<string:userName>/<string:password>/<string:firstName>/<string:lastName>/<string:email>/<string:address>/<string:suburb>/<string:businessName>/<string:phone>/<string:entityName>/<string:contactMethod>")
+def create_manager(userName: str,password: str,firstName: str,lastName: str,email: str,address: str,suburb: str,businessName: str,phone: str,entityName: str,contactMethod: str):
+    result = cpa_sql.create_manager(userName,password,firstName,lastName,email,phone,address,suburb,contactMethod,businessName,entityName)
+
+    return jsonify(success=str(result[0]),error=str(result[1]))
 if __name__ == "__main__":
     app.run(debug=True)

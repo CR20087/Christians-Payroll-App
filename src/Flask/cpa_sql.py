@@ -176,7 +176,6 @@ def update_manager_settings(username_old,username,password,firstname,lastname,em
                 ,password = {password}
             WHERE username = {username_old};""")
 
-        cur.commit()
         cur.execute(f"""Update manager
             SET first_name={firstname}
                 ,last_name = {lastname}
@@ -194,4 +193,47 @@ def update_manager_settings(username_old,username,password,firstname,lastname,em
         return 'Failed',e
     return 'Success','n/a'
 
+def create_manager(username,password,firstname,lastname,email,phone,address,suburb,contact_method,business_name,entity_name):
+    cur = init()
+    try:
+        cur.execute(f"""INSERT INTO login(
+                    username,
+                    password,
+                    created_on,
+                    role
+        ) VALUES (
+                    {username},
+                    {password},
+                    current_timestamp,
+                    'manager'
+        )""")
 
+        cur.execute(f"""INSERT INTO manager(
+                    username
+                ,first_name
+                ,last_name 
+                ,email 
+                ,phone 
+                ,contact_method 
+                ,business_name 
+                ,entity_name 
+                ,business_address_1 
+                ,business_address_2 
+        ) VALUES (
+                    {username}
+                    ,{firstname}
+                    ,{lastname}
+                    ,{email}
+                    ,{phone}
+                    ,{contact_method}
+                    ,{business_name}
+                    ,{entity_name}
+                    ,{address}
+                    ,{suburb}
+        )""")
+        cur.commit()
+        cur.close()
+    except Exception as e:
+        cur.close()
+        return 'Failed',e
+    return 'Success','n/a'

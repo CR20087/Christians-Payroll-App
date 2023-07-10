@@ -7,6 +7,7 @@ import EmployeePortal from '../Pages/EmployeePortal';
 import ManagerPortal from '../Pages/ManagerPortal';
 import ManagerSettings from '../Pages/ManagerSettings';
 import Register from '../Pages/Register';
+import ManagerRegister from '../Pages//ManagerRegister';
 
 function Pages() {
   const location = useLocation();
@@ -19,6 +20,7 @@ function Pages() {
         <Route path="/Portal/manager/:userID/settings" element={<ManagerSettings/>} />
         <Route path="/Portal/employee/:userID" element={<EmployeePortal/>} />
         <Route path="/Register/:pagenum" element={<Register/>} />
+        <Route path="/Register/manager/:pagenum" element={<ManagerRegister/>} />
     </Routes>
   );
 }
