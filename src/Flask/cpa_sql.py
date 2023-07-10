@@ -168,6 +168,8 @@ def get_manager_settings(username):
     result = cur.fetchone()
     cur.close()
 
+    return result
+
 def update_manager_settings(username_old,username,password,firstname,lastname,email,phone,address,suburb,contact_method,business_name,entity_name):
     cur = init()
     try:
@@ -185,7 +187,7 @@ def update_manager_settings(username_old,username,password,firstname,lastname,em
                 ,business_name = {business_name}
                 ,entity_name = {entity_name}
                 ,business_address_1 = {address}
-                ,business_address_2 = {suburb}""")
+                ,business_address_2 = {suburb} WHERE username = {username_old}""")
         cur.commit()
         cur.close()
     except Exception as e:
@@ -232,6 +234,52 @@ def create_manager(username,password,firstname,lastname,email,phone,address,subu
                     ,{suburb}
         )""")
         cur.commit()
+        cur.close()
+    except Exception as e:
+        cur.close()
+        return 'Failed',e
+    return 'Success','n/a'
+
+def get_employee_settings(username):
+    cur = init()
+    cur.execute(f"""
+        SELECT [login].[username]
+      ,[login].[password]
+      ,[first_name]
+      ,[last_name]
+      ,[email]
+      ,[address_1]
+      ,[address_2]
+      ,[post_code]
+      ,[phone]
+    FROM [dbo].[employee] 
+    INNER JOIN login ON login.username = employee.username 
+    WHERE [login].[username] = {username}""")
+    
+    result = cur.fetchone()
+    cur.close()
+
+    return result
+
+def update_employee_settings(username_old,username,password,firstname,lastname,email,phone,address,suburb,postcode):
+    cur = init()
+    try:
+        cur.execute(f"""Update login
+            SET username = {username}
+                ,password = {password}
+            WHERE username = {username_old};""")
+
+        cur.execute(f"""Update employee
+            SET first_name={firstname}
+                ,last_name = {lastname}
+                ,email = {email}
+                ,phone = {phone}
+                ,post_code = {postcode}
+                ,address_1 = {address}
+                ,address_2 = {suburb} WHERE username = {username_old}""")
+        
+        cur.commit()
+
         cur.close()
     except Exception as e:
         cur.close()

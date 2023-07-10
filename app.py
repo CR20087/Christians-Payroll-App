@@ -49,5 +49,17 @@ def create_manager(userName: str,password: str,firstName: str,lastName: str,emai
     result = cpa_sql.create_manager(userName,password,firstName,lastName,email,phone,address,suburb,contactMethod,businessName,entityName)
 
     return jsonify(success=str(result[0]),error=str(result[1]))
+
+@app.route("/settings/employee/<string:userName>")
+def get_employee_settings(userName: str):
+    result = cpa_sql.get_employee_settings(userName)
+
+    return jsonify(userName=str(result[0]),password=str(result[1]),firstName=str(result[2]),lastName=str(result[3]),email=str(result[4]),address=str(result[5]),suburb=str(result[6]),postCode=str(result[7]),phone=str(result[8]))
+
+@app.route("/settings/employee/update/<string:userNameOld>/<string:userName>/<string:password>/<string:firstName>/<string:lastName>/<string:email>/<string:phone>/<string:address>/<string:suburb>/<string:postCode>")
+def update_employee_settings(userNameOld: str,userName: str,password: str,firstName: str,lastName: str,email: str,phone: str,address: str,suburb: str,postCode: str):
+    result = cpa_sql.update_employee_settings(userNameOld,userName,password,firstName,lastName,email,phone,address,suburb,postCode)
+
+    return jsonify(success=str(result[0]),error=str(result[1]))
 if __name__ == "__main__":
     app.run(debug=True)
