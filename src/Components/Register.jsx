@@ -86,7 +86,7 @@ function RegisterForm() {
         sessionStorage.removeItem('postCode')
         sessionStorage.removeItem('phone')
       } else {
-        alert("Registering failed unexpectedley. Please Try again.")
+        alert(`Registering failed .Please check information and try again.\n\n\n\n${data.error}`)
       }
 
       

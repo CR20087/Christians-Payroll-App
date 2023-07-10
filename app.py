@@ -25,7 +25,7 @@ def register_check(userName: str,password: str):
 def register_account(userName: str,firstName: str,lastName: str,email: str,address: str,suburb: str,postCode: str,phone: str):
     result = cpa_sql.register_account(userName,firstName,lastName,email,address,suburb,postCode,phone)
 
-    return jsonify(success=str(result)) 
+    return jsonify(success=str(result[0]),error=str(result[1])) 
 
 @app.route(f"/sendpayslip/<string:username>")
 def sendpayslip(username: str):
@@ -38,5 +38,10 @@ def get_manager_settings(userName: str):
 
     return jsonify(userName=str(result[0]),password=str(result[1]),firstName=str(result[2]),lastName=str(result[3]),email=str(result[4]),address=str(result[5]),suburb=str(result[6]),contactMethod=str(result[7]),businessName=str(result[8]),entityName=str(result[9]),phone=str(result[10]))
 
+@app.route("/settings/manager/update/<string:userNameOld>/<string:userName>/<string:password>/<string:firstName>/<string:lastName>/<string:email>/<string:phone>/<string:address>/<string:suburb>/<string:contactMethod>/<string:businessName>/<string:entityName>")
+def update_manager_settings(userNameOld: str,userName: str,password: str,firstName: str,lastName: str,email: str,phone: str,address: str,suburb: str,contactMethod: str,businessName: str,entityName: str):
+    result = cpa_sql.update_manager_settings(userNameOld,userName,password,firstName,lastName,email,phone,address,suburb,contactMethod,businessName,entityName)
+
+    return jsonify(success=str(result[0]),error=str(result[1]))
 if __name__ == "__main__":
     app.run(debug=True)
