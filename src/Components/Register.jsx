@@ -100,7 +100,7 @@ function RegisterForm() {
         <div className={isAuthorised} >
             <p>User Name:</p>
               <input 
-                onChange={(e) => setFirstName(e.target.value)}
+                onChange={(e) => setUserName(e.target.value)}
                 type="text"
                 placeholder="Enter Username" 
                 value={userName}
@@ -124,7 +124,7 @@ function RegisterForm() {
         <div className={isAuthorised} >
             <p>First Name:</p>
               <input 
-                onChange={(e) => setUserName(e.target.value)}
+                onChange={(e) => setFirstName(e.target.value)}
                 type="text"
                 placeholder="First Name..." 
                 value={firstName}
@@ -189,7 +189,6 @@ function RegisterForm() {
                 value={phone}
                 {...register("phone", { required: true })}
                 />{errors.phone && <h6>Phone is required</h6>}
-            
             </div>
             <br></br>
         </div>

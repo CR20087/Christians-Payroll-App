@@ -3,7 +3,7 @@ import { BiArrowBack } from 'react-icons/bi'
 import { Link } from "react-router-dom";
 import RegisterForm from "../Components/Register";
 
-function Login() {
+function Register() {
 
   return (
     <Page>
@@ -43,4 +43,4 @@ const GoBack = styled(Link)`
   }
 `
 
-export default Login
+export default Register
