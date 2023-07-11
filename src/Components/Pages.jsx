@@ -9,6 +9,8 @@ import ManagerSettings from '../Pages/ManagerSettings';
 import Register from '../Pages/Register';
 import ManagerRegister from '../Pages//ManagerRegister';
 import EmployeeSettings from '../Pages/EmployeeSettings';
+import EmployeeTimesheets from '../Pages/EmployeeTimesheets';
+import EmployeeView from '../Pages/ManagerEmployeeView';
 
 function Pages() {
   const location = useLocation();
@@ -23,6 +25,9 @@ function Pages() {
         <Route path="/Portal/employee/:userID" element={<EmployeePortal/>} />
         <Route path="/Register/:pagenum" element={<Register/>} />
         <Route path="/Register/manager/:pagenum" element={<ManagerRegister/>} />
+        <Route path="/Portal/employee/:userID/timesheets" element={<EmployeeTimesheets/>} />
+        <Route path="/Portal/employee/" element={<EmployeeTimesheets/>} />
+        <Route path="/Portal/manager/:userID/employee-view" element={<EmployeeView/>} />
     </Routes>
   );
 }
