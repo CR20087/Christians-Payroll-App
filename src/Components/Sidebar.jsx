@@ -28,9 +28,9 @@ function SideBar() {
           <IoMdCalendar size={25}/>
           <p>Leave</p>
         </MenuItem>
-        <MenuItem to={`/Portal/manager/${params.userID}/employee-settings`}>
+        <MenuItem to={`/Portal/manager/${params.userID}/employee-view`}>
           <IoMdPerson size={25}/>
-          <p>Employee Settings</p>
+          <p>Employee View</p>
         </MenuItem>
         <MenuItem to={`/Portal/manager/${params.userID}/settings`}>
           <IoMdSettings size={25}/>
@@ -45,7 +45,7 @@ function SideBar() {
           <IoMdHome size={25}/>
           <p>Dashboard</p>
         </MenuItem>
-        <MenuItem to={`/Portal/employee/${params.userID}/timesheet`}>
+        <MenuItem to={`/Portal/employee/${params.userID}/timesheets`}>
           <IoMdTime size={25}/>
           <p>Timesheet</p>
         </MenuItem>
