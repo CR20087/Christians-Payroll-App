@@ -285,3 +285,31 @@ def update_employee_settings(username_old,username,password,firstname,lastname,e
         cur.close()
         return 'Failed',e
     return 'Success','n/a'
+
+def get_manager_employees(username):
+    cur = init()
+    cur.execute(f""" SELECT [username]
+        ,[first_name]
+        ,[last_name]
+        ,[phone]
+        ,[email]
+      ,[pay_rate]
+      ,[bank_account]
+      ,[kiwisaver]
+      ,[student_loan]
+      ,[one_off_deduction]
+      ,[tax_rate]
+      ,[final_pay]
+      ,[weekly_allowance]
+      ,[weekly_allowance_nontax]
+      ,[year_to_date]
+      ,[child_support]
+      ,[tax_credit]
+      ,[benefits]
+    ,[created_on]
+  FROM [manager_employee_list] WHERE manager = {username}""")
+    
+    result = cur.fetchall()
+    cur.close()
+
+    return result
