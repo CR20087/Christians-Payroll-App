@@ -137,8 +137,45 @@ def delete_manager_employee_list(userName: str):
 @app.route("/employee/timesheet/<string:userName>")
 def get_timesheet(userName: str):
     result = cpa_sql.get_timesheet(userName)
-    response = {'period_start' : result[0],'period_end' : result[1],'monday_hours_worked' : result[2],'tuesday_hours_worked' : result[3],'wednesday_hours_worked' : result[4],'thursday_hours_worked' : result[5],'friday_hours_worked' : result[6],'saturday_hours_worked' : result[7],'sunday_hours_worked' : result[8],'total_hours_worked' : result[9]}
+
+    response = {'period_start_date' : result[0].__str__(),'period_end_date' : result[1].__str__(),'period_start' : result[0].strftime('%a, %d %b'),'period_end' : result[1].strftime('%a, %d %b'),'monday_hours_worked' : result[2],'tuesday_hours_worked' : result[3],'wednesday_hours_worked' : result[4],'thursday_hours_worked' : result[5],'friday_hours_worked' : result[6],'saturday_hours_worked' : result[7],'sunday_hours_worked' : result[8],'total_hours_worked' : result[9]}
     return jsonify(results=[response])
+
+@app.route("/employee/timesheet-entrys/<string:userName>/<string:startDate>/<string:endDate>")
+def get_timesheet_entry(userName: str,startDate: str,endDate: str):
+    result = cpa_sql.get_timesheet_entry(userName,startDate,endDate)
+
+    class Timesheet_entry() :
+        def __init__(self,sheet):
+            self.timesheet_entry_id = sheet[0]
+            self.date = sheet[1].__str__()
+            self.start_time = sheet[2].__str__()
+            self.end_time = sheet[3].__str__()
+            self.unpaid_break = sheet[4].__str__()
+            self.pay_type = sheet[5]
+            self.comments = sheet[6]
+        def string(self):
+            return {'timesheet_entry_id': self.timesheet_entry_id,
+                     'date' : self.date,
+                     'start_time' : self.start_time,
+                     'end_time' : self.end_time,
+                     'unpaid_break' : self.unpaid_break,
+                     'pay_type' : self.pay_type,
+                     'comments' : self.comments}
+    
+   
+    entrys = []
+
+    for i in result:
+        ent = Timesheet_entry(i)
+        entrys.append(ent)
+
+    response = []
+    for i in entrys:
+        response.append(i.string())
+        
+
+    return jsonify(results = response)
 
 if __name__ == "__main__":
     app.run(debug=True)

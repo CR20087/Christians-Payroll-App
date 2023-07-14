@@ -341,7 +341,9 @@ def update_manager_employee_list(bank_account,benefits,child_support,email,final
                     ,phone = {phone}             
                     WHERE username = {username_old}""")
         cur.commit()
+        cur.close()
     except Exception as E:
+        cur.close()
         return 'Failed',E
 
     return 'Success','n/a'
@@ -369,7 +371,9 @@ def delete_manager_employee_list(userName): #Erroring
                     WHERE employee = {userName};""")
         
         cur.commit()
+        cur.close()
     except Exception as E:
+        cur.close()
         return 'Failed',E
     return 'Success','n/a'
 
@@ -389,5 +393,23 @@ def get_timesheet(username):
     WHERE username = {username} ORDER BY WeekStartDate ASC """)
 
     result = cur.fetchone()
+    cur.close()
+
+    return result
+
+def get_timesheet_entry(username,start_date,end_date):
+    cur = init()
+    cur.execute(f"""SELECT [timesheet_entry_id]
+      ,[date]
+      ,[start_time]
+      ,[end_time]
+      ,[unpaid_break]
+      ,[pay_type]
+      ,[comments]
+  FROM [dbo].[timesheet_entry]
+    WHERE username = {username} AND date >= {start_date} AND date <= {end_date} """)
+
+    result = cur.fetchall()
+    cur.close()
 
     return result
