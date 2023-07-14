@@ -114,6 +114,7 @@ position: fixed;
   display: flex;
   justify-content: center;
   width: 5%;
+  z-index: 10;
   transition: 1s;
   background-color: black ;
   flex-direction: column-reverse;
