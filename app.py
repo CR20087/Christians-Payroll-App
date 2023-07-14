@@ -120,5 +120,60 @@ def get_manager_employees(userName: str):
         
 
     return jsonify(results = response)
+
+@app.route("/manager/employee-list/update/<string:bank_account>/<string:benefits>/<string:child_support>/<string:email>/<string:final_pay>/<string:first_name>/<string:kiwisaver>/<string:last_name>/<string:one_off_deduction>/<string:pay_rate>/<string:phone>/<string:student_loan>/<string:tax_credit>/<string:tax_rate>/<string:username>/<string:username_old>/<string:weekly_allowance>/<string:weekly_allowance_nontax>")
+def update_manager_employee_list(bank_account: str,benefits: str,child_support: str,email: str,final_pay: str,first_name: str,kiwisaver: str,last_name: str,one_off_deduction: str,pay_rate: str,phone: str,student_loan: str,tax_credit: str,tax_rate: str,username: str,username_old: str,weekly_allowance: str,weekly_allowance_nontax: str):
+    result = cpa_sql.update_manager_employee_list(bank_account,benefits,child_support,email,final_pay,first_name,kiwisaver,last_name,one_off_deduction,pay_rate,phone,student_loan,tax_credit,tax_rate,username,username_old,weekly_allowance,weekly_allowance_nontax)
+
+    return jsonify(success=str(result[0]),error=str(result[1]))
+
+
+@app.route("/manager/employee-list/delete/<string:userName>")
+def delete_manager_employee_list(userName: str):
+    result = cpa_sql.delete_manager_employee_list(userName)
+    
+    return jsonify(success=str(result[0]),error=str(result[1]))
+
+@app.route("/employee/timesheet/<string:userName>")
+def get_timesheet(userName: str):
+    result = cpa_sql.get_timesheet(userName)
+
+    return jsonify(period_start = result[0],
+                period_end = result[1],
+                monday_hours_worked = result[2],
+                tuesday_hours_worked = result[3],
+                wednesday_hours_worked = result[4],
+                thursday_hours_worked = result[5],
+                friday_hours_worked = result[6],
+                saturday_hours_worked = result[7],
+                sunday_hours_worked = result[8],
+                total_hours_worked = result[9],)
+
 if __name__ == "__main__":
     app.run(debug=True)
+
+#     class Timesheet() :
+#         def __init__(self,employee):
+#             self.period_start = employee[0].__str__()
+#             self.period_end = employee[1].__str__()
+#             self.monday_hours_worked = employee[2].__str__()
+#             self.tuesday_hours_worked = employee[3].__str__()
+#             self.wednesday_hours_worked = employee[4].__str__()
+#             self.thursday_hours_worked = employee[5].__str__()
+#             self.friday_hours_worked = employee[6].__str__()
+#             self.saturday_hours_worked = employee[7].__str__()
+#             self.sunday_hours_worked = employee[8].__str__()
+#             self.total_hours_worked = employee[9].__str__()
+#         def string(self):
+#             return {
+#                 'period_start': self.period_start,
+#                 'period_end': self.period_end,
+#                 'monday_hours_worked': self.monday_hours_worked,
+#                 'tuesday_hours_worked': self.tuesday_hours_worked,
+#                 'wednesday_hours_worked': self.wednesday_hours_worked,
+#                 'thursday_hours_worked': self.thursday_hours_worked,
+#                 'friday_hours_worked': self.friday_hours_worked,
+#                 'saturday_hours_worked': self.saturday_hours_worked,
+#                 'sunday_hours_worked': self.sunday_hours_worked,
+#                 'total_hours_worked': self.total_hours_worked,
+#                 }

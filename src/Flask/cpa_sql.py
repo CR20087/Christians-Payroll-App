@@ -313,3 +313,81 @@ def get_manager_employees(username):
     cur.close()
 
     return result
+
+def update_manager_employee_list(bank_account,benefits,child_support,email,final_pay,first_name,kiwisaver,last_name,one_off_deduction,pay_rate,phone,student_loan,tax_credit,tax_rate,username,username_old,weekly_allowance,weekly_allowance_nontax):
+    cur = init()
+    try:
+        cur.execute(f"""Update login
+                SET username = {username}
+                WHERE username = {username_old}""")
+        cur.execute(f"""Update pay_details
+                    SET bank_account = {bank_account}
+                    ,benefits = {benefits}
+                    ,child_support = {child_support}
+                    ,final_pay = {final_pay}
+                    ,kiwisaver = {kiwisaver}
+                    ,one_off_deduction = {one_off_deduction}
+                    ,pay_rate = {pay_rate}
+                    ,student_loan = {student_loan}
+                    ,tax_credit = {tax_credit}
+                    ,tax_rate = {tax_rate}
+                    ,weekly_allowance = {weekly_allowance}
+                    ,weekly_allowance_nontax = {weekly_allowance_nontax}
+                    WHERE username = {username_old}""")
+        cur.execute(f"""Update employee
+                    SET email = {email}
+                    ,first_name = {first_name}
+                    ,last_name = {last_name}
+                    ,phone = {phone}             
+                    WHERE username = {username_old}""")
+        cur.commit()
+    except Exception as E:
+        return 'Failed',E
+
+    return 'Success','n/a'
+
+def delete_manager_employee_list(userName): #Erroring
+    cur = init()
+    try:
+        cur.execute(f"""DELETE FROM login
+                    WHERE username = {userName};
+                DELETE FROM pay_details
+                    WHERE username = {userName};
+                DELETE FROM timesheet_entry
+                    WHERE username = {userName};
+                DELETE FROM employee
+                    WHERE username = {userName};
+                DELETE FROM leave_details
+                    WHERE username = {userName};
+                DELETE FROM leave_entry
+                    WHERE username = {userName};
+                DELETE FROM manager
+                    WHERE username = {userName};
+                DELETE FROM manager_employee
+                    WHERE manager = {userName};
+                DELETE FROM manager_employee
+                    WHERE employee = {userName};""")
+        
+        cur.commit()
+    except Exception as E:
+        return 'Failed',E
+    return 'Success','n/a'
+
+def get_timesheet(username):
+    cur = init()
+    cur.execute(f"""SELECT TOP (1) [WeekStartDate]
+      ,[WeekEndDate]
+      ,[monday_hours_worked]
+      ,[tuesday_hours_worked]
+      ,[wednesday_hours_worked]
+      ,[thursday_hours_worked]
+      ,[friday_hours_worked]
+      ,[saturday_hours_worked]
+      ,[sunday_hours_worked]
+      ,[total_hours_worked]
+  FROM [dbo].[timesheet]
+    WHERE username = {username} ORDER BY WeekStartDate ASC """)
+
+    result = cur.fetchone()
+
+    return result
