@@ -413,3 +413,22 @@ def get_timesheet_entry(username,start_date,end_date):
     cur.close()
 
     return result
+
+def update_timesheet_entry(timesheet_entry_id,date,start_time,end_time,unpaid_break,pay_type,comment):
+    cur = init()
+    try:
+        cur.execute(f"""Update timesheet_entry SET 
+    date = {date},
+    start_time = {start_time},
+    end_time = {end_time},
+    unpaid_break = {unpaid_break},
+    pay_type = {pay_type},
+    comments = {comment}
+    WHERE timesheet_entry_id = {timesheet_entry_id}""")
+        cur.close()
+    except Exception as E:
+        cur.close()
+        return 'Failed',E
+    
+
+    return 'Success','n/a'

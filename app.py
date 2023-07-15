@@ -177,6 +177,18 @@ def get_timesheet_entry(userName: str,startDate: str,endDate: str):
 
     return jsonify(results = response)
 
+
+@app.route("/employee/timesheet-entry/update/<string:timesheet_entry_id>/<string:date>/<string:start_time>/<string:end_time>/<string:unpaid_break>/<string:pay_type>/<string:comment>")
+def update_timesheet_entry(timesheet_entry_id: str,date: str,start_time: str,end_time: str,unpaid_break: str,pay_type: str,comment: str):
+    result = cpa_sql.update_timesheet_entry(timesheet_entry_id,date,start_time,end_time,unpaid_break,pay_type,comment)
+
+    return jsonify(success=str(result[0]),error=str(result[1]))
+
+
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
 
