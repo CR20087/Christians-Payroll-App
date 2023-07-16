@@ -204,31 +204,46 @@ def new_timesheet_entry(username: str,date: str,start_time: str,end_time: str,un
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 
+# @app.route("/manager/employee-timesheets/<string:userName>/")
+# def get_manager_timesheets(userName: str):
+#     result = cpa_sql.get_manager_timesheets(userName,startDate,endDate)
+
+#     class employee_Timesheet() :
+#         def __init__(self,sheet):
+#             self.timesheet_entry_id = sheet[0]
+#             self.date = sheet[1].__str__()
+#             self.start_time = sheet[2].__str__()
+#             self.end_time = sheet[3].__str__()
+#             self.unpaid_break = sheet[4].__str__()
+#             self.pay_type = sheet[5]
+#             self.comments = sheet[6]
+#             self.timesheet_entrys[7:]
+#         def string(self):
+#             return {'timesheet_entry_id': self.timesheet_entry_id,
+#                      'date' : self.date,
+#                      'start_time' : self.start_time,
+#                      'end_time' : self.end_time,
+#                      'unpaid_break' : self.unpaid_break,
+#                      'pay_type' : self.pay_type,
+#                      'comments' : self.comments,
+#                       'timesheet-entrys' : self.timesheet_entrys}
+    
+   
+#     entrys = []
+
+#     for i in result:
+#         ent = Timesheet_entry(i)
+#         entrys.append(ent)
+
+#     response = []
+#     for i in entrys:
+#         response.append(i.string())
+        
+
+#     return jsonify(results = response)
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
-
-#     class Timesheet() :
-#         def __init__(self,employee):
-#             self.period_start = employee[0].__str__()
-#             self.period_end = employee[1].__str__()
-#             self.monday_hours_worked = employee[2].__str__()
-#             self.tuesday_hours_worked = employee[3].__str__()
-#             self.wednesday_hours_worked = employee[4].__str__()
-#             self.thursday_hours_worked = employee[5].__str__()
-#             self.friday_hours_worked = employee[6].__str__()
-#             self.saturday_hours_worked = employee[7].__str__()
-#             self.sunday_hours_worked = employee[8].__str__()
-#             self.total_hours_worked = employee[9].__str__()
-#         def string(self):
-#             return {
-#                 'period_start': self.period_start,
-#                 'period_end': self.period_end,
-#                 'monday_hours_worked': self.monday_hours_worked,
-#                 'tuesday_hours_worked': self.tuesday_hours_worked,
-#                 'wednesday_hours_worked': self.wednesday_hours_worked,
-#                 'thursday_hours_worked': self.thursday_hours_worked,
-#                 'friday_hours_worked': self.friday_hours_worked,
-#                 'saturday_hours_worked': self.saturday_hours_worked,
-#                 'sunday_hours_worked': self.sunday_hours_worked,
-#                 'total_hours_worked': self.total_hours_worked,
-#                 }
