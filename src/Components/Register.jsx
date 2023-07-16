@@ -29,7 +29,7 @@ function RegisterForm() {
 
       console.log(information)
 
-      const res = await fetch(`/register/'${information.userName}'/'${information.password}'`)
+      const res = await fetch(`https://cpa-flask.azurewebsites.net/register/'${information.userName}'/'${information.password}'`)
       const data = await res.json()
       console.log(data)
       console.log(information.userName+' '+information.password)
