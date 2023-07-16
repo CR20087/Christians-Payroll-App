@@ -11,6 +11,8 @@ import ManagerRegister from '../Pages//ManagerRegister';
 import EmployeeSettings from '../Pages/EmployeeSettings';
 import EmployeeTimesheets from '../Pages/EmployeeTimesheets';
 import EmployeeView from '../Pages/ManagerEmployeeView';
+import EmployeeLeave from '../Pages/EmployeeLeave';
+import ManagerTimesheetView from '../Pages/ManagerTimesheetView'
 
 function Pages() {
   const location = useLocation();
@@ -28,6 +30,8 @@ function Pages() {
         <Route path="/Portal/employee/:userID/timesheets" element={<EmployeeTimesheets/>} />
         <Route path="/Portal/employee/" element={<EmployeeTimesheets/>} />
         <Route path="/Portal/manager/:userID/employee-view" element={<EmployeeView/>} />
+        <Route path="/Portal/employee/:userID/leave" element={<EmployeeLeave/>} />
+        <Route path="/Portal/manager/:userID/employee-timesheets" element={<ManagerTimesheetView/>} />
     </Routes>
   );
 }
