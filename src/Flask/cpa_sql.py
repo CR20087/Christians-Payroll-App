@@ -407,7 +407,7 @@ def get_timesheet_entry(username,start_date,end_date):
       ,[pay_type]
       ,[comments]
   FROM [dbo].[timesheet_entry]
-    WHERE username = {username} AND date >= {start_date} AND date <= {end_date} """)
+    WHERE username = {username} AND date >= {start_date} AND date <= {end_date}  AND completed = 'false'""")
 
     result = cur.fetchall()
     cur.close()
@@ -425,10 +425,46 @@ def update_timesheet_entry(timesheet_entry_id,date,start_time,end_time,unpaid_br
     pay_type = {pay_type},
     comments = {comment}
     WHERE timesheet_entry_id = {timesheet_entry_id}""")
+        cur.commit()
         cur.close()
     except Exception as E:
         cur.close()
         return 'Failed',E
-    
+    return 'Success','n/a'
 
+def delete_timesheet_entrys(entrys):
+    cur = init()
+    try:
+        cur.execute(f"""Delete From timesheet_entry WHERE timesheet_entry_id in {entrys}""")
+        cur.commit()
+        cur.close()
+    except Exception as E:
+        cur.close()
+        return 'Failed',E
+    return 'Success','n/a'
+
+def new_timesheet_entry(username,date,start_time,end_time,unpaid_break,pay_type,comment):
+    cur = init()
+    try:
+        cur.execute(f"""INSERT INTO timesheet_entry(
+    username
+    ,date
+    ,start_time
+    ,end_time
+    ,unpaid_break
+    ,pay_type
+    ,comments ) VALUES(
+    {username},
+    {date},
+    {start_time},
+    {end_time},
+    {unpaid_break},
+    {pay_type},
+    {comment}
+    )""")
+        cur.commit()
+        cur.close()
+    except Exception as E:
+        cur.close()
+        return 'Failed',E
     return 'Success','n/a'

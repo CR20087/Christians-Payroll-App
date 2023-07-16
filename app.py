@@ -184,10 +184,25 @@ def update_timesheet_entry(timesheet_entry_id: str,date: str,start_time: str,end
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 
+@app.route("/employee/timesheet-entry/delete/<string:entry_ids>")
+def delete_timesheet_entrys(entry_ids: str):
 
+    entrys = entry_ids
+    listed= list(tuple(entrys))
+    listed.remove("'")
+    listed.remove("'")
+    final_entrys = tuple(listed)
 
+    result = cpa_sql.delete_timesheet_entrys(final_entrys)
 
+    return jsonify(success=str(result[0]),error=str(result[1]))
 
+app.route("/employee/timesheet-entry/new/<string:username>/<string:date>/<string:start_time>/<string:end_time>/<string:unpaid_break>/<string:pay_type>/<string:comment>")
+def new_timesheet_entry(username: str,date: str,start_time: str,end_time: str,unpaid_break: str,pay_type: str,comment: str):
+    
+    result = cpa_sql.new_timesheet_entry(username,date,start_time,end_time,unpaid_break,pay_type,comment)
+
+    return jsonify(success=str(result[0]),error=str(result[1]))
 
 if __name__ == "__main__":
     app.run(debug=True)
