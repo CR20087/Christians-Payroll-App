@@ -174,8 +174,8 @@ function EmployeeTable() {
 
 const handleSaveRow = async ({ exitEditingMode, row, values }) => {
   console.log(values)
-  console.log(`https://cpa-flask.azurewebsites.net/employee/timesheet-entry/update/'${row.original.timesheet_entry_id}'/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entry/update/'${row.original.timesheet_entry_id}'/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
+  console.log(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/update/'${row.original.timesheet_entry_id}'/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/update/'${row.original.timesheet_entry_id}'/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
   const data = await res.json()
 
   if (data.success === 'Success') {
@@ -193,7 +193,7 @@ const DeleteAccount = async (table) => {
 
     console.log(`${table.getSelectedRowModel().rows.map((row) => (`${row.original.timesheet_entry_id}`))}`)
 
-    const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entry/delete/'${table.getSelectedRowModel().rows.map((row) => (`${row.original.timesheet_entry_id}`))}'`)
+    const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/delete/'${table.getSelectedRowModel().rows.map((row) => (`${row.original.timesheet_entry_id}`))}'`)
     const data = await res.json()
 
     if (data.success === 'true') {
@@ -207,7 +207,7 @@ const DeleteAccount = async (table) => {
 const handleCreateNewRow = async (values) => {
 
   console.log(values)
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entry/new/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/new/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
   const data = await res.json()
 
   if (data.success === 'true') {
