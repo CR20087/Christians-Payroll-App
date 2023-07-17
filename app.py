@@ -161,7 +161,7 @@ def get_timesheet_entry(userName: str,startDate: str,endDate: str):
                      'end_time' : self.end_time,
                      'unpaid_break' : self.unpaid_break,
                      'pay_type' : self.pay_type,
-                     'comments' : self.comments}
+                     'comment' : self.comments}
     
    
     entrys = []
@@ -197,7 +197,7 @@ def delete_timesheet_entrys(entry_ids: str):
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 
-app.route("/employee/timesheet-entry/new/<string:username>/<string:date>/<string:start_time>/<string:end_time>/<string:unpaid_break>/<string:pay_type>/<string:comment>")
+@app.route("/employee/timesheet-entry/new/<string:username>/<string:date>/<string:start_time>/<string:end_time>/<string:unpaid_break>/<string:pay_type>/<string:comment>")
 def new_timesheet_entry(username: str,date: str,start_time: str,end_time: str,unpaid_break: str,pay_type: str,comment: str):
     
     result = cpa_sql.new_timesheet_entry(username,date,start_time,end_time,unpaid_break,pay_type,comment)
