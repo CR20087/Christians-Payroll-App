@@ -215,7 +215,7 @@ const Form = styled.form`
     justify-self: center;
     width: 40%;
     height: fit-content;
-    background: #aeaeae;
+    background: #dfdddd;
     border: 4px solid black;
     justify-content: center;
     align-self: center;
@@ -254,7 +254,7 @@ const Form = styled.form`
         width: 100%;
     }
     h1 {
-        text-decoration: underline dashed;
+        font-weight:400;
         text-align:center;
     }
     .Show {
