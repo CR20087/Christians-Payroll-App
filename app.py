@@ -193,7 +193,7 @@ def delete_timesheet_entrys(entry_ids: str):
     print(listed)
     final_entrys = tuple(listed)
     if len(final_entrys) == 1:
-        final_entrys = tuple(final_entrys[0],final_entrys[0])
+        final_entrys = tuple(final_entrys[0])*2
     print(final_entrys)
 
     result = cpa_sql.delete_timesheet_entrys(final_entrys)
