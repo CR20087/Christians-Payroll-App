@@ -468,3 +468,104 @@ def new_timesheet_entry(username,date,start_time,end_time,unpaid_break,pay_type,
         cur.close()
         return 'Failed',E
     return 'Success','n/a'
+
+def get_employee_timesheets(username):
+    cur = init()
+
+    class employee_Timesheet() :
+        def __init__(self,sheet):
+            self.WeekStartDate = sheet[0].strftime('%a, %d %b')
+            self.WeekEndDate = sheet[1].strftime('%a, %d %b')
+            self.monday_hours_worked = sheet[2]
+            self.tuesday_hours_worked = sheet[3]
+            self.wednesday_hours_worked = sheet[4]
+            self.thursday_hours_worked = sheet[5]
+            self.friday_hours_worked = sheet[6]
+            self.saturday_hours_worked = sheet[7]
+            self.sunday_hours_worked = sheet[8]
+            self.total_hours_worked = sheet[9]
+            self.total_unpaid_break = sheet[10]
+            self.timesheet_entrys = sheet[11]
+        def string(self):
+            return {'WeekStartDate' : self.WeekStartDate,
+                     'WeekEndDate' : self.WeekEndDate,
+                     'monday_hours_worked' : self.monday_hours_worked,
+                     'tuesday_hours_worked' : self.tuesday_hours_worked,
+                     'wednesday_hours_worked' : self.wednesday_hours_worked,
+                     'thursday_hours_worked' : self.thursday_hours_worked,
+                     'friday_hours_worked' : self.friday_hours_worked,
+                      'saturday_hours_worked' : self.saturday_hours_worked,
+                      'sunday_hours_worked' : self.sunday_hours_worked,
+                      'total_hours_worked' : self.total_hours_worked,
+                      'total_unpaid_break' : self.total_unpaid_break,
+                      'timesheet_entrys' : self.timesheet_entrys}
+    class employee_timesheet_entry():
+        def __init__(self,entry):
+            self.timesheet_entry_id = entry[0]
+            self.date = entry[1]
+            self.start_time = entry[2]
+            self.end_time = entry[3]
+            self.unpaid_break = entry[4]
+            self.pay_type = entry[5]
+            self.comment = entry[6]
+        def string(self):
+            return {'timesheet_entry_id': self.timesheet_entry_id,
+                     'date' : self.date,
+                     'start_time' : self.start_time,
+                     'end_time' : self.end_time,
+                     'unpaid_break' : self.unpaid_break,
+                     'pay_type' : self.pay_type,
+                     'comments' : self.comment}
+        
+    timesheet_response = []
+
+    cur.execute(f"""SELECT [employee] FROM employee_manager where [manager] = {username}""")
+    employee_usernames = cur.fetchall()
+
+    for emp in employee_usernames:
+
+        try:
+            cur.execute(f"""SELECT TOP (1) [WeekStartDate]
+        ,[WeekEndDate]
+        ,[monday_hours_worked]
+        ,[tuesday_hours_worked]
+        ,[wednesday_hours_worked]
+        ,[thursday_hours_worked]
+        ,[friday_hours_worked]
+        ,[saturday_hours_worked]
+        ,[sunday_hours_worked]
+        ,[total_hours_worked]
+        ,[total_unpaid_break]
+    FROM [dbo].[timesheet]
+        WHERE username = {emp} ORDER BY WeekStartDate ASC """)
+
+            timesheet = cur.fetchone()
+
+            cur.execute(f"""SELECT TOP(1) [timesheet_entry_id]
+        ,[date]
+        ,[start_time]
+        ,[end_time]
+        ,[unpaid_break]
+        ,[pay_type]
+        ,[comments]
+    FROM [timesheet_entry]
+    Where timesheet_entry.[date] >= {timesheet[0].__str__()} and timesheet_entry.date <= {timesheet[1].__str__()} AND username = {emp}
+            """)
+
+            timesheet_entrys = cur.fetchall()
+            entry_list = []
+            
+
+            for entry in timesheet_entrys:
+                classed = employee_timesheet_entry(entry)
+                entry_list.append(classed.string())
+
+            timesheet.append(entry_list)
+            
+            timesheet_classed = employee_Timesheet(timesheet)
+            timesheet_response.append(timesheet_classed.string())
+
+        except:
+            continue
+
+    return timesheet_response

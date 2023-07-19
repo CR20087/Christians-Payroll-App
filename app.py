@@ -161,7 +161,7 @@ def get_timesheet_entry(userName: str,startDate: str,endDate: str):
                      'end_time' : self.end_time,
                      'unpaid_break' : self.unpaid_break,
                      'pay_type' : self.pay_type,
-                     'comment' : self.comments}
+                     'comments' : self.comments}
     
    
     entrys = []
@@ -177,70 +177,71 @@ def get_timesheet_entry(userName: str,startDate: str,endDate: str):
 
     return jsonify(results = response)
 
-
-@app.route("/employee/timesheet-entrys/update/<string:timesheet_entry_id>/<string:date>/<string:start_time>/<string:end_time>/<string:unpaid_break>/<string:pay_type>/<string:comment>")
+@app.route("/employee/timesheet-entry/update/<string:timesheet_entry_id>/<string:date>/<string:start_time>/<string:end_time>/<string:unpaid_break>/<string:pay_type>/<string:comment>")
 def update_timesheet_entry(timesheet_entry_id: str,date: str,start_time: str,end_time: str,unpaid_break: str,pay_type: str,comment: str):
     result = cpa_sql.update_timesheet_entry(timesheet_entry_id,date,start_time,end_time,unpaid_break,pay_type,comment)
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 
-@app.route("/employee/timesheet-entrys/delete/<string:entry_ids>")
+@app.route("/employee/timesheet-entry/delete/<string:entry_ids>")
 def delete_timesheet_entrys(entry_ids: str):
 
     entrys = entry_ids
     listed= list(tuple(entrys))
     listed.remove("'")
     listed.remove("'")
+    print(listed)
     final_entrys = tuple(listed)
+    print(final_entrys)
 
     result = cpa_sql.delete_timesheet_entrys(final_entrys)
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 
-@app.route("/employee/timesheet-entrys/new/<string:username>/<string:date>/<string:start_time>/<string:end_time>/<string:unpaid_break>/<string:pay_type>/<string:comment>")
+app.route("/employee/timesheet-entry/new/<string:username>/<string:date>/<string:start_time>/<string:end_time>/<string:unpaid_break>/<string:pay_type>/<string:comment>")
 def new_timesheet_entry(username: str,date: str,start_time: str,end_time: str,unpaid_break: str,pay_type: str,comment: str):
     
     result = cpa_sql.new_timesheet_entry(username,date,start_time,end_time,unpaid_break,pay_type,comment)
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 
-# @app.route("/manager/employee-timesheets/<string:userName>/")
-# def get_manager_timesheets(userName: str):
-#     result = cpa_sql.get_manager_timesheets(userName,startDate,endDate)
+@app.route("/manager/employee-timesheets/<string:userName>/")
+def get_manager_timesheets(userName: str):
+    result = cpa_sql.get_manager_timesheets(userName)
 
-#     class employee_Timesheet() :
-#         def __init__(self,sheet):
-#             self.timesheet_entry_id = sheet[0]
-#             self.date = sheet[1].__str__()
-#             self.start_time = sheet[2].__str__()
-#             self.end_time = sheet[3].__str__()
-#             self.unpaid_break = sheet[4].__str__()
-#             self.pay_type = sheet[5]
-#             self.comments = sheet[6]
-#             self.timesheet_entrys[7:]
-#         def string(self):
-#             return {'timesheet_entry_id': self.timesheet_entry_id,
-#                      'date' : self.date,
-#                      'start_time' : self.start_time,
-#                      'end_time' : self.end_time,
-#                      'unpaid_break' : self.unpaid_break,
-#                      'pay_type' : self.pay_type,
-#                      'comments' : self.comments,
-#                       'timesheet-entrys' : self.timesheet_entrys}
+    class employee_Timesheet() :
+        def __init__(self,sheet):
+            self.timesheet_entry_id = sheet[0]
+            self.date = sheet[1].__str__()
+            self.start_time = sheet[2].__str__()
+            self.end_time = sheet[3].__str__()
+            self.unpaid_break = sheet[4].__str__()
+            self.pay_type = sheet[5]
+            self.comments = sheet[6]
+            self.timesheet_entrys = sheet[7:]
+        def string(self):
+            return {'timesheet_entry_id': self.timesheet_entry_id,
+                     'date' : self.date,
+                     'start_time' : self.start_time,
+                     'end_time' : self.end_time,
+                     'unpaid_break' : self.unpaid_break,
+                     'pay_type' : self.pay_type,
+                     'comments' : self.comments,
+                      'timesheet-entrys' : self.timesheet_entrys}
     
    
-#     entrys = []
+    entrys = []
 
-#     for i in result:
-#         ent = Timesheet_entry(i)
-#         entrys.append(ent)
+    for i in result:
+        ent = employee_Timesheet(i)
+        entrys.append(ent)
 
-#     response = []
-#     for i in entrys:
-#         response.append(i.string())
+    response = []
+    for i in entrys:
+        response.append(i.string())
         
 
-#     return jsonify(results = response)
+    return jsonify(results = response)
 
 
 
