@@ -190,11 +190,9 @@ def delete_timesheet_entrys(entry_ids: str):
     listed= list(tuple(entrys))
     listed.remove("'")
     listed.remove("'")
-    print(listed)
     final_entrys = tuple(listed)
     if len(final_entrys) == 1:
         final_entrys = tuple(final_entrys[0])*2
-    print(final_entrys)
 
     result = cpa_sql.delete_timesheet_entrys(final_entrys)
 
@@ -207,43 +205,10 @@ def new_timesheet_entry(username: str,date: str,start_time: str,end_time: str,un
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 
-@app.route("/manager/employee-timesheets/<string:userName>/")
+@app.route("/manager/employee-timesheets/<string:userName>")
 def get_manager_timesheets(userName: str):
-    result = cpa_sql.get_manager_timesheets(userName)
-
-    class employee_Timesheet() :
-        def __init__(self,sheet):
-            self.timesheet_entry_id = sheet[0]
-            self.date = sheet[1].__str__()
-            self.start_time = sheet[2].__str__()
-            self.end_time = sheet[3].__str__()
-            self.unpaid_break = sheet[4].__str__()
-            self.pay_type = sheet[5]
-            self.comments = sheet[6]
-            self.timesheet_entrys = sheet[7:]
-        def string(self):
-            return {'timesheet_entry_id': self.timesheet_entry_id,
-                     'date' : self.date,
-                     'start_time' : self.start_time,
-                     'end_time' : self.end_time,
-                     'unpaid_break' : self.unpaid_break,
-                     'pay_type' : self.pay_type,
-                     'comments' : self.comments,
-                      'timesheet-entrys' : self.timesheet_entrys}
-    
-   
-    entrys = []
-
-    for i in result:
-        ent = employee_Timesheet(i)
-        entrys.append(ent)
-
-    response = []
-    for i in entrys:
-        response.append(i.string())
-        
-
-    return jsonify(results = response)
+    result = cpa_sql.get_employee_timesheets(userName)
+    return jsonify(results = result)
 
 
 

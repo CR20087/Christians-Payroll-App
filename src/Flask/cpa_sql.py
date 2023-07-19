@@ -485,7 +485,8 @@ def get_employee_timesheets(username):
             self.sunday_hours_worked = sheet[8]
             self.total_hours_worked = sheet[9]
             self.total_unpaid_break = sheet[10]
-            self.timesheet_entrys = sheet[11]
+            self.username = sheet[11]
+            self.timesheet_entrys = sheet[12]
         def string(self):
             return {'WeekStartDate' : self.WeekStartDate,
                      'WeekEndDate' : self.WeekEndDate,
@@ -498,14 +499,15 @@ def get_employee_timesheets(username):
                       'sunday_hours_worked' : self.sunday_hours_worked,
                       'total_hours_worked' : self.total_hours_worked,
                       'total_unpaid_break' : self.total_unpaid_break,
+                      'username' : self.username,
                       'timesheet_entrys' : self.timesheet_entrys}
     class employee_timesheet_entry():
         def __init__(self,entry):
             self.timesheet_entry_id = entry[0]
-            self.date = entry[1]
-            self.start_time = entry[2]
-            self.end_time = entry[3]
-            self.unpaid_break = entry[4]
+            self.date = entry[1].strftime('%a, %d %b')
+            self.start_time = entry[2].__str__()
+            self.end_time = entry[3].__str__()
+            self.unpaid_break = entry[4].__str__()
             self.pay_type = entry[5]
             self.comment = entry[6]
         def string(self):
@@ -536,8 +538,9 @@ def get_employee_timesheets(username):
         ,[sunday_hours_worked]
         ,[total_hours_worked]
         ,[total_unpaid_break]
+        ,[username]
     FROM [dbo].[timesheet]
-        WHERE username = {emp} ORDER BY WeekStartDate ASC """)
+        WHERE username = '{emp[0]}' ORDER BY WeekStartDate ASC """)
 
             timesheet = cur.fetchone()
 
@@ -549,8 +552,7 @@ def get_employee_timesheets(username):
         ,[pay_type]
         ,[comments]
     FROM [timesheet_entry]
-    Where timesheet_entry.[date] >= {timesheet[0].__str__()} and timesheet_entry.date <= {timesheet[1].__str__()} AND username = {emp}
-            """)
+    Where [date] >= '{timesheet[0].__str__()}' and date <= '{timesheet[1].__str__()}' AND username = '{emp[0]}' """)
 
             timesheet_entrys = cur.fetchall()
             entry_list = []
@@ -560,6 +562,7 @@ def get_employee_timesheets(username):
                 classed = employee_timesheet_entry(entry)
                 entry_list.append(classed.string())
 
+            timesheet = list(timesheet)
             timesheet.append(entry_list)
             
             timesheet_classed = employee_Timesheet(timesheet)
