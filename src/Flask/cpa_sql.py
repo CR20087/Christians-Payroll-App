@@ -593,8 +593,8 @@ def get_employee_leave(username):
     
     for ent in entrys:
         dict_entrys.append({'leave_entry_id' :ent[0],
-        'leaave_start_date' :ent[1],
-        'leave_end_date' :ent[2],
+        'leave_start_date' :ent[1].strftime('%a, %d %b'),
+        'leave_end_date' :ent[2].strftime('%a, %d %b'),
         'leave-type' :ent[3],
         'status' :ent[4]})
 
