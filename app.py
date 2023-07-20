@@ -198,7 +198,7 @@ def delete_timesheet_entrys(entry_ids: str):
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 
-app.route("/employee/timesheet-entrys/new/<string:username>/<string:date>/<string:start_time>/<string:end_time>/<string:unpaid_break>/<string:pay_type>/<string:comment>")
+@app.route("/employee/timesheet-entrys/new/<string:username>/<string:date>/<string:start_time>/<string:end_time>/<string:unpaid_break>/<string:pay_type>/<string:comment>")
 def new_timesheet_entry(username: str,date: str,start_time: str,end_time: str,unpaid_break: str,pay_type: str,comment: str):
     
     result = cpa_sql.new_timesheet_entry(username,date,start_time,end_time,unpaid_break,pay_type,comment)
@@ -208,8 +208,14 @@ def new_timesheet_entry(username: str,date: str,start_time: str,end_time: str,un
 @app.route("/manager/employee-timesheets/<string:userName>")
 def get_manager_timesheets(userName: str):
     result = cpa_sql.get_employee_timesheets(userName)
+
     return jsonify(results = result)
 
+@app.route("/employee/leave/<string:userName>")
+def get_employee_leave(userName: str):
+    result = cpa_sql.get_employee_leave(userName)
+
+    return jsonify(leave_balance = str(result[0]),leave_balance_hours = str(result[1]),leave_entrys = result[2])
 
 
 

@@ -572,3 +572,32 @@ def get_employee_timesheets(username):
             continue
 
     return timesheet_response
+
+def get_employee_leave(username):
+    cur = init()
+
+    cur.execute(f"""SELECT [leave_balance]
+                ,[leave_balance_hours]
+                FROM [leave_details] WHERE username = {username}""")
+    details = list(cur.fetchone())
+
+    cur.execute(f"""SELECT [leave_entry_id]
+      ,[leave_start_date]
+      ,[leave_end_date]
+      ,[leave_type]
+      ,[status]
+  FROM [dbo].[leave_entry]""")
+    
+    entrys = cur.fetchall()
+    dict_entrys = []
+    
+    for ent in entrys:
+        dict_entrys.append({'leave_entry_id' :ent[0],
+        'leaave_start_date' :ent[1],
+        'leave_end_date' :ent[2],
+        'leave-type' :ent[3],
+        'status' :ent[4]})
+
+    details.append(dict_entrys)
+
+    return details
