@@ -11,7 +11,7 @@ function SideBar() {
   function NavType() {
     if (portalType === 'manager') {
       return(
-        <div>
+        <Shortcuts>
           <MenuItem to={`/Portal/manager/${params.userID}`}>
           <IoMdHome size={25}/>
           <p>Dashboard</p>
@@ -36,11 +36,11 @@ function SideBar() {
           <IoMdSettings size={25}/>
           <p>Settings</p>
         </MenuItem>
-        </div>
+        </Shortcuts>
       )
     } else if (portalType === 'employee') {
       return(
-        <div>
+        <Shortcuts>
           <MenuItem to={`/Portal/employee/${params.userID}`}>
           <IoMdHome size={25}/>
           <p>Dashboard</p>
@@ -57,7 +57,7 @@ function SideBar() {
           <IoMdSettings size={25}/>
           <p>Settings</p>
         </MenuItem>
-        </div>
+        </Shortcuts>
       )
     } else {
       <MenuItem>
@@ -88,21 +88,25 @@ const Logo = styled.div`
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
+  height: fit-content;
   
   p {
     font-weight: 650;
   }
 `
 
+const Shortcuts = styled.div`
+  display: grid;
+  padding-top: 1.5rem;
+`
+
 const MenuItem = styled(Link)`
 
   flex-direction: column;
   display: flex;
-  justify-content: flex-end;
   align-items: center;
   text-decoration: none;
   color: black;
-  padding-bottom: 3rem;
 
   svg {
     color: #0707d6;
