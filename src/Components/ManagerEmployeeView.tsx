@@ -332,16 +332,16 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
   //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
   console.log(values)
   if (!Object.keys(validationErrors).length) {
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/update/${values.bank_account}/${values.benefits}/${values.child_support}/${values.email}/${values.final_pay}/${values.first_name}/${values.kiwisaver}/${values.last_name}/${values.one_off_deduction}/${values.pay_rate}/${values.phone}/${values.student_loan}/${values.tax_credit}/${values.tax_rate}/${values.username}/${row.original.username}/${values.weekly_allowance}/${values.weekly_allowance_nontax}`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/update/'${values.bank_account}'/'${values.benefits}'/'${values.child_support}'/'${values.email}'/'${values.final_pay}'/'${values.first_name}'/'${values.kiwisaver}'/'${values.last_name}'/'${values.one_off_deduction}'/'${values.pay_rate}'/'${values.phone}'/'${values.student_loan}'/'${values.tax_credit}'/'${values.tax_rate}'/'${values.username}'/'${row.original.username}'/'${values.weekly_allowance}'/'${values.weekly_allowance_nontax}'`)
   const data = await res.json()
 
-  if (data.success === 'true') {
+  if (data.success === 'Success') {
     alert(`${values.first_name} ${values.last_name} (${values.username}) was updated successfully`)
     setChange(true)}
     else {
       alert(`An error occured.\n\n\n\n${data.error}`) }
-  //send/receive api updates here
-  exitEditingMode(); //required to exit editing mode
+
+  exitEditingMode(); 
   }
 };
 const handleCreateNewRow = (values) => {
