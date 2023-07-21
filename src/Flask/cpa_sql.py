@@ -595,8 +595,8 @@ def get_employee_leave(username):
         dict_entrys.append({'leave_entry_id' :ent[0],
         'leave_start_date' :ent[1].__str__(),
         'leave_end_date' :ent[2].__str__(),
-        'leave-type' :ent[3],
-        'status' :ent[4]})
+        'leave_type' :ent[3],
+        'status' :ent[4].capitalize()})
 
     details.append(dict_entrys)
 
