@@ -570,6 +570,7 @@ def get_employee_timesheets(username):
 
         except:
             continue
+    cur.close()
 
     return timesheet_response
 
@@ -599,6 +600,7 @@ def get_employee_leave(username):
         'status' :ent[4].capitalize()})
 
     details.append(dict_entrys)
+    cur.close()
 
     return details
 
@@ -610,7 +612,10 @@ def update_employee_leave(username,leave_start,leave_end,leave_type):
                     ,[leave_end_date] = {leave_end}
                     ,[leave_type] = {leave_type}
                     WHERE username = {username}""")
+        cur.commit()
+        cur.close()
     except Exception as e:
+        cur.close()
         return 'Failed',e
     return 'Success','n/a'
 
@@ -628,6 +633,9 @@ def new_employee_leave_entry(username,leave_start,leave_end,leave_type):
                     ,{leave_end}
                     ,{leave_type}
                     )""")
+        cur.commit()
+        cur.close()
     except Exception as e:
+        cur.close()
         return 'Failed',e
     return 'Success','n/a'
