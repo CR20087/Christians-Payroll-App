@@ -141,10 +141,12 @@ function EmployeeTable() {
       {
         accessorKey: 'date',
         header: 'Date',
+        placeHolder: 'YYYY-MM-DD'
       },
       {
         accessorKey: 'comment',
         header: 'Comments',
+        placeHolder: ''
       }
     ],
     [],
@@ -251,6 +253,7 @@ return (
                 key={column.accessorKey}
                 label={column.header}
                 name={column.accessorKey}
+                placeholder={column.placeHolder}
                 onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
