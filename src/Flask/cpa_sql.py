@@ -587,7 +587,7 @@ def get_employee_leave(username):
       ,[leave_end_date]
       ,[leave_type]
       ,[status]
-  FROM [dbo].[leave_entry]""")
+  FROM [dbo].[leave_entry] WHERE username = {username} AND leave_end_date >= CURRENT_TIMESTAMP""")
     
     entrys = cur.fetchall()
     dict_entrys = []
