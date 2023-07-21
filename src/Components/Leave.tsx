@@ -2,69 +2,46 @@ import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
 import { Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon,  } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
-import {Box,Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,Stack,TextField ,Typography} from '@mui/material';
+import {Box,Button,Dialog,DialogActions,DialogContent, MenuItem, DialogTitle,IconButton,Stack,TextField ,Typography} from '@mui/material';
+import { Leave_Type } from '../Components/lists.jsx'
 
 
 function EmployeeLeave() {
   let params = useParams()
   const [data, setData] = useState({});
-  const [data2, setData2] = useState({});
+  const [leaveBalance, setLeaveBalance] = useState('...');
+  const [leaveBalanceHours, setLeaveBalanceHours] = useState('...');
   const [change, setChange] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [validationErrors, setValidationErrors] = useState({});
 
-  
 
   const columns = useMemo(
     () => [
-      
       {
-        accessorKey: 'period_start',
-        header: 'Period Start',
-        size:150
+        accessorKey: 'leave_start_date',
+        header: 'Leave Start Date',
       },
       {
-        accessorKey: 'period_end',
-        header: 'Period End',
+        accessorKey: 'leave_end_date',
+        header: 'Leave End Date',
+        type: 'number',
       },
       {
-        accessorKey: 'monday_hours_worked',
-        header: 'Monday',
-        size:50
+        accessorKey: 'leave_type',
+        header: 'Leave Type',
+        muiTableBodyCellEditTextFieldProps: {
+          select: true, //change to select for a dropdown
+          children: Leave_Type.map((type) => (
+            <MenuItem key={type} value={type}>
+              {type}
+            </MenuItem>
+          )),
+        },
       },
       {
-        accessorKey: 'tuesday_hours_worked',
-        header: 'Tuesday',
-        size:50
-      },
-      {
-        accessorKey: 'wednesday_hours_worked',
-        header: 'Wednesday',
-        size:50
-      },
-      {
-        accessorKey: 'thursday_hours_worked',
-        header: 'Thursday',
-        size:50
-      },
-      {
-        accessorKey: 'friday_hours_worked',
-        header: 'Friday',
-        size:50
-      },
-      {
-        accessorKey: 'saturday_hours_worked',
-        header: 'Saturday',
-        size:50
-      },
-      {
-        accessorKey: 'sunday_hours_worked',
-        header: 'Sunday',
-        size:50
-      },
-      {
-        accessorKey: 'total_hours_worked',
-        header: 'Total Hours',
+        accessorKey: 'status',
+        header: 'Status',
+        enableEditing: false,
       }
     ],
     [],
@@ -73,31 +50,13 @@ function EmployeeLeave() {
   const columns2 = useMemo(
     () => [
       {
-        accessorKey: 'date',
-        header: 'Date',
+        accessorKey: 'leave_start_date',
+        header: 'Leave Start Date',
       },
       {
-        accessorKey: 'start_time',
-        header: 'Start Time',
+        accessorKey: 'leave_end_date',
+        header: 'Leave End Date',
         type: 'number'
-      },
-      {
-        accessorKey: 'end_time',
-        header: 'End Time',
-        type: 'number'
-      },
-      {
-        accessorKey: 'unpaid_break',
-        header: 'Unpaid Break',
-        type: 'number'
-      },
-      {
-        accessorKey: 'pay_type',
-        header: 'Pay Type',
-      },
-      {
-        accessorKey: 'comment',
-        header: 'Comments',
       }
     ],
     [],
@@ -107,60 +66,75 @@ function EmployeeLeave() {
   useEffect(() => {
     console.log("fetch")    
     async function fetchData()  {
-        const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet/'${params.userID}'`)
+        const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/'${params.userID}'`)
         const data = await res.json()
 
         console.log(data)
-        setData(data.results)
-
-        const res2 = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/'${params.userID}'/'${data.results[0].period_start_date}'/'${data.results[0].period_end_date}'`)
-        const data2 = await res2.json()
-
-        console.log(data2)
-        setData2(data2.results)
+        setData(data.leave_entrys)
+        setLeaveBalance(data.leave_balance)
+        setLeaveBalanceHours(data.leave_balance_hours)
     } 
         
     fetchData()
 
 },[change])
 
-const handleCancelRowEdits = () => {
-  setValidationErrors({});
-};
-
 const handleSaveRow = async ({ exitEditingMode, row, values }) => {
   //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
   console.log(values)
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/update/${values.bank_account}/${values.benefits}/${values.child_support}/${values.email}/${values.final_pay}/${values.first_name}/${values.kiwisaver}/${values.last_name}/${values.one_off_deduction}/${values.pay_rate}/${values.phone}/${values.student_loan}/${values.tax_credit}/${values.tax_rate}/${values.username}/${row.original.username}/${values.weekly_allowance}/${values.weekly_allowance_nontax}`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/update/'${params.userID}'/'${values.leave_start_date}'/'${values.leave_end_date}'/'${values.leave_type}'`)
   const data = await res.json()
 
-  if (data.success === 'true') {
-    alert(`${values.first_name} ${values.last_name} (${values.username}) was updated successfully`)
+  if (data.success === 'Success') {
+    alert(`Leave entry\n\tFrom: ${values.leave_start_date}   To ${values.leave_end_date}\n was updated successfully`)
     setChange(true)}
     else {
       alert(`An error occured.\n\n\n\n${data.error}`) }
   //send/receive api updates here
   exitEditingMode(); //required to exit editing mode
 };
-const handleCreateNewRow = (values) => {
 
+
+const handleCreateNewRow = async (values) => {
+  console.log(values)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/new/'${params.userID}'/'${values.leave_start_date}'/'${values.leave_end_date}'/'${values.leave_type}'`)
+  const data = await res.json()
+
+  if (data.success === 'Success') {
+    alert(`${values.leave_start_date} was created successfully`)
+    setChange(true)}
+    else {
+      alert(`An error occured.\n\n\n\n${data.error}`) }
 };
 
   return (
     <>
+    <div className='leave-elements'>
+    <div className='Circle-balance'>
+      <div>
+      <p>{leaveBalance}</p>
+      <h4>Weeks</h4></div><div>
+      <p>{leaveBalanceHours}</p>
+      <h4>Hours</h4></div>
+    </div>
+    </div>
     <MaterialReactTable
       columns={columns}
       data={data}
       enableFullScreenToggle={false}
-      initialState={{ columnPinning: { left: ['period_start','period_end']} }}
+      initialState={{ columnPinning: { right: ['status']} }}
       enablePinning
+      enableEditing
+      editingMode='row'
+      onEditingRowSave={handleSaveRow}
+      
       renderTopToolbarCustomActions={() => (
   <Button
     color="secondary"
     onClick={() => setCreateModalOpen(true)}
     variant="contained"
   >
-    New Time sheet Entry
+    New leave Entry
   </Button>
 )}/>
       <CreateNewAccountModal
@@ -169,8 +143,8 @@ const handleCreateNewRow = (values) => {
       onClose={() => setCreateModalOpen(false)}
       onSubmit={handleCreateNewRow}
       />
-      
-  </>
+      </>
+  
   );
 };
 
@@ -196,13 +170,14 @@ onClose();
 return (
   <div className={String(open)}>
 <div className={'mui-box-container-form'} >
-<DialogTitle textAlign="center">New Timesheet Entry</DialogTitle>
+<DialogTitle textAlign="center">New Leave Entry</DialogTitle>
 <DialogContent>
 <form onSubmit={(e) => e.preventDefault()}>
   <Stack
     sx={{
       minWidth: { xs: '300px', sm: '360px', md: '400px' },
       gap: '1.5rem',
+      select: {padding: '16.5px 14px',font:'inherit'},
     }}
   >
     {columns.map((column) => (
@@ -210,11 +185,18 @@ return (
         key={column.accessorKey}
         label={column.header}
         name={column.accessorKey}
+        placeholder='YYYY-MM-DD'
         onChange={(e) =>
           setValues({ ...values, [e.target.name]: e.target.value })
         }
       />
     ))}
+    <select name='leave_type' onChange={(e) =>
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }>
+                  <option value="">Leave Type</option>
+                  {Leave_Type.map((type) => (<option key={type} value={type}>{type}</option>))}
+              </select>
   </Stack>
 </form>
 <div className='buttons-for-form'>

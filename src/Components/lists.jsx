@@ -293,3 +293,10 @@ export const Times = [
 export const Pay_Type = [
     'Wages'
 ]
+
+export const Leave_Type = [
+    'Annual leave',
+    'Bereavement',
+    'Sick',
+    'Parental'
+]

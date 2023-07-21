@@ -21,6 +21,9 @@ function EmployeeLeave() {
     .css-80pr5n-MuiPaper-root {width:70vw;}
     .css-1gws2xf-MuiButtonBase-root-MuiIconButton-root {color:rgb(14,119,191)}
     .css-zcbmsk-MuiButtonBase-root-MuiButton-root {background-color:rgb(14,119,191)}
+    .css-1d3ml05-MuiPopper-root-MuiTooltip-popper {
+        height: 3rem;
+    }
     .mui-box-container-form {
         position: fixed;
         top: 45%;
@@ -56,8 +59,31 @@ function EmployeeLeave() {
     height:fit-content;
     justify-self:center;
     padding-top: 5rem;
-    .timesheet-entrys {
-        padding-top: 10rem;
+    .leave-elements {
+        display: grid;
+        padding-bottom:10rem;
+        .Circle-balance {
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            border: 3px solid black;
+            background-color: #eaeaea;
+            justify-self: center;
+            display: flex;
+            flex-direction: column;
+
+            p {
+                text-align: center;
+                font-weight: 778;
+                font-size: 50px;
+                margin: auto;
+            }
+            h4 {
+                text-align:center;
+            }
+         }    
     }
 `
+    
+    
 export default EmployeeLeave
