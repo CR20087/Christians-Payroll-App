@@ -161,7 +161,7 @@ function EmployeeTable() {
         console.log(data)
         setData(data.results)
 
-        const res2 = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/'${params.userID}'/'${data.results[0].period_start_date}'/'${data.results[0].period_end_date}'`)
+        const res2 = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/'${params.userID}'/'${data.entry_start_date}'/'${data.entry_end_date}'`)
         const data2 = await res2.json()
 
         console.log(data2)

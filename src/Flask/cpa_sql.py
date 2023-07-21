@@ -379,7 +379,7 @@ def delete_manager_employee_list(userName): #Erroring
 
 def get_timesheet(username):
     cur = init()
-    cur.execute(f"""SELECT TOP (1) [WeekStartDate]
+    cur.execute(f"""SELECT [WeekStartDate]
       ,[WeekEndDate]
       ,[monday_hours_worked]
       ,[tuesday_hours_worked]
@@ -390,12 +390,32 @@ def get_timesheet(username):
       ,[sunday_hours_worked]
       ,[total_hours_worked]
   FROM [dbo].[timesheet]
-    WHERE username = {username} ORDER BY WeekStartDate ASC """)
+    WHERE username = {username} AND completed = 'false' 
+    ORDER BY WeekStartDate DESC  """)
 
-    result = cur.fetchone()
+    res = cur.fetchall()
+
+    cur.execute(f"""SELECT [WeekStartDate] 
+  FROM [dbo].[timesheet]
+    WHERE username = {username} AND completed = 'false' ORDER BY WeekStartDate ASC""")
+
+    start_date = cur.fetchone()[0].__str__()
+
+    cur.execute(f"""SELECT [WeekEndDate] 
+  FROM [dbo].[timesheet]
+    WHERE username = {username} AND completed = 'false' ORDER BY WeekEndDate DESC""")
+
+    end_date = cur.fetchone()[0].__str__()
+
     cur.close()
+    response = []
 
-    return result
+    for sheet in res:
+        
+        dict_sheet = {'period_start' : sheet[0].strftime('%a, %d %b'),'period_end' : sheet[1].strftime('%a, %d %b'),'monday_hours_worked' : sheet[2],'tuesday_hours_worked' : sheet[3],'wednesday_hours_worked' : sheet[4],'thursday_hours_worked' : sheet[5],'friday_hours_worked' : sheet[6],'saturday_hours_worked' : sheet[7],'sunday_hours_worked' : sheet[8],'total_hours_worked' : sheet[9]}
+        response.append(dict_sheet)
+
+    return response, start_date,end_date
 
 def get_timesheet_entry(username,start_date,end_date):
     cur = init()

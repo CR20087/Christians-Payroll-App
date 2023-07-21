@@ -138,8 +138,7 @@ def delete_manager_employee_list(userName: str):
 def get_timesheet(userName: str):
     result = cpa_sql.get_timesheet(userName)
 
-    response = {'period_start_date' : result[0].__str__(),'period_end_date' : result[1].__str__(),'period_start' : result[0].strftime('%a, %d %b'),'period_end' : result[1].strftime('%a, %d %b'),'monday_hours_worked' : result[2],'tuesday_hours_worked' : result[3],'wednesday_hours_worked' : result[4],'thursday_hours_worked' : result[5],'friday_hours_worked' : result[6],'saturday_hours_worked' : result[7],'sunday_hours_worked' : result[8],'total_hours_worked' : result[9]}
-    return jsonify(results=[response])
+    return jsonify(results=result[0],entry_start_date=result[1],entry_end_date=result[2])
 
 @app.route("/employee/timesheet-entrys/<string:userName>/<string:startDate>/<string:endDate>")
 def get_timesheet_entry(userName: str,startDate: str,endDate: str):
