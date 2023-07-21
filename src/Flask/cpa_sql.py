@@ -593,11 +593,23 @@ def get_employee_leave(username):
     
     for ent in entrys:
         dict_entrys.append({'leave_entry_id' :ent[0],
-        'leave_start_date' :ent[1].strftime('%a, %d %b'),
-        'leave_end_date' :ent[2].strftime('%a, %d %b'),
+        'leave_start_date' :ent[1].__str__(),
+        'leave_end_date' :ent[2].__str__(),
         'leave-type' :ent[3],
         'status' :ent[4]})
 
     details.append(dict_entrys)
 
     return details
+
+def update_employee_leave(username,leave_start,leave_end,leave_type):
+    cur = init()
+    try:
+        cur.execute(f"""Update leave_entry SET
+                    [leave_start_date] = {leave_start}
+                    ,[leave_end_date] = {leave_end}
+                    ,[leave_type] = {leave_type}
+                    WHERE username = {username}""")
+    except Exception as e:
+        return 'Failed',e
+    return 'Success','n/a'
