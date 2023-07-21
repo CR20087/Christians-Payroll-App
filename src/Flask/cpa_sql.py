@@ -613,3 +613,21 @@ def update_employee_leave(username,leave_start,leave_end,leave_type):
     except Exception as e:
         return 'Failed',e
     return 'Success','n/a'
+
+def new_employee_leave_entry(username,leave_start,leave_end,leave_type):
+    cur = init()
+    try:
+        cur.execute(f"""INSERT INTO leave_entry (
+                    [username]
+                    ,[leave_start_date]
+                    ,[leave_end_date]
+                    ,[leave_type] 
+                    ) VALUES (
+                    {username}
+                    ,{leave_start}
+                    ,{leave_end}
+                    ,{leave_type}
+                    )""")
+    except Exception as e:
+        return 'Failed',e
+    return 'Success','n/a'
