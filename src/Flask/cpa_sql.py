@@ -676,7 +676,7 @@ def manager_employee_leave(username):
     response = []
 
     for entry in entrys:
-        dict_entry = {}
+        dict_entry = {'username' : entry[0],'leave_entry_id' : entry[1],'leave_start_date' : entry[2],'leave_end_date' : entry[3],'leave_type' : entry[4],'status' : entry[5]}
         response.append(dict_entry)
 
 
