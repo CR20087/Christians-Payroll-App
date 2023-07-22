@@ -659,3 +659,49 @@ def new_employee_leave_entry(username,leave_start,leave_end,leave_type):
         cur.close()
         return 'Failed',e
     return 'Success','n/a'
+
+def manager_employee_leave(username):
+    cur = init()
+    cur.execute(f"""SELECT [username]
+      ,[leave_entry_id]
+      ,[leave_start_date]
+      ,[leave_end_date]
+      ,[leave_type]
+      ,[status]
+    FROM [dbo].[leave_entry]
+    INNER JOIN employee_manager ON leave_entry.username = employee_manager.employee
+    WHERE manager = {username} AND leave_end_date >= CURRENT_TIMESTAMP""")
+
+    entrys = cur.fetchall()
+    response = []
+
+    for entry in entrys:
+        dict_entry = {}
+        response.append(dict_entry)
+
+
+    return response
+
+def manager_employee_leave_accept(entry_id):
+    cur = init()
+    try:
+        cur.execute(f"""UPDATE leave_entry SET status = 'Approved' 
+                    WHERE timesheet_entry_id = {entry_id}""")
+        cur.commit()
+        cur.close()
+    except Exception as e:
+        cur.close()
+        return 'Failed',e
+    return 'Success','n/a'
+
+def manager_employee_leave_decline(entry_id):
+    cur = init()
+    try:
+        cur.execute(f"""UPDATE leave_entry SET status = 'Declined' 
+                    WHERE timesheet_entry_id = {entry_id}""")
+        cur.commit()
+        cur.close()
+    except Exception as e:
+        cur.close()
+        return 'Failed',e
+    return 'Success','n/a'

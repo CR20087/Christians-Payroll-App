@@ -228,6 +228,24 @@ def new_employee_leave_entry(userName: str,leave_start_date: str,leave_end_date:
 
     return jsonify(success = str(result[0]),error = str(result[1]))
 
+@app.route("/manager/employee-leave/<string:userName>")
+def manager_employee_leave(userName: str):
+    result = cpa_sql.manager_employee_leave(userName)
+
+    return jsonify(results=result)
+
+@app.route("/manager/employee-leave/decline/<string:leave_entry_id>")
+def manager_employee_leave_decline(leave_entry_id: str):
+    result = cpa_sql.manager_employee_leave_decline(leave_entry_id)
+
+    return jsonify(success = str(result[0]),error = str(result[1]))
+
+@app.route("/manager/employee-leave/accept/<string:leave_entry_id>")
+def manager_employee_leave_accept(leave_entry_id: str):
+    result = cpa_sql.manager_employee_leave_accept(leave_entry_id)
+
+    return jsonify(success = str(result[0]),error = str(result[1]))
+
 
 if __name__ == "__main__":
     app.run(debug=True)
