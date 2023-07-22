@@ -20,10 +20,16 @@ display: grid;
 `
 
 const Container = styled.div`
+.css-80pr5n-MuiPaper-root {width:70vw;}
 display: flex;
 height:fit-content;
 justify-self:center;
 padding-top: 5rem;
+
+.title-details {
+  text-decoration: underline wavy;
+  font-size: 17px;
+}
 `
 
 
