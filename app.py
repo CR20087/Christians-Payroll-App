@@ -204,8 +204,8 @@ def new_timesheet_entry(username: str,date: str,start_time: str,end_time: str,un
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 
-@app.route("/manager/employee-timesheets/<string:userName>")
-def get_manager_timesheets(userName: str):
+@app.route("/manager/timesheets/<string:userName>")
+def get_employee_timesheets(userName: str):
     result = cpa_sql.get_employee_timesheets(userName)
 
     return jsonify(results = result)
