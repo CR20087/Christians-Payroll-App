@@ -676,7 +676,7 @@ def manager_employee_leave(username):
     response = []
 
     for entry in entrys:
-        dict_entry = {'username' : entry[0],'leave_entry_id' : entry[1],'leave_start_date' : entry[2],'leave_end_date' : entry[3],'leave_type' : entry[4],'status' : entry[5]}
+        dict_entry = {'username' : entry[0],'leave_entry_id' : entry[1],'leave_start_date' : entry[2].strftime('%a, %d %b'),'leave_end_date' : entry[3].strftime('%a, %d %b'),'leave_type' : entry[4],'status' : entry[5]}
         response.append(dict_entry)
 
 
@@ -686,7 +686,7 @@ def manager_employee_leave_accept(entry_id):
     cur = init()
     try:
         cur.execute(f"""UPDATE leave_entry SET status = 'Approved' 
-                    WHERE timesheet_entry_id = {entry_id}""")
+                    WHERE leave_entry_id = {entry_id}""")
         cur.commit()
         cur.close()
     except Exception as e:
@@ -698,7 +698,7 @@ def manager_employee_leave_decline(entry_id):
     cur = init()
     try:
         cur.execute(f"""UPDATE leave_entry SET status = 'Declined' 
-                    WHERE timesheet_entry_id = {entry_id}""")
+                    WHERE leave_entry_id = {entry_id}""")
         cur.commit()
         cur.close()
     except Exception as e:
