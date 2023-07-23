@@ -121,9 +121,9 @@ def get_manager_employees(userName: str):
 
     return jsonify(results = response)
 
-@app.route("/manager/employee-list/update/<string:bank_account>/<string:benefits>/<string:child_support>/<string:email>/<string:final_pay>/<string:first_name>/<string:kiwisaver>/<string:last_name>/<string:one_off_deduction>/<string:pay_rate>/<string:phone>/<string:student_loan>/<string:tax_credit>/<string:tax_rate>/<string:username>/<string:username_old>/<string:weekly_allowance>/<string:weekly_allowance_nontax>")
-def update_manager_employee_list(bank_account: str,benefits: str,child_support: str,email: str,final_pay: str,first_name: str,kiwisaver: str,last_name: str,one_off_deduction: str,pay_rate: str,phone: str,student_loan: str,tax_credit: str,tax_rate: str,username: str,username_old: str,weekly_allowance: str,weekly_allowance_nontax: str):
-    result = cpa_sql.update_manager_employee_list(bank_account,benefits,child_support,email,final_pay,first_name,kiwisaver,last_name,one_off_deduction,pay_rate,phone,student_loan,tax_credit,tax_rate,username,username_old,weekly_allowance,weekly_allowance_nontax)
+@app.route("/manager/employee-list/update/<string:bank_account>/<string:benefits>/<string:child_support>/<string:email>/<string:final_pay>/<string:first_name>/<string:kiwisaver>/<string:last_name>/<string:one_off_deduction>/<string:pay_rate>/<string:phone>/<string:student_loan>/<string:tax_credit>/<string:tax_rate>/<string:username>/<string:username_old>/<string:weekly_allowance>/<string:weekly_allowance_nontax>/<string:ird_number>/<string:tax-code>")
+def update_manager_employee_list(bank_account: str,benefits: str,child_support: str,email: str,final_pay: str,first_name: str,kiwisaver: str,last_name: str,one_off_deduction: str,pay_rate: str,phone: str,student_loan: str,tax_credit: str,tax_rate: str,username: str,username_old: str,weekly_allowance: str,weekly_allowance_nontax: str,ird_number: str,tax_code: str):
+    result = cpa_sql.update_manager_employee_list(bank_account,benefits,child_support,email,final_pay,first_name,kiwisaver,last_name,one_off_deduction,pay_rate,phone,student_loan,tax_credit,tax_rate,username,username_old,weekly_allowance,weekly_allowance_nontax,ird_number,tax_code)
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 

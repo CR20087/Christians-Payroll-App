@@ -220,6 +220,8 @@ def get_manager_employees(username):
         ,[email]
       ,[pay_rate]
       ,[bank_account]
+      ,[ird_number]
+      ,[tax_code]
       ,[kiwisaver]
       ,[student_loan]
       ,[one_off_deduction]
@@ -239,7 +241,7 @@ def get_manager_employees(username):
 
     return result
 
-def update_manager_employee_list(bank_account,benefits,child_support,email,final_pay,first_name,kiwisaver,last_name,one_off_deduction,pay_rate,phone,student_loan,tax_credit,tax_rate,username,username_old,weekly_allowance,weekly_allowance_nontax):
+def update_manager_employee_list(bank_account,benefits,child_support,email,final_pay,first_name,kiwisaver,last_name,one_off_deduction,pay_rate,phone,student_loan,tax_credit,tax_rate,username,username_old,weekly_allowance,weekly_allowance_nontax,ird_number,tax_code):
     cur = init()
     try:
         cur.execute(f"""Update login
@@ -258,6 +260,8 @@ def update_manager_employee_list(bank_account,benefits,child_support,email,final
                     ,tax_rate = {tax_rate}
                     ,weekly_allowance = {weekly_allowance}
                     ,weekly_allowance_nontax = {weekly_allowance_nontax}
+                    ,ird_number = {ird_number}
+                    ,tax_code = {tax_code}
                     WHERE username = {username_old}""")
         cur.execute(f"""Update employee
                     SET email = {email}
@@ -651,7 +655,7 @@ def pay_run_info(username):
     response = []
 
     for entry in info:
-        dict_entry = {'name' : entry[0],'pay_period_start' : entry[1].__str__(),'pay_period_end' : entry[2].__str__(),'total_hours' : str(entry[3]),'pay_rate' : str(entry[4]),'leave_taken' : entry[5],'leave_days' : entry[6],'gross_pay' : str(entry[7]),'one_off-deduction' : str(entry[8]),'total_deductions' : str(entry[9]),'net_pay' : str(entry[10])}
+        dict_entry = {'name' : entry[0],'pay_period_start' : entry[1].__str__(),'pay_period_end' : entry[2].__str__(),'total_hours' : str(entry[3]),'pay_rate' : str(entry[4]),'leave_taken' : entry[5],'leave_days' : entry[6],'gross_pay' : str(entry[7]),'one_off_deduction' : str(entry[8]),'total_deductions' : str(entry[9]),'net_pay' : str(entry[10])}
         response.append(dict_entry)
 
 
