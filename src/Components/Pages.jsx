@@ -14,6 +14,7 @@ import EmployeeView from '../Pages/ManagerEmployeeView';
 import EmployeeLeave from '../Pages/EmployeeLeave';
 import ManagerTimesheetView from '../Pages/ManagerTimesheetView'
 import ManagerLeaveView from '../Pages/ManagerLeaveView'
+import ManagerPayRun from '../Pages/ManagerPayRun'
 
 function Pages() {
   const location = useLocation();
@@ -34,6 +35,7 @@ function Pages() {
         <Route path="/Portal/employee/:userID/leave" element={<EmployeeLeave/>} />
         <Route path="/Portal/manager/:userID/employee-timesheets" element={<ManagerTimesheetView/>} />
         <Route path="/Portal/manager/:userID/leave" element={<ManagerLeaveView/>} />
+        <Route path="/Portal/manager/:userID/pay-run" element={<ManagerPayRun/>} />
     </Routes>
   );
 }
