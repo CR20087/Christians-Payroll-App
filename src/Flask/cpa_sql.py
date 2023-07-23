@@ -648,6 +648,7 @@ def pay_run_info(username):
       ,[one_off_deduction]
       ,[total_deductions]
       ,[net_pay]
+      ,[username]
     From pay_run_info
     WHERE manager = {username}""")
 
@@ -655,7 +656,7 @@ def pay_run_info(username):
     response = []
 
     for entry in info:
-        dict_entry = {'name' : entry[0],'pay_period_start' : entry[1].__str__(),'pay_period_end' : entry[2].__str__(),'total_hours' : str(entry[3]),'pay_rate' : str(entry[4]),'leave_taken' : entry[5],'leave_days' : entry[6],'gross_pay' : str(entry[7]),'one_off_deduction' : str(entry[8]),'total_deductions' : str(entry[9]),'net_pay' : str(entry[10])}
+        dict_entry = {'name' : entry[0],'pay_period_start' : entry[1].__str__(),'pay_period_end' : entry[2].__str__(),'total_hours' : str(entry[3]),'pay_rate' : str(entry[4]),'leave_taken' : entry[5],'leave_days' : entry[6],'gross_pay' : str(entry[7]),'one_off_deduction' : str(entry[8]),'total_deductions' : str(entry[9]),'net_pay' : str(entry[10]),'username' : entry[11]}
         response.append(dict_entry)
 
 
