@@ -106,6 +106,22 @@ function EmployeeTable() {
         type: 'number'
       },
       {
+        accessorKey: 'ird_number',
+        header: 'IRD Number',
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...validateCheck(cell),
+        }),
+        type: 'number'
+      },
+      {
+        accessorKey: 'tax_code',
+        header: 'Tax Code',
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...validateCheck(cell),
+        }),
+        type: 'number'
+      },
+      {
         accessorKey: 'kiwisaver',
         header: 'Kiwisaver',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
@@ -226,8 +242,16 @@ function EmployeeTable() {
         type: 'number'
       },
       {
-        accessorKey: 'kiwisaver',
-        header: 'Kiwisaver',
+        accessorKey: 'ird_number',
+        header: 'IRD Number',
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...validateCheck(cell),
+        }),
+        type: 'number'
+      },
+      {
+        accessorKey: 'tax_code',
+        header: 'Tax Code',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
@@ -332,7 +356,7 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
   //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
   console.log(values)
   if (!Object.keys(validationErrors).length) {
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/update/'${values.bank_account}'/'${values.benefits}'/'${values.child_support}'/'${values.email}'/'${values.final_pay}'/'${values.first_name}'/'${values.kiwisaver}'/'${values.last_name}'/'${values.one_off_deduction}'/'${values.pay_rate}'/'${values.phone}'/'${values.student_loan}'/'${values.tax_credit}'/'${values.tax_rate}'/'${values.username}'/'${row.original.username}'/'${values.weekly_allowance}'/'${values.weekly_allowance_nontax}'`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/update/'${values.bank_account}'/'${values.benefits}'/'${values.child_support}'/'${values.email}'/'${values.final_pay}'/'${values.first_name}'/'${values.kiwisaver}'/'${values.last_name}'/'${values.one_off_deduction}'/'${values.pay_rate}'/'${values.phone}'/'${values.student_loan}'/'${values.tax_credit}'/'${values.tax_rate}'/'${values.username}'/'${row.original.username}'/'${values.weekly_allowance}'/'${values.weekly_allowance_nontax}'/'${values.ird_number}'/'${values.tax_code}'`)
   const data = await res.json()
 
   if (data.success === 'Success') {
