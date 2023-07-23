@@ -246,6 +246,11 @@ def manager_employee_leave_accept(leave_entry_id: str):
 
     return jsonify(success = str(result[0]),error = str(result[1]))
 
+@app.route("/manager/pay-run/<string:userName>")
+def pay_run_info(userName: str):
+    result = cpa_sql.pay_run_info(userName)
+
+    return jsonify(results=result)
 
 if __name__ == "__main__":
     app.run(debug=True)
