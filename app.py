@@ -75,18 +75,20 @@ def get_manager_employees(userName: str):
             self.email = employee[4]
             self.pay_rate = employee[5].__str__()
             self.bank_account = employee[6]
-            self.kiwisaver = employee[7].__str__()
-            self.student_loan = employee[8].__str__()
-            self.one_off_deduction = employee[9].__str__()
-            self.tax_rate = employee[10].__str__()
-            self.final_pay = employee[11].__str__()
-            self.weekly_allowance = employee[12].__str__()
-            self.weekly_allowance_nontax = employee[13].__str__()
-            self.year_to_date = employee[14].__str__()
-            self.child_support = employee[15].__str__()
-            self.tax_credit = employee[16].__str__()
-            self.benefits = employee[17].__str__()
-            self.created_on = employee[18].__str__()
+            self.ird_number = employee[7]
+            self.tax_code = employee[8]
+            self.kiwisaver = employee[9].__str__()
+            self.student_loan = employee[10].__str__()
+            self.one_off_deduction = employee[11].__str__()
+            self.tax_rate = employee[12].__str__()
+            self.final_pay = employee[13].__str__()
+            self.weekly_allowance = employee[14].__str__()
+            self.weekly_allowance_nontax = employee[15].__str__()
+            self.year_to_date = employee[16].__str__()
+            self.child_support = employee[17].__str__()
+            self.tax_credit = employee[18].__str__()
+            self.benefits = employee[19].__str__()
+            self.created_on = employee[20].__str__()
         def string(self):
             return {
                 'username':self.username,
@@ -96,6 +98,8 @@ def get_manager_employees(userName: str):
                 'email':self.email,
                 'pay_rate':self.pay_rate,
                 'bank_account':self.bank_account,
+                'ird_number':self.ird_number,
+                'tax_code':self.tax_code,
                 'kiwisaver':self.kiwisaver,
                 'student_loan':self.student_loan,
                 'one_off_deduction':self.one_off_deduction,
@@ -121,7 +125,7 @@ def get_manager_employees(userName: str):
 
     return jsonify(results = response)
 
-@app.route("/manager/employee-list/update/<string:bank_account>/<string:benefits>/<string:child_support>/<string:email>/<string:final_pay>/<string:first_name>/<string:kiwisaver>/<string:last_name>/<string:one_off_deduction>/<string:pay_rate>/<string:phone>/<string:student_loan>/<string:tax_credit>/<string:tax_rate>/<string:username>/<string:username_old>/<string:weekly_allowance>/<string:weekly_allowance_nontax>/<string:ird_number>/<string:tax-code>")
+@app.route("/manager/employee-list/update/<string:bank_account>/<string:benefits>/<string:child_support>/<string:email>/<string:final_pay>/<string:first_name>/<string:kiwisaver>/<string:last_name>/<string:one_off_deduction>/<string:pay_rate>/<string:phone>/<string:student_loan>/<string:tax_credit>/<string:tax_rate>/<string:username>/<string:username_old>/<string:weekly_allowance>/<string:weekly_allowance_nontax>/<string:ird_number>/<string:tax_code>")
 def update_manager_employee_list(bank_account: str,benefits: str,child_support: str,email: str,final_pay: str,first_name: str,kiwisaver: str,last_name: str,one_off_deduction: str,pay_rate: str,phone: str,student_loan: str,tax_credit: str,tax_rate: str,username: str,username_old: str,weekly_allowance: str,weekly_allowance_nontax: str,ird_number: str,tax_code: str):
     result = cpa_sql.update_manager_employee_list(bank_account,benefits,child_support,email,final_pay,first_name,kiwisaver,last_name,one_off_deduction,pay_rate,phone,student_loan,tax_credit,tax_rate,username,username_old,weekly_allowance,weekly_allowance_nontax,ird_number,tax_code)
 
