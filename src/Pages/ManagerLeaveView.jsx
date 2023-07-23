@@ -2,6 +2,7 @@ import React from 'react'
 import LeaveView from '../Components/ManagerLeaveView.tsx'
 import SideBar from "../Components/Sidebar"
 import styled from 'styled-components'
+import Footer from '../Components/Footer.jsx'
 function ManagerLeave() {
 
     return (
@@ -10,6 +11,7 @@ function ManagerLeave() {
             <Container>
                 <LeaveView/>
             </Container>
+            <Footer/>
         </Page>
       )
     }

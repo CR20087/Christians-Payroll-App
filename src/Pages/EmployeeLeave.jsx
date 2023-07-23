@@ -2,6 +2,7 @@ import React from 'react'
 import Leave from '../Components/Leave.tsx'
 import SideBar from "../Components/Sidebar"
 import styled from 'styled-components'
+import Footer from '../Components/Footer.jsx'
 function EmployeeLeave() {
 
     return (
@@ -10,6 +11,7 @@ function EmployeeLeave() {
             <Container>
                 <Leave/>
             </Container>
+            <Footer/>
         </Page>
       )
     }

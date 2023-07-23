@@ -2,6 +2,7 @@ import React from 'react'
 import Timesheet from '../Components/Timesheet.tsx'
 import SideBar from "../Components/Sidebar"
 import styled from 'styled-components'
+import Footer from '../Components/Footer.jsx'
 function EmployeeTimesheets() {
 
     return (
@@ -10,6 +11,7 @@ function EmployeeTimesheets() {
             <Container>
                 <Timesheet/>
             </Container>
+            <Footer/>
         </Page>
       )
     }
