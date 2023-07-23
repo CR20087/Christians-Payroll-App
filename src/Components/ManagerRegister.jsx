@@ -56,7 +56,7 @@ function ManagerRegisterForm() {
       setIsLoading(true)
 
       const res = await 
-        fetch(`https://cpa-flask.azurewebsites.net/registerAccount/manager/'${sessionStorage.getItem('userName')}'/'${sessionStorage.getItem('password')}'/'${sessionStorage.getItem('firstName')}'/'${sessionStorage.getItem('lastName')}'/'${sessionStorage.getItem('email')}'/'${sessionStorage.getItem('address')}'/'${sessionStorage.getItem('suburb')}'/'${sessionStorage.getItem('businessName')}'/'${sessionStorage.getItem('phone')}'/'${sessionStorage.getItem('entityName')}/'${sessionStorage.getItem('contactMethod')}''`)
+        fetch(`https://cpa-flask.azurewebsites.net/registerAccount/manager/'${sessionStorage.getItem('userName')}'/'${sessionStorage.getItem('password')}'/'${sessionStorage.getItem('firstName')}'/'${sessionStorage.getItem('lastName')}'/'${sessionStorage.getItem('email')}'/'${sessionStorage.getItem('address')}'/'${sessionStorage.getItem('suburb')}'/'${sessionStorage.getItem('businessName')}'/'${sessionStorage.getItem('phone')}'/'${sessionStorage.getItem('entityName')}'/'${sessionStorage.getItem('contactMethod')}'`)
       const data = await res.json()
       console.log(data)
 
