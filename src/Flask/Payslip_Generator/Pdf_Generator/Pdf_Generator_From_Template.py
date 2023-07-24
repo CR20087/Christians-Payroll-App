@@ -114,7 +114,7 @@ def pdf_generator_from_template():
     def generate_pdf(context_data):
         # Load the HTML template using Jinja2
         template_dir = os.path.join(os.getcwd(), 'src','Flask','templates')
-        print(template_dir)
+
         env = Environment(loader=FileSystemLoader(template_dir))
         template = env.get_template('PaySliptemplate.html')
 
