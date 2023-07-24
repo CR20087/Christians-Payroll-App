@@ -128,7 +128,7 @@ def pdf_generator_from_template():
 
         # Generate the PDF using pdfkit
         pdf_file = 'output.pdf'
-        pdfkit.from_file(temp_html_file, pdf_file)
+        pdfkit.from_file(temp_html_file, pdf_file, options={"enable-local-file-access": ""}, css='./src/Flask/static/PaySliptemplate.css')
 
         # Clean up temporary HTML file
         os.remove(temp_html_file)
