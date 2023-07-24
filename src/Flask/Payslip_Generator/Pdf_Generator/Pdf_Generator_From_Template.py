@@ -1,7 +1,8 @@
 def pdf_generator_from_template():
-    import pdfkit
     from datetime import datetime
-    from flask import make_response,render_template
+    import os
+    import pdfkit
+    from jinja2 import Environment, FileSystemLoader
 
     # Business details
     class Entity():
@@ -109,28 +110,30 @@ def pdf_generator_from_template():
                  'leave_insert':leave.html(True) }
     
 #    Render the template with the context variables
-    rendered_template = render_template('PaySliptemplate.html', **context)
 
-    print(rendered_template)
+    def generate_pdf(context_data):
+        # Load the HTML template using Jinja2
+        template_dir = os.path.join(os.getcwd(), 'src','Flask','templates')
+        print(template_dir)
+        env = Environment(loader=FileSystemLoader(template_dir))
+        template = env.get_template('PaySliptemplate.html')
 
-    options = {
-    'quiet': '',
-    'page-size': 'Letter',
-    'margin-top': '0mm',
-    'margin-right': '0mm',
-    'margin-bottom': '0mm',
-    'margin-left': '0mm',
-}
+        # Render the HTML template with context data
+        html_content = template.render(context=context_data)
 
-    # Generate the PDF using wkhtmltopdf and pdfkit
-    pdf = pdfkit.from_string(rendered_template, False, options=options)
+        # Save the rendered HTML to a temporary file
+        temp_html_file = 'temp.html'
+        with open(temp_html_file, 'w', encoding='utf-8') as f:
+            f.write(html_content)
 
-    # Create a response with the PDF file
-    response = make_response(pdf)
-    response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'attachment; filename=output.pdf'
+        # Generate the PDF using pdfkit
+        pdf_file = 'output.pdf'
+        pdfkit.from_file(temp_html_file, pdf_file)
 
-    print(response)
+        # Clean up temporary HTML file
+        os.remove(temp_html_file)
+    
+    generate_pdf(context)
    
 
 if __name__=='__main__':
