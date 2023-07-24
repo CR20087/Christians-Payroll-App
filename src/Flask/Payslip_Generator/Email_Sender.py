@@ -4,6 +4,7 @@ def email_sender(username,recipient,manager):
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
     import smtplib
+    import os
 
 
     server = smtplib.SMTP('smtp.gmail.com', 587)
@@ -31,7 +32,7 @@ def email_sender(username,recipient,manager):
 
     msg.attach(MIMEText(message, "plain"))
 
-    with open('src\Flask\Payslip_Generator\Pdf_Generator\Generated_PDF.pdf', "rb") as f:
+    with open(os.getcwd()+'\Pdf_Generator\Generated_PDF.pdf', "rb") as f:
         attach = MIMEApplication(f.read(),_subtype="pdf")
         attach.add_header('Content-Disposition','attachment',filename=str(f'PAYSLIP {username} {datetime.datetime.strftime(datetime.datetime.today(),"%d%b%Y")}.pdf'))
         msg.attach(attach)
