@@ -200,7 +200,7 @@ const DeleteAccount = async (table) => {
     const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/delete/'${stringF2}'`)
     const data = await res.json()
 
-    if (data.success === 'true') {
+    if (data.success === 'Success') {
       alert(`Selected rows were deleted successfully`)
       setChange(true)}
     else {
