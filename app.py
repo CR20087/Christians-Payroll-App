@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template
 from src.Flask.Payslip_Generator import Payslip_Script
 from src.Flask import cpa_sql
+import random
 
 app = Flask(__name__, template_folder='src/Flask/templates')
 app.config['WKHTMLTOPDF_PATH'] = '/usr/bin/wkhtmltopdf' 
@@ -256,5 +257,29 @@ def pay_run_info(userName: str):
 
     return jsonify(results=result)
 
+@app.route("/manager/pay-run/execute/all/<string:userName>")
+def pay_run_execute_all(userName: str):
+    result = cpa_sql.pay_run_execute_all(userName)
+
+    if result[0] == 'Failed':
+
+        return jsonify(success = str(result[0]),error = str(result[1]))
+
+    else:
+        for id in result[0]:
+            Payslip_Script.Payslip_Script(id)
+
+        return jsonify(success = 'Success',error = 'n/a')\
+        
+@app.route("/manager/employee-list/new/<string:bank_account>/<string:benefits>/<string:child_support>/<string:final_pay>/<string:kiwisaver>/<string:one_off_deduction>/<string:pay_rate>/<string:student_loan>/<string:tax_credit>/<string:tax_rate>/<string:username>/<string:weekly_allowance>/<string:weekly_allowance_nontax>/<string:ird_number>/<string:tax_code>")
+def new_manager_employee(bank_account: str,benefits: str,child_support: str,final_pay: str,kiwisaver: str,one_off_deduction: str,pay_rate: str,student_loan: str,tax_credit: str,tax_rate: str,username: str,weekly_allowance: str,weekly_allowance_nontax: str,ird_number: str,tax_code: str):
+    string= list('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+    random.shuffle(string)
+    password_string = ''.join(string)[:9]
+
+    result = cpa_sql.new_manager_employee(password_string,bank_account,benefits,child_support,final_pay,kiwisaver,one_off_deduction,pay_rate,student_loan,tax_credit,tax_rate,username,weekly_allowance,weekly_allowance_nontax,ird_number,tax_code)
+
+    return jsonify(success=str(result[0]),error=str(result[1]),password=str(result[2]))
+    
 if __name__ == "__main__":
     app.run(debug=True)
