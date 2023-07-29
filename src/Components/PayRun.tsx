@@ -109,29 +109,40 @@ const handleAddStatutoryHoliday = async (values) => {
 
 const PaySelectedEmployees = async (table) => {
 
-  const stringF1 = `${table.getSelectedRowModel().rows.map((row) => (`${row.original.username}`))}`
+  
+  if (window.confirm(`Are you sure you want execute payrun(s) for:${table.getSelectedRowModel().rows.map((row) => (`\n\t${row.original.name}\nPeriod ending ${row.original.pay_period_end}`))}`)) {
 
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/execute/${stringF1}`)
-  const data = await res.json()
+    const selected_array = table.getSelectedRowModel().rows.map((row) => (`${row.original.username},${row.original.pay_period_end}`))
+    const res = await fetch('https://cpa-flask.azurewebsites.net/manager/pay-run/execute/selected',{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(selected_array)
+    })
+    const data = await res.json()
 
-  if (data.success === 'Success') {
-    alert(`Selected rows were deleted successfully`)
-    setChange(true)}
-  else {
-    alert(`An error occured.\n\n\n\n${data.error}`) }
+    if (data.success === 'Success') {
+      alert(`Selected rows were deleted successfully`)
+      setChange(true)}
+    else {
+      alert(`An error occured.\n\n\n\n${data.error}`) }
+    }
   }
 
 const PayAllEmployees = async (table) => {
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/execute/all/${params.userID}`)
-  const data = await res.json()
 
-  if (data.success === 'Success') {
-    alert(`All employees were paid successfully`)
-    setChange(true)}
-  else {
-    alert(`An error occured.\n\n\n\n${data.error}`) }
+  if (window.confirm(`Are you sure you want execute payrun(s) for:${table.getRowModel().rows.map((row) => (`\n\t${row.original.name}\nPeriod ending ${row.original.pay_period_end}`))}`)) {
+    const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/execute/all/${params.userID}`)
+    const data = await res.json()
+
+    if (data.success === 'Success') {
+      alert(`All employees were paid successfully`)
+      setChange(true)}
+    else {
+      alert(`An error occured.\n\n\n\n${data.error}`) }
+    }
   }
-
 
 const CreateNewEntry = ({ open, columns, onClose, onSubmit }) => {
   const [values, setValues] = useState(() =>
