@@ -95,11 +95,42 @@ function PayTable() {
 
 },[change])
 
-const handleAddStatutoryHoliday = async () => {}
+const handleAddStatutoryHoliday = async (values) => {
 
-const PayAllEmployees = async () => {}
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/add-stat/'${values.username}'/'${values.date}'/'${values.stat_length}'`)
+  const data = await res.json()
 
-const PaySelectedEmployees = async () => {}
+  if (data.success === 'Success') {
+    alert(`Selected rows were deleted successfully`)
+    setChange(true)}
+  else {
+    alert(`An error occured.\n\n\n\n${data.error}`) }
+  }
+
+const PaySelectedEmployees = async (table) => {
+
+  const stringF1 = `${table.getSelectedRowModel().rows.map((row) => (`${row.original.username}`))}`
+
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/execute/${stringF1}`)
+  const data = await res.json()
+
+  if (data.success === 'Success') {
+    alert(`Selected rows were deleted successfully`)
+    setChange(true)}
+  else {
+    alert(`An error occured.\n\n\n\n${data.error}`) }
+  }
+
+const PayAllEmployees = async (table) => {
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/execute/all/${params.userID}`)
+  const data = await res.json()
+
+  if (data.success === 'Success') {
+    alert(`All employees were paid successfully`)
+    setChange(true)}
+  else {
+    alert(`An error occured.\n\n\n\n${data.error}`) }
+  }
 
 
 const CreateNewEntry = ({ open, columns, onClose, onSubmit }) => {
@@ -119,7 +150,7 @@ const CreateNewEntry = ({ open, columns, onClose, onSubmit }) => {
   return (
     <div className={String(open)}>
       <div className={'mui-box-container-form'} >
-        <DialogTitle textAlign="center">New Timesheet Entry</DialogTitle>
+        <DialogTitle textAlign="center">New Statutory Holiday</DialogTitle>
           <DialogContent>
           <form onSubmit={(e) => e.preventDefault()}>
             <Stack
@@ -146,6 +177,12 @@ const CreateNewEntry = ({ open, columns, onClose, onSubmit }) => {
                     <option value="">Username</option>
                     {usernameArray.map((username) => (<option key={username} value={username}>{username}</option>))}
                 </select>
+                <select name='stat_length' onChange={(e) =>
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }>
+                  <option value="">Time length</option>
+                  {Times.map((time) => (<option key={time} value={time}>{time}</option>))}
+              </select>
             </Stack>
           </form>
           <div className='buttons-for-form'>
@@ -170,16 +207,17 @@ const CreateNewEntry = ({ open, columns, onClose, onSubmit }) => {
       initialState={{ columnPinning: { left: ['name']} }}
       enablePinning
       enableRowSelection
-      renderTopToolbarCustomActions={() => (
+      renderTopToolbarCustomActions={({table}) => {
+        return(
         <>
   <Button
     color="secondary"
-    onClick={() => PayAllEmployees()}
+    onClick={() => PayAllEmployees(table)}
     variant="contained"
   >Pay All</Button>
   <Button
     color="secondary"
-    onClick={() => PaySelectedEmployees()}
+    onClick={() => PaySelectedEmployees(table)}
     variant="contained"
   >Pay selected</Button>
   <Button
@@ -188,7 +226,7 @@ const CreateNewEntry = ({ open, columns, onClose, onSubmit }) => {
     variant="contained"
   >Add Statutory holiday</Button>
     </>
-    )}
+  )}}
   />
   <CreateNewEntry
       columns={columns2}

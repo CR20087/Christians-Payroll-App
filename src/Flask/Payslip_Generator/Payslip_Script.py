@@ -1,35 +1,31 @@
-def Payslip_Script(username):
+def Payslip_Script(id):
     from . import Email_Sender  
     from .Pdf_Generator import Pdf_Generator_From_Template
     from .. import cpa_sql
 
-    #Payslip Generate
-
-    Pdf_Generator_From_Template.pdf_generator_from_template()
-
     #get the data
+    payslip_data = cpa_sql.get_payslip_data(id)
+    email_details = cpa_sql.email_payslip_details(payslip_data[0])
 
-    results = cpa_sql.email_payslip_details(username)
+    # Payslip Generater
+
+    Pdf_Generator_From_Template.pdf_generator_from_template(payslip_data)
 
     # map the data
 
     class recipient():
         def __init__(self):
-            self.email = results[0]
-            self.name = results[1]
+            self.email = email_details[0]
+            self.name = email_details[1]
     class manager():
         def __init__(self):
-            self.name = results[2]
-            self.contact = results[3]
+            self.name = email_details[2]
+            self.contact = email_details[3]
 
     #send the email
     recipient=recipient()
     manager=manager()
 
-    Email_Sender.email_sender(username,recipient,manager)
-    return 'Success'
-    
-     
+    Email_Sender.email_sender(payslip_data[0],payslip_data[18],recipient,manager)   
 
-if __name__ == "__main__":
-    Payslip_Script('employee')
+    cpa_sql.exit_payrun_update(id)
