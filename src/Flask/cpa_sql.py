@@ -883,19 +883,27 @@ def new_manager_employee(password,bank_account,benefits,child_support,final_pay,
 
 def add_new_stat_day(username,date,stat_length):
     cur = init()
-    cur.execute(f"""INSERT INTO leave_entry([username]
+    try:
+        cur.execute(f"""INSERT INTO leave_entry(
+        [username]
       ,[leave_start_date]
       ,[leave_end_date]
       ,[leave_type]
       ,[stat_hours]
       ,[status] ) VALUES (
-                ,{username}
+                {username}
                 ,{date}
                 ,{date}
                 ,'Statutory Holiday'
                 ,{stat_length}
                 ,'Approved'
       )""")
+        cur.commit()
+        cur.close()
+    except Exception as e:
+        cur.close()
+        return 'Failed',e
+    return 'Success','n/a' 
     
 def pay_run_execute_selected(data_array):
     cur = init()
