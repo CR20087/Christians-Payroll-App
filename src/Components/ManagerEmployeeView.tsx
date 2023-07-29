@@ -266,6 +266,14 @@ function EmployeeTable() {
         type: 'number'
       },
       {
+        accessorKey: 'kiwisaver',
+        header: 'Kiwisaver',
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...validateCheck(cell),
+        }),
+        type: 'number'
+      },
+      {
         accessorKey: 'one_off_deduction',
         header: 'One off deduction',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
@@ -368,10 +376,17 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
   exitEditingMode(); 
   }
 };
-const handleCreateNewRow = (values) => {
-  if (!Object.keys(validationErrors).length) {
+const handleCreateNewRow = async (values) => {
   console.log(values)
-  }
+
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/new/'${values.bank_account}'/'${values.benefits}'/'${values.child_support}'/'${values.final_pay}'/'${values.kiwisaver}'/'${values.one_off_deduction}'/'${values.pay_rate}'/'${values.student_loan}'/'${values.tax_credit}'/'${values.tax_rate}'/'${values.username}'/'${values.weekly_allowance}'/'${values.weekly_allowance_nontax}'/'${values.ird_number}'/'${values.tax_code}'/'${params.userID}'`)
+  const data = await res.json()
+
+  if (data.success === 'Success') {
+    alert(`Employee was created successfully\n\tUsername: '${values.username}'\n\tPassword: '${data.password}'`)
+    setChange(true)}
+    else {
+      alert(`An error occured.\n\n\n\n${data.error}`) }
 };
 const DeleteAccount = async (row) => {
   console.log(row)
