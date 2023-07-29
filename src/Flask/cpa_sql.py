@@ -926,7 +926,7 @@ def pay_run_execute_selected(data_array):
         ,[year_to_date]
         ,[child_support]
         ,[tax_credit]
-        ,[benefits] FROM [dbo].[pay_run_info] WHERE username = '{i[0]}' AND pay_period_end = '{i[1]}'""")
+        ,[benefits] FROM [dbo].[pay_run_info] WHERE username = '{i[0]}' AND WeekEndDate = '{i[1]}'""")
             
             payslip_data = cur.fetchall()
             print(payslip_data)
