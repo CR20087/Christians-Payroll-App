@@ -289,11 +289,9 @@ def add_new_stat_day(username: str,date: str,stat_length:str):
 
 @app.route("/manager/pay-run/execute/selected", methods=['POST'])
 def pay_run_execute_selected():
-    data_array = Request.get_json()
-    data_array2 = request.get_json()
+    data_array = request.get_json()
     print(data_array)
-    print('2 ')
-    print(data_array2)
+    
     list_of_tuples = [tuple(data.split(',')) for data in data_array]
     print(list_of_tuples)
     result = cpa_sql.pay_run_execute_selected(list_of_tuples)
