@@ -832,7 +832,7 @@ def exit_payrun_update(id):
     cur.execute(f"""UPDATE timesheet_entry SET completed = 'True' WHERE date BETWEEN '{period[0].isoformat()}' AND '{period[1].isoformat()}'""")
     cur.commit()
 
-def new_manager_employee(password,bank_account,benefits,child_support,final_pay,kiwisaver,one_off_deduction,pay_rate,student_loan,tax_credit,tax_rate,username,weekly_allowance,weekly_allowance_nontax,ird_number,tax_code):
+def new_manager_employee(password,bank_account,benefits,child_support,final_pay,kiwisaver,one_off_deduction,pay_rate,student_loan,tax_credit,tax_rate,username,weekly_allowance,weekly_allowance_nontax,ird_number,tax_code,manager):
     cur = init()
     try:
         cur.execute(f"""Insert into login(username,password,created_on,role)
@@ -871,6 +871,8 @@ def new_manager_employee(password,bank_account,benefits,child_support,final_pay,
                     ,cast({weekly_allowance_nontax} as decimal(18,2))
                     ,{ird_number}
                     ,{tax_code} )""")
+        cur.execute(f"""INSERT INTO employee_manager(manager,employee)
+                    VALUES ({manager},{username})""")
         cur.commit()
         cur.close()
     except Exception as E:
@@ -878,3 +880,123 @@ def new_manager_employee(password,bank_account,benefits,child_support,final_pay,
         return 'Failed',E,'n/a'
 
     return 'Success','n/a',password
+
+def add_new_stat_day(username,date,stat_length):
+    cur = init()
+    cur.execute(f"""INSERT INTO leave_entry([username]
+      ,[leave_start_date]
+      ,[leave_end_date]
+      ,[leave_type]
+      ,[stat_hours]
+      ,[status] ) VALUES (
+                ,{username}
+                ,{date}
+                ,{date}
+                ,'Statutory Holiday'
+                ,{stat_length}
+                ,'Approved'
+      )""")
+    
+def pay_run_execute_selected(data_array):
+    cur = init()
+    
+    for i in data_array:
+        try:
+            cur.execute(f"""SELECT [username]
+        ,[WeekStartDate]
+        ,[WeekEndDate]
+        ,[total_hours_worked]
+        ,[pay_rate]
+        ,[pay_type]
+        ,[pay_amount]
+        ,[pay_and_leave]
+        ,[leave_taken]
+        ,[days]
+        ,[leave_pay]
+        ,[gross_pay]
+        ,[one_off_deduction]
+        ,[total_deductions]
+        ,[net_pay]
+        ,[kiwisaver_total]
+        ,[student_loan_total]
+        ,[final_pay]
+        ,[paye]
+        ,[weekly_allowance]
+        ,[weekly_allowance_nontax]
+        ,[year_to_date]
+        ,[child_support]
+        ,[tax_credit]
+        ,[benefits] FROM [dbo].[pay_run_info] WHERE username = {i[0]} AND pay_period_end = {i[1]}""")
+            
+            payslip_data = cur.fetchall()
+            print(payslip_data)
+            payslip_ids = []
+
+            for payslip in payslip_data:
+                cur.execute(f"""INSERT INTO payslips(
+            [username]
+        ,[pay_period_start]
+        ,[pay_period_end]
+        ,[total_hours_worked]
+        ,[pay_rate]
+        ,[pay_type]
+        ,[pay_amount]
+        ,[pay_and_leave]
+        ,[leave_taken]
+        ,[leave_days]
+        ,[leave_pay]
+        ,[gross_pay]
+        ,[one_off_deduction]
+        ,[total_deductions]
+        ,[net_pay]
+
+        ,[kiwisaver]
+        ,[student_loan]
+        ,[final_pay]
+        ,[paye]
+        ,[weekly_allowance]
+        ,[weekly_allowance_nontax]
+        ,[year_to_date]
+        ,[child_support]
+        ,[tax_credit]
+        ,[benefits]
+
+        ,[pay_date]  ) VALUES (
+                        '{payslip[0]}',
+                        '{payslip[1].isoformat()}',
+                        '{payslip[2].isoformat()}',
+                        {payslip[3]},
+                        {payslip[4]},
+                        '{payslip[5]}',
+                        {payslip[6]},
+                        {payslip[7]},
+                        '{payslip[8]}',
+                        {payslip[9]},
+                        {payslip[10]},
+                        {payslip[11]},
+                        {payslip[12]},
+                        {payslip[13]},
+                        {payslip[14]},
+                        {payslip[15]},
+                        {payslip[16]},
+                        {payslip[17]},
+                        {payslip[18]},
+                        {payslip[19]},
+                        {payslip[20]},
+                        {payslip[21]},
+                        {payslip[22]},
+                        {payslip[23]},
+                        {payslip[24]},
+                        CURRENT_TIMESTAMP
+        ); """)
+                
+                cur.execute("Select SCOPE_IDENTITY()")
+            
+                payslip_ids.append(cur.fetchone()[0])
+                print(payslip_ids)
+            cur.commit()
+            cur.close()
+        except Exception as e:
+            cur.close()
+            return 'Failed',e
+    return payslip_ids,'n/a'
