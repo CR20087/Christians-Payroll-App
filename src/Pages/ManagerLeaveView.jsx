@@ -22,6 +22,7 @@ const Page = styled.div`
     
 const Container = styled.div`
     .css-80pr5n-MuiPaper-root {width:70vw;}
+    .css-1hhu9xl {width:70vw;}
     display: flex;
     height:fit-content;
     justify-self:center;
