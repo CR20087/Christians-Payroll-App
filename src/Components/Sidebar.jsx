@@ -106,10 +106,10 @@ const MenuItem = styled(Link)`
   display: flex;
   align-items: center;
   text-decoration: none;
-  color: black;
+  color: #000000;
 
   svg {
-    color: #0707d6;
+    color: #ffffff;
   }
 `
 
@@ -120,7 +120,7 @@ position: fixed;
   width: 5%;
   z-index: 10;
   transition: 1s;
-  background-color: black ;
+  background-color: #0b3048 ;
   flex-direction: column-reverse;
   align-items: center;
   p {
@@ -137,10 +137,11 @@ position: fixed;
       height:0%
     }
   :hover{
-    background-color:grey ;
+    background-color: #06151f;
     width:18%;
     p {
     visibility: visible;
+    color: white;
   }
     img {
       visibility: visible;

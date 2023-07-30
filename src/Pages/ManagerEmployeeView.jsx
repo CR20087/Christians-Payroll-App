@@ -22,8 +22,11 @@ display: grid;
 const Container = styled.div`
 .css-80pr5n-MuiPaper-root {width:70vw;}
 .css-1hhu9xl {width:70vw;}
-.css-1gws2xf-MuiButtonBase-root-MuiIconButton-root {color:rgb(14,119,191)}
-.css-zcbmsk-MuiButtonBase-root-MuiButton-root {background-color:rgb(14,119,191)}
+.css-zcbmsk-MuiButtonBase-root-MuiButton-root {
+        background-color: #4d6788;
+        :hover {
+            background-color: #2d4965
+        }}
 .mui-box-container-form {
     position: fixed;
     top: 45%;

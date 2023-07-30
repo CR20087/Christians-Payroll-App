@@ -13,7 +13,7 @@ function Landing() {
                 </Logo>
                 <Hyperlinks> 
                     <Support to={"/Support"}>Support & Doccumentation</Support>
-                    <LoginButton to={"/Login"}>Login<CiLock size={20}/></LoginButton>
+                    <LoginButton to={"/Login"}>Login</LoginButton>
                 </Hyperlinks>
             </Nav>
             <Info>
@@ -32,7 +32,7 @@ function Landing() {
 
 const Nav = styled.div`
 padding: 1.5rem;
-background: linear-gradient(90deg, rgba(255,255,255,1) 6%, rgb(9, 108, 159) 96%);
+background: linear-gradient(90deg, rgba(255,255,255,1) 6%, #0b3048 80%);
 height: 100pt;
 `
 
@@ -40,11 +40,12 @@ const Logo = styled(Link)`
 display: flex;
 text-decoration: none;
 font-size: 2rem;
-font-weight: 400;
+font-weight: 500;
 font-family: 'Rockwell';
-color: black;
+color: #06151f;
 width: 30%;
 float: left;
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 p {
 padding-top: 1rem;
 }
@@ -55,7 +56,6 @@ padding-top: 2.5rem;
 display: flex;
 justify-content: space-between;
 font-size: 1rem;
-color: black;
 width: 30%;
 float: right;
 p {
@@ -64,7 +64,7 @@ p {
 `
 
 const LoginButton = styled(Link)`
-padding: 1rem 1rem;
+padding: 1rem 1.5rem;
 height: 20%;
 text-decoration: none;
 font-family: 'Comic-Sans';
@@ -74,8 +74,9 @@ border: 2px solid black;
 margin-right: 2rem;
 font-weight: 600;
 float: right;
+border-radius: 10px;
+font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 cursor: pointer;
-border-radius: 0%;
 :hover {
     background: #404040;
     color: #ffffff;
@@ -85,9 +86,10 @@ border-radius: 0%;
 const Support = styled(Link)`
     padding-top: 1rem;
     text-decoration: none;
-    color: black;
+    color: white;
     font-family: 'Comic-Sans';
     font-weight: 400;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 `
 
 const Payslips = styled.div`

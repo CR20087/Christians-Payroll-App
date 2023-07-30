@@ -19,7 +19,7 @@ function Login() {
 
  const Page = styled.div`
   display: grid;
-  background: #0c5c0c;
+  background: #0b3048;
   min-height:fit-content + 5rem;
 
 p {
