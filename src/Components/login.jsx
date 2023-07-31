@@ -55,7 +55,7 @@ function LoginForm() {
     return (
         <Window onSubmit={handleSubmit(FetchLogin)}>
           <Head>
-            <img src="./Christian-Payroll-App-Logo.png" alt="logo" />
+            <img src="./Christian-Payroll-App-Logo.svg" alt="logo" />
               <p>Christian's Payroll App</p>
           </Head>
           <div className={isAuthorised} >

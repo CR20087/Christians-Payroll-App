@@ -8,7 +8,7 @@ function Landing() {
         <body>
             <Nav>
                 <Logo to={"/"}>
-                    <img src="./Christian-Payroll-App-Logo.png" alt="logo" width={150} />
+                    <img src="./Christian-Payroll-App-Logo.svg" alt="logo" width={150} />
                     <p>Christian's Payroll App</p>
                 </Logo>
                 <Hyperlinks> 

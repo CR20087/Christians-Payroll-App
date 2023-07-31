@@ -216,7 +216,7 @@ function RegisterForm() {
     return (
         <Window onSubmit={handleSubmit(parseInt(formPage) > 1 ? InfoLog : FetchLogin)}>
           <Head>
-            <img src="/Christian-Payroll-App-Logo.png" alt="logo" />
+            <img src="/Christian-Payroll-App-Logo.svg" alt="logo" />
               <p>Christian's Payroll App</p>
           </Head>
 

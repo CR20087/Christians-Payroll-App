@@ -6,7 +6,7 @@ function Footer() {
   return (
       <FooterDiv>
         
-            <img src="/Christian-Payroll-App-Logo.png" alt="logo"  />
+            <img src="/Christian-Payroll-App-Logo.svg" alt="logo"  />
             <p>Christian's Payroll App</p>
         
       </FooterDiv>
