@@ -22,6 +22,11 @@ function EmployeeTimesheets() {
     const Container = styled.div`
     .css-80pr5n-MuiPaper-root {width:70vw;}
     .css-1hhu9xl {width:70vw;}
+    .css-1rs06yn {
+        background-color: #4d6788;
+        :hover {
+            background-color: #2d4965
+        }}
     .css-zcbmsk-MuiButtonBase-root-MuiButton-root {
         background-color: #4d6788;
         :hover {

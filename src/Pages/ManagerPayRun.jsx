@@ -21,19 +21,25 @@ function EmployeeTimesheets() {
     `
     const Container = styled.div`
     .css-80pr5n-MuiPaper-root {width:70vw;}
-    .css-1hhu9xl {width:70vw;}
+    .css-1hhu9xl {width:70vw;z-index:1}
+    .css-1rs06yn {
+        background-color: #4d6788;
+        :hover {
+            background-color: #2d4965
+        }}
     .css-zcbmsk-MuiButtonBase-root-MuiButton-root {
         background-color: #4d6788;
         :hover {
             background-color: #2d4965
         }}
+
     .mui-box-container-form {
         position: fixed;
         top: 45%;
         left: 50%;
         transform: translate(-50%, -50%);
         z-index: 700;
-        background-color:#ffffff;
+        background-color: rgba(255, 255, 255, 1);
         height: 40vh;
         padding-bottom: 10rem;
     
