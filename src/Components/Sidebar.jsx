@@ -89,6 +89,9 @@ const Logo = styled.div`
   justify-content: flex-start;
   align-items: center;
   height: fit-content;
+  img {
+    max-width: 100%;
+  }
   
   p {
     font-weight: 650;
