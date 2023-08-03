@@ -688,7 +688,7 @@ def pay_run_execute_all(username):
       ,[year_to_date]
       ,[child_support]
       ,[tax_credit]
-      ,[benefits] FROM [dbo].[pay_run_info] WHERE manager = {username}""")
+      ,[benefits] FROM [dbo].[pay_run_info] WHERE manager = '{username}'""")
         
         payslip_data = cur.fetchall()
         print(payslip_data)
