@@ -3,7 +3,7 @@ import { MaterialReactTable } from 'material-react-table';
 import { Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon,  } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
 import {Box,Button,Dialog,DialogActions,DialogContent, MenuItem, DialogTitle,IconButton,Stack,TextField ,Typography} from '@mui/material';
-import { Leave_Type } from '../Components/lists.jsx'
+import {Leave_Type, Years, Month, Days} from './lists'
 
 
 function EmployeeLeave() {
@@ -47,21 +47,6 @@ function EmployeeLeave() {
     [],
   );
 
-  const columns2 = useMemo(
-    () => [
-      {
-        accessorKey: 'leave_start_date',
-        header: 'Leave Start Date',
-      },
-      {
-        accessorKey: 'leave_end_date',
-        header: 'Leave End Date',
-        type: 'number'
-      }
-    ],
-    [],
-  );
-
 
   useEffect(() => {
     console.log("fetch")    
@@ -97,7 +82,7 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
 
 const handleCreateNewRow = async (values) => {
   console.log(values)
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/new/'${params.userID}'/'${values.leave_start_date}'/'${values.leave_end_date}'/'${values.leave_type}'`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/new/'${params.userID}'/'${[values.start_date_year,values.start_date_month,values.start_date_day].join('-')}'/'${[values.end_date_year,values.end_date_month,values.end_date_day].join('-')}'/'${values.leave_type}'`)
   const data = await res.json()
 
   if (data.success === 'Success') {
@@ -138,7 +123,6 @@ const handleCreateNewRow = async (values) => {
   </Button>
 )}/>
       <CreateNewAccountModal
-      columns={columns2}
       open={createModalOpen}
       onClose={() => setCreateModalOpen(false)}
       onSubmit={handleCreateNewRow}
@@ -153,19 +137,27 @@ export default EmployeeLeave;
 
 
 //example of creating a mui dialog modal for creating new rows
-const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
-const [values, setValues] = useState(() =>
-columns.reduce((acc, column) => {
-acc[column.accessorKey ?? ''] = '';
-return acc;
-}, {}),
-);
+const CreateNewAccountModal = ({ open, onClose, onSubmit }) => {
+const [values, setValues] = useState([]);
+const [daysF, setDaysF] = useState([])
 
 const handleSubmit = () => {
 //put your validation logic here
 onSubmit(values);
 onClose();
 };
+
+useEffect(() => {
+  if (['01','03','05','07','08','10','12'].includes(values.date_month)) {
+    setDaysF(Days)
+  } else if (values.date_month == '02') {
+    const days_alt = Days.slice(0,28)
+    setDaysF(days_alt)
+  } else {
+    const days_alt = Days.slice(0,30)
+    setDaysF(days_alt)
+  }
+},[values.date_month])
 
 return (
   <div className={String(open)}>
@@ -178,19 +170,48 @@ return (
       minWidth: { xs: '300px', sm: '360px', md: '400px' },
       gap: '1.5rem',
       select: {padding: '16.5px 14px',font:'inherit'},
+      div: {display:'flex',gap:'1rem',justifyContent:'center',alignItems:'center'}
     }}
-  >
-    {columns.map((column) => (
-      <TextField
-        key={column.accessorKey}
-        label={column.header}
-        name={column.accessorKey}
-        placeholder='YYYY-MM-DD'
-        onChange={(e) =>
-          setValues({ ...values, [e.target.name]: e.target.value })
-        }
-      />
-    ))}
+  ><div>Start
+  <select name='start_date_year' onChange={(e) =>
+        setValues({ ...values, [e.target.name]: e.target.value })
+      }>
+        <option value="">Year</option>
+        {Years.map((year) => (<option key={year} value={year}>{year}</option>))}
+    </select>
+    <select name='start_date_month' onChange={(e) =>
+        setValues({ ...values, [e.target.name]: e.target.value })
+      }>
+        <option value="">Month</option>
+        {Month.map((month) => (<option key={month} value={month}>{month}</option>))}
+    </select>
+    <select name='start_date_day' onChange={(e) =>
+        setValues({ ...values, [e.target.name]: e.target.value })
+      }>
+        <option value="">Day</option>
+        {daysF.map((day) => (<option key={day} value={day}>{day}</option>))}
+    </select>
+    </div>
+    <div>End
+  <select name='end_date_year' onChange={(e) =>
+        setValues({ ...values, [e.target.name]: e.target.value })
+      }>
+        <option value="">Year</option>
+        {Years.map((year) => (<option key={year} value={year}>{year}</option>))}
+    </select>
+    <select name='end_date_month' onChange={(e) =>
+        setValues({ ...values, [e.target.name]: e.target.value })
+      }>
+        <option value="">Month</option>
+        {Month.map((month) => (<option key={month} value={month}>{month}</option>))}
+    </select>
+    <select name='end_date_day' onChange={(e) =>
+        setValues({ ...values, [e.target.name]: e.target.value })
+      }>
+        <option value="">Day</option>
+        {daysF.map((day) => (<option key={day} value={day}>{day}</option>))}
+    </select>
+    </div>
     <select name='leave_type' onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }>

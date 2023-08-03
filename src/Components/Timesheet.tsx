@@ -3,7 +3,7 @@ import { MaterialReactTable } from 'material-react-table';
 import { Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon,  } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
 import {Box,Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,Stack,TextField ,Typography, MenuItem} from '@mui/material';
-import {Times, Pay_Type} from './lists'
+import {Times, Pay_Type, Years, Month, Days} from './lists'
 
 function EmployeeTable() {
   let params = useParams()
@@ -139,14 +139,8 @@ function EmployeeTable() {
   const columns3 = useMemo(
     () => [
       {
-        accessorKey: 'date',
-        header: 'Date',
-        placeHolder: 'YYYY-MM-DD'
-      },
-      {
         accessorKey: 'comment',
         header: 'Comments',
-        placeHolder: ''
       }
     ],
     [],
@@ -211,7 +205,8 @@ const DeleteAccount = async (table) => {
 const handleCreateNewRow = async (values) => {
 
   console.log(values)
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/new/'${params.userID}'/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
+  console.log([values.date_year,values.date_month,values.date_day].join('-'))
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/new/'${params.userID}'/'${[values.date_year,values.date_month,values.date_day].join('-')}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
   const data = await res.json()
 
   if (data.success === 'Success') {
@@ -229,11 +224,25 @@ return acc;
 }, {}),
 );
 
+const [daysF, setDaysF] = useState([])
+
 const handleSubmit = () => {
 //put your validation logic here
 onSubmit(values);
 onClose();
 };
+
+useEffect(() => {
+  if (['01','03','05','07','08','10','12'].includes(values.date_month)) {
+    setDaysF(Days)
+  } else if (values.date_month == '02') {
+    const days_alt = Days.slice(0,28)
+    setDaysF(days_alt)
+  } else {
+    const days_alt = Days.slice(0,30)
+    setDaysF(days_alt)
+  }
+},[values.date_month])
 
 return (
   <div className={String(open)}>
@@ -245,20 +254,31 @@ return (
             sx={{
               minWidth: { xs: '300px', sm: '360px', md: '400px' },
               gap: '1.5rem',
-              select: {padding: '16.5px 14px',font:'inherit'}
+              select: {padding: '16.5px 14px',font:'inherit'},
+              div: {display:'flex',gap:'1rem',justifyContent:'center'}
             }}
           >
-            {columns.map((column) => (
-              <TextField
-                key={column.accessorKey}
-                label={column.header}
-                name={column.accessorKey}
-                placeholder={column.placeHolder}
-                onChange={(e) =>
+            <div>
+            <select name='date_year' onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
-                }
-              />
-            ))}
+                }>
+                  <option value="">Year</option>
+                  {Years.map((year) => (<option key={year} value={year}>{year}</option>))}
+              </select>
+              <select name='date_month' onChange={(e) =>
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }>
+                  <option value="">Month</option>
+                  {Month.map((month) => (<option key={month} value={month}>{month}</option>))}
+              </select>
+              <select name='date_day' onChange={(e) =>
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }>
+                  <option value="">Day</option>
+                  {daysF.map((day) => (<option key={day} value={day}>{day}</option>))}
+              </select>
+              </div>
+
             <select name='start_time' onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }>
@@ -283,6 +303,16 @@ return (
                   <option value="">Pay Type</option>
                   {Pay_Type.map((type) => (<option key={type} value={type}>{type}</option>))}
               </select>
+              {columns.map((column) => (
+              <TextField
+                key={column.accessorKey}
+                label={column.header}
+                name={column.accessorKey}
+                onChange={(e) =>
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }
+              />
+            ))}
           </Stack>
         </form>
         <div className='buttons-for-form'>
