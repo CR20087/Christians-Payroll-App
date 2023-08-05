@@ -8,7 +8,7 @@ function Landing() {
         <body>
             <Nav>
                 <Logo to={"/"}>
-                    <img src="./Christian-Payroll-App-Logo.svg" alt="logo" width={150} />
+                    <img src="./Christian-Payroll-App-Logo.svg" alt="logo" />
                     <p>Christian's Payroll App</p>
                 </Logo>
                 <Hyperlinks> 
@@ -17,13 +17,49 @@ function Landing() {
                 </Hyperlinks>
             </Nav>
             <Info>
-                <h1>Welcome!</h1>
-                <br></br>
+                <h1>Evolution of Christian's Payroll App</h1>
                 <Payslips>
-                <h4>Payslips</h4>
-                <iframe src="Website_Payslip_example.pdf" title="Payslip Example PDF"></iframe>
-                <p>Payslips Text </p>
+                    <h4>Payslips</h4>
+                    <iframe src="Website_Payslip_example.pdf" title="Payslip Example PDF"></iframe>
+                    <TextBox>
+                        <p>Payslips are emailed to employees when a pay run is executed. The data that feeds into the payslip will be shown to Manager's prior to executing the pay run, to ensure all values are correct.
+                            Delivery details of the payslip are able to be edited by Manager and Employee accounts within settings. Leave, if taken during the pay period, is inserted with a new header of the payslip.
+                            If no leave occurs during the period no leave section is included.
+                            <br></br><br></br>
+                            The payslip design was originally designed within Google Docs, then exported as a Web Page file (html). This design did not have addequite width allocation. Because of this when this version
+                            was used near every element was skewed from original position (Last payslip example is version 0). By seperating the css from the html file and deleting all the tab spaces ('&nbsp') the files
+                            were now aable to be edited tidily. From here the CSS was adjusted to design the columns per each section. After the files were in working condition, font styles, weights, sizes were adjusted
+                            to create an ideal payslip.
+                            <br></br>
+                            (
+                            <a href="https://docs.google.com/document/d/1j2ebk1iyum8F68IOyYyG6s0WPCZr--0u3Tu4GJi6Glk/edit?usp=sharing">Link to original document</a>
+                            ) 
+                        </p>
+                    </TextBox>
                 </Payslips>
+                <DualDetail>
+                    <LogoDesign>
+                    <div>
+                        <h2>Original Design</h2>
+                        <TextBox>
+                            <p>Christian's Payroll App's original logo required improving... There was no pre-determined concepts related to colour scheme, nor image selection.</p>
+                        </TextBox>
+                        <img src="./Christian-Payroll-App-Logo-2.png"/>
+                        </div>
+                        
+                        <div>
+                        <h2>Current Design</h2>
+                        <TextBox>
+                            <p>Our current logo  has been designed with the correct concepts. The orange text and border are matching and are the warm (opposite) colour to the blue background. Our image represents CPA (Christian's Payroll App), making they design more complex. </p>
+                        </TextBox>
+                        <img src="./Christian-Payroll-App-Logo-3.png"/>
+                        </div>
+                    </LogoDesign>
+                    <MaterialReactTable>
+                        <img src="https://www.material-react-table.com/mrt_logo.svg"/>
+                        <h2>Material React Table</h2>
+                    </MaterialReactTable>
+                </DualDetail>
             </Info>
         </body>
     )
@@ -36,6 +72,38 @@ background: linear-gradient(90deg, rgba(255,255,255,1) 6%, #0b3048 80%);
 height: 100pt;
 `
 
+const DualDetail = styled.div`
+display: flex;
+justify-items:center;
+width:100%;
+min-height: 40rem;
+height: fit-content;
+`
+const LogoDesign = styled.div`
+div { margin-left: 18%; }
+padding-top:2rem;
+display: flex;
+flex-direction: column;
+gap: 5rem;
+background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #0b3048 3%, #0b3048 98.5%, rgba(255,255,255,0) 100%);
+width: 50%;
+
+
+img {
+    width: 15%;
+    min-width: 8rem;
+}
+`
+const MaterialReactTable = styled.div`
+padding-top:2rem;
+width: 50%;
+background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #0a3756 3%, #0a3756 98.5%, rgba(255,255,255,0) 100%);
+
+img {
+    width: 10%;
+    min-width: 6rem;
+}
+`
 const Logo = styled(Link)`
 display: flex;
 text-decoration: none;
@@ -93,13 +161,6 @@ const Support = styled(Link)`
 `
 
 const Payslips = styled.div`
-
-    p {
-        float: left;
-        padding-left: 5rem;
-        align-self: center;
-    }
-    
     iframe {
         margin-left: 18%;
         width: 30%;
@@ -108,7 +169,21 @@ const Payslips = styled.div`
     }
 `
 
+const TextBox = styled.div`
+    float: left;
+    padding-left: 5%;
+    align-self: center;
+    overflow-wrap: break-word;
+    word-wrap: break-word;
+    word-break: break-word;
+    width: 30%;
+    text-align: left;
+`
+
 const Info = styled.div`
+    display: grid;
+    gap: 8rem;
+    width: 100%;
     justify-content: center;
     text-align: center;
     //background: linear-gradient(90deg, rgba(2,190,71,1) 6%, rgba(9,108,159,1) 96%);
