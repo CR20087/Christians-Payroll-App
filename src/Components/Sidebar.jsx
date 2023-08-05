@@ -95,6 +95,7 @@ const Logo = styled.div`
   
   p {
     font-weight: 650;
+    text-align: center;
   }
 `
 
