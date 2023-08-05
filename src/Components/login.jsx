@@ -38,8 +38,21 @@ function LoginForm() {
         sessionStorage.setItem('authKey',authKey)
         sessionStorage.setItem('userID', userID)
         sessionStorage.setItem('role',data.role)
+
+        const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/add/'${userID}'/'${authKey}'`)
+        const auth_data = await res.json()
+        console.log(auth_data)
+
+        if (auth_data.success === 'Failed') {
+          setIsAuthorised('border-red')
+          sessionStorage.clear()
+          alert(`There was an error authenticating your credentials.\n\n\n\n${auth_data.error}`)
+        } else {
+          navigate('/Portal/' +data.role + '/'+ userID )  
+        }
+        
   
-        navigate('/Portal/' +data.role + '/'+ userID )      
+            
       } else if(data.match === 'False') {
         setIsAuthorised('border-red')
       } else if (data.setup === 'False') {
