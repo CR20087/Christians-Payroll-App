@@ -305,6 +305,20 @@ def pay_run_execute_selected():
             Payslip_Script.Payslip_Script(id)
 
         return jsonify(success = 'Success',error = 'n/a')
+
+@app.route("/auth/add/<string:username>/<string:authKey>")
+def auth_add(username: str,authKey: str):
+    
+    result = cpa_sql.auth_add(username,authKey)
+
+    return jsonify(success = str(result[0]),error = str(result[1]))
+
+@app.route("/auth/validate/<string:username>/<string:authKey>")
+def auth_validate(username: str,authKey: str):
+    
+    result = cpa_sql.auth_validate(username,authKey)
+
+    return jsonify(success = str(result[0]),error = str(result[1]),match = str(result[2]))
     
 if __name__ == "__main__":
     app.run(debug=True)

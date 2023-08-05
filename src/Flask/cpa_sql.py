@@ -1008,3 +1008,41 @@ def pay_run_execute_selected(data_array):
             cur.close()
             return 'Failed',e
     return payslip_ids,'n/a'
+
+def auth_add(username, auth_key):
+    
+    cur = init()
+    try:
+        cur.execute(f"""INSERT INTO Auth(
+                [auth_token]
+                ,[username]
+                ) VALUES (
+                {auth_key}
+                ,{username}
+                )""")
+        cur.commit()
+        cur.close()
+    except Exception as e:
+        cur.close()
+        return 'Failed',e
+    return 'Success','n/a'
+
+def auth_validate(username, auth_key):
+    
+    cur = init()
+    try:
+        cur.execute(f"""SELECT
+                [auth_token]
+                    FROM Auth
+                    Where username = {username}
+                """)
+        result = cur.fetchone()
+        
+        cur.close()
+    except Exception as e:
+        cur.close()
+        return 'Failed',e,'n/a'
+    
+    if f'{result[0]}' == auth_key:
+            return 'Success','n/a','true'
+    return 'Success','n/a','false'
