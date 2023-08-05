@@ -1034,7 +1034,7 @@ def auth_validate(username, auth_key):
         cur.execute(f"""SELECT
                 [auth_token]
                     FROM Auth
-                    Where username = {username}
+                    Where username = {username} AND auth_token = '{auth_key}'
                 """)
         result = cur.fetchone()
         
@@ -1043,6 +1043,9 @@ def auth_validate(username, auth_key):
         cur.close()
         return 'Failed',e,'n/a'
     
-    if f'{result[0]}' == auth_key:
+    if result == None:
+        return 'Success','n/a','false'
+
+    if result[0] == auth_key:
             return 'Success','n/a','true'
     return 'Success','n/a','false'
