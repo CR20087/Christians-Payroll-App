@@ -100,16 +100,16 @@ function ManagerRegisterForm() {
                 type="text"
                 placeholder="Enter Username" 
                 value={userName}
-                {...register("userName", { required: true })}
-              />{errors.userName && <h6>Username is required</h6>}
+                {...register("userName", { required: true, pattern: /^[a-zA-Z0-9]{1,30}$/ })}
+              />{errors.userName && <h6>Username must be valid</h6>}
             <p>Password:</p>
               <input 
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
                 placeholder="Enter Password" 
                 value={password}
-                {...register("password", { required: true })}
-              />{errors.password && <h6>Password is required</h6>}
+                {...register("password", { required: true,pattern: /^[a-zA-Z0-9^"'\/]*$/ })}
+              />{errors.password && <h6>Password must be valid</h6>}
               <br></br>
         </div>
       )
@@ -124,16 +124,16 @@ function ManagerRegisterForm() {
                 type="text"
                 placeholder="First Name..." 
                 value={firstName}
-                {...register("firstName", { required: true })}
-            />{errors.firstName && <h6>First Name is required</h6>}
+                {...register("firstName", { required: true,pattern: /^[a-zA-Z]+$/ })}
+            />{errors.firstName && <h6>First Name must be valid</h6>}
             <p>Last Name:</p>
               <input 
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
                 placeholder="Last Name..." 
                 value={lastName}
-                {...register("lastName", { required: true })}
-            />{errors.lastName && <h6>Last Name is required</h6>}
+                {...register("lastName", { required: true,pattern: /^[a-zA-Z]+$/ })}
+            />{errors.lastName && <h6>Last Name must be valid</h6>}
             <br></br>
         </div>
       )
@@ -150,15 +150,15 @@ function ManagerRegisterForm() {
                 placeholder="Email..." 
                 value={email}
                 {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
-            />{errors.email && <h6>Email is required and must be valid</h6>}
+            />{errors.email && <h6>Email must be valid</h6>}
             <p>Phone:</p>
               <input 
                 onChange={(e) => setPhone(e.target.value)}
                 type="text"
                 placeholder="Phone..." 
                 value={phone}
-                {...register("phone", { required: true })}
-                />{errors.phone && <h6>Phone is required</h6>}
+                {...register("phone", { required: true,pattern: /^[+#]\d{1,13}$/ })}
+                />{errors.phone && <h6>Phone must be valid</h6>}
             <p>Contact Method For Employees:</p>
             <select 
             value={contactMethod} 
@@ -167,7 +167,7 @@ function ManagerRegisterForm() {
                 <option value="">Select</option>
                 <option value="email">Email</option>
                 <option value="phone">Phone</option>
-            </select>{errors.contactMethod && <h6>Contact Method is required</h6>}
+            </select>{errors.contactMethod && <h6>Contact Method must be valid</h6>}
             </div>
             <div className="large2 column">
             <p>Business Name:</p>
@@ -176,32 +176,32 @@ function ManagerRegisterForm() {
                 type="text"
                 placeholder="Business Name..." 
                 value={businessName}
-                {...register("businessName", { required: true })}
-            />{errors.address && <h6>Business Name is required</h6>}
+                {...register("businessName", { required: true,pattern: /^[a-zA-Z0-9 ]*$/ })}
+            />{errors.address && <h6>Business Name must be valid</h6>}
                 <p>Business Address:</p>
               <input 
                 onChange={(e) => setAddress(e.target.value)}
                 type="text"
                 placeholder="Address..." 
                 value={address}
-                {...register("address", { required: true })}
-            />{errors.address && <h6>Business address is required</h6>}
+                {...register("address", { required: true,pattern: /^[a-zA-Z0-9 ]*$/ })}
+            />{errors.address && <h6>Business address must be valid</h6>}
             <p>Business Suburb/City:</p>
               <input 
                 onChange={(e) => setSuburb(e.target.value)}
                 type="text"
                 placeholder="Suburb/City..." 
                 value={suburb}
-                {...register("suburb", { required: true })}
-            />{errors.suburb && <h6>Suburb/City is required</h6>}
+                {...register("suburb", { required: true,pattern: /^[a-zA-Z]*$/ })}
+            />{errors.suburb && <h6>Suburb/City must be valid</h6>}
             <p>Entity Name:</p>
               <input 
                 onChange={(e) => setEntityName(e.target.value)}
                 type="text"
                 placeholder="Entity name..." 
                 value={entityName}
-                {...register("entityName", { required: true })}
-            />{errors.entityName && <h6>Entity Name is required</h6>}
+                {...register("entityName", { required: true,pattern: /^[a-zA-Z0-9 ]*$/ })}
+            />{errors.entityName && <h6>Entity Name must be valid</h6>}
             </div>
             <br></br>
         </div>

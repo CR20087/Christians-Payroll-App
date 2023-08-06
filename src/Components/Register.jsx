@@ -128,16 +128,16 @@ function RegisterForm() {
                 type="text"
                 placeholder="First Name..." 
                 value={firstName}
-                {...register("firstName", { required: true })}
-            />{errors.firstName && <h6>First Name is required</h6>}
+                {...register("firstName", { required: true, pattern: /^[^/0-9 ]*$/ })}
+            />{errors.firstName && <h6>First Name must be valid</h6>}
             <p>Last Name:</p>
               <input 
                 onChange={(e) => setLastName(e.target.value)}
                 type="text"
                 placeholder="Last Name..." 
                 value={lastName}
-                {...register("lastName", { required: true })}
-            />{errors.lastName && <h6>Last Name is required</h6>}
+                {...register("lastName", { required: true, pattern: /^[^/0-9 ]*$/ })}
+            />{errors.lastName && <h6>Last Name must be valid</h6>}
             <br></br>
         </div>
       )
@@ -154,23 +154,23 @@ function RegisterForm() {
                 placeholder="Email..." 
                 value={email}
                 {...register("email", { required: true, pattern: /^\S+@\S+$/i })}
-            />{errors.email && <h6>Email is required and must be valid</h6>}
+            />{errors.email && <h6>Email must be valid</h6>}
             <p>Address:</p>
               <input 
                 onChange={(e) => setAddress(e.target.value)}
                 type="text"
                 placeholder="Address..." 
                 value={address}
-                {...register("address", { required: true })}
-            />{errors.address && <h6>Address is required</h6>}
+                {...register("address", { required: true,pattern: /^[a-zA-Z0-9 ]*$/ })}
+            />{errors.address && <h6>Address must be valid</h6>}
             <p>Suburb/City:</p>
               <input 
                 onChange={(e) => setSuburb(e.target.value)}
                 type="text"
                 placeholder="Suburb/City..." 
                 value={suburb}
-                {...register("suburb", { required: true })}
-            />{errors.suburb && <h6>Suburb/City is required</h6>}
+                {...register("suburb", { required: true,pattern: /^[a-zA-Z]*$/ })}
+            />{errors.suburb && <h6>Suburb/City must be valid</h6>}
             </div>
             <div className="large2 column">
             <p>Post Code:</p>
@@ -179,16 +179,16 @@ function RegisterForm() {
                 type="text"
                 placeholder="Post Code..." 
                 value={postCode}
-                {...register("postCode", { required: true })}
-            />{errors.postCode && <h6>Post Code is required</h6>}
+                {...register("postCode", { required: true,pattern: /^\d{4}$/ })}
+            />{errors.postCode && <h6>Post Code must be valid</h6>}
             <p>Phone:</p>
               <input 
                 onChange={(e) => setPhone(e.target.value)}
                 type="text"
                 placeholder="Phone..." 
                 value={phone}
-                {...register("phone", { required: true })}
-                />{errors.phone && <h6>Phone is required</h6>}
+                {...register("phone", { required: true,pattern: /^[+#]\d{1,13}$/ })}
+                />{errors.phone && <h6>Phone must be valid</h6>}
             </div>
             <br></br>
         </div>
