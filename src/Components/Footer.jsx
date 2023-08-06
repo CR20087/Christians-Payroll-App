@@ -21,6 +21,7 @@ const FooterDiv = styled.div`
   flex-direction: row;
   height: fit-content;
   align-items: flex-end;
+  padding-top: 2rem;
 
   p {
     align-self: center;

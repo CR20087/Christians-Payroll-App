@@ -1,17 +1,45 @@
-import React from 'react'
 import PayTable from '../Components/PayRun.tsx'
 import SideBar from "../Components/Sidebar"
 import styled from 'styled-components'
 import Footer from '../Components/Footer.jsx'
+import { useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import Loading from "../Components/Loading"
 function EmployeeTimesheets() {
+
+    let params = useParams()
+    const [authenticated,setAuthenticated] = useState(false)
+
+    useEffect(() => {
+
+        async function validate_auth() {    
+        const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/validate/'${params.userID}'/${sessionStorage.getItem('authKey')}`)
+        const data = await res.json()
+    
+        console.log(data)
+    
+        if (data.match === 'true') {
+          setAuthenticated(true)
+        }
+        if (data.match === 'false') {
+          setAuthenticated(false)
+        }
+        }
+    
+        validate_auth()
+      },[])
 
     return (
         <Page>
+            {authenticated ?
+            <>
             <SideBar/>
             <Container>
                 <PayTable/>
             </Container>
             <Footer/>
+            </>
+    : <><Loading/><Footer/></> }
         </Page>
       )
     }

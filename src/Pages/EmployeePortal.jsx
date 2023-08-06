@@ -2,11 +2,41 @@ import styled from "styled-components"
 import SideBar from "../Components/Sidebar"
 import {IoMdTime, IoMdSettings, IoMdCalendar } from "react-icons/io"
 import { Link, useParams } from "react-router-dom"
+import { useEffect, useState } from "react"
+import Loading from "../Components/Loading"
+import Footer from "../Components/Footer"
 
 function EmployeePortal() {
+
   let params = useParams()
+  const [authenticated,setAuthenticated] = useState(false)
+
+  useEffect(() => {
+
+    async function validate_auth() {
+    console.log('validate')
+
+    const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/validate/'${params.userID}'/${sessionStorage.getItem('authKey')}`)
+    const data = await res.json()
+
+    console.log(data)
+
+    if (data.match === 'true') {
+      setAuthenticated(true)
+    }
+    if (data.match === 'false') {
+      setAuthenticated(false)
+    }
+    }
+
+    validate_auth()
+  },[])
+
+
   return (
     <Dashboard>
+    {authenticated ?
+    <>
     <SideBar/>
     <Layout>
       <Bubble to={`/Portal/employee/${params.userID}/timesheets`}>
@@ -28,13 +58,14 @@ function EmployeePortal() {
       <p>Small description</p>
       </Bubble>
     </Layout>
+    </>
+    : <><Loading/><Footer/></>}
     </Dashboard>
   )
 }
 
 const Dashboard = styled.div`
-display:grid
-
+display:grid;
 `
 
 const Layout = styled.div`
