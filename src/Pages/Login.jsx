@@ -32,15 +32,19 @@ p {
 const GoBack = styled(Link)`
 background: white;
   display: flex;
-  height: fit-content;
-  width: fit-content +1rem;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  height: 10%;
+  align-items: center;
+  min-height: fit-content;
+  width: fit-content;
   border-radius: 50px;
   text-decoration: none;
   justify-self: left;
   border: 1px solid black;
   svg {
   color: black;
-  padding-top: 1rem;
+  width: 2rem;
   }
   transition: 1s;
   opacity: 0.5;
@@ -49,7 +53,7 @@ background: white;
   }
   p {
     color: black;
-    font-size: 1.5rem;
+    font-size: 1rem;
   }
 `
 

@@ -28,18 +28,30 @@ p {
 `
 
 const GoBack = styled(Link)`
+background: white;
   display: flex;
-  color: white;
+  margin-top: 1rem;
+  margin-left: 1rem;
+  height: 10%;
+  align-items: center;
+  min-height: fit-content;
+  width: fit-content;
+  border-radius: 50px;
   text-decoration: none;
   justify-self: left;
+  border: 1px solid black;
   svg {
-  color: white;
-  padding-top: 1rem;
+  color: black;
+  width: 2rem;
   }
   transition: 1s;
   opacity: 0.5;
   :hover {
         opacity: 1;
+  }
+  p {
+    color: black;
+    font-size: 1rem;
   }
 `
 
