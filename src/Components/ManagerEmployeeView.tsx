@@ -3,6 +3,7 @@ import { MaterialReactTable } from 'material-react-table';
 import { Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon, Save as SaveIcon } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
 import {Box,Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,MenuItem,Stack,TextField,Tooltip } from '@mui/material';
+import { useForm } from 'react-hook-form';
 
 
 function EmployeeTable() {
@@ -11,40 +12,14 @@ function EmployeeTable() {
   const [change, setChange] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
-  const validateRequired = (value) => !!value.length;
-  const validateEmail = (email) =>
-    !!email.length &&
-    email
-      .toLowerCase()
-      .match(/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i)
-  const validatePercentage = (value) => value >= 0 && value <= 100
 
   const validateCheck = useCallback(
     (cell) => {
+      
+      console.log(`${cell.id}\t${cell.column.columnDef.regex.test(cell.getValue())}`)
       return {
-        error: !!validationErrors[cell.id],
-        helperText: validationErrors[cell.id],
-        onBlur: (event) => {
-          const isValid =
-            cell.column.id === 'email'
-              ? validateEmail(event.target.value)
-              : cell.column.id === 'child_support' || cell.column.id === 'tax_rate' || cell.column.id === 'kiwisaver' || cell.column.id === 'student_loan'
-              ? validatePercentage(+event.target.value)
-              : validateRequired(event.target.value);
-          if (!isValid) {
-            //set validation error for cell if invalid
-            setValidationErrors({
-              ...validationErrors,
-              [cell.id]: `${cell.column.columnDef.header} is required`,
-            });
-          } else {
-            //remove validation error for cell if valid
-            delete validationErrors[cell.id];
-            setValidationErrors({
-              ...validationErrors,
-            });
-          }
-        },
+        error: true,
+        helperText: cell.column.columnDef.helperText,
       };
     },
     [validationErrors],
@@ -58,13 +33,17 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
+        helperText: "First Name must be: Letters",
+        regex: /^[A-Za-z]*$/
       },
       {
         accessorKey: 'last_name',
         header: 'Last Name',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
-        })
+        }),
+        helperText: "Last Name must be: Letters",
+        regex: /^[A-Za-z]*$/
       },
       {
         accessorKey: 'phone',
@@ -72,7 +51,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Phone must be: 1-13 characters, (Optional '#,+')",
+        regex: /^[+#]\d{1,13}$/
       },
       {
         accessorKey: 'email',
@@ -80,14 +60,17 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'email'
+        helperText: "Email must be: Alphanumerical (Optional symbols excluding '/')",
+        regex: /^[^\s/@]+@[^\s/@]+\.[^\s/@]+$/
       },
       {
         accessorKey: 'username',
         header: 'Username',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
-        })
+        }),
+        helperText: "User name must be: Alphanumerical",
+        regex: /^[a-zA-Z0-9]{1,30}$/
       },
       {
         accessorKey: 'pay_rate',
@@ -95,7 +78,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Pay rate must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'bank_account',
@@ -103,7 +87,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Bank account must be: 8-12 digits",
+        regex: /^\d{8,12}$/
       },
       {
         accessorKey: 'ird_number',
@@ -111,7 +96,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "IRD number must be: 9 digits (Optional '-')",
+        regex: /^\d{3}-?\d{3}-?\d{3}$/
       },
       {
         accessorKey: 'tax_code',
@@ -119,7 +105,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Tax code must be: <5 charaters, Captial letters",
+        regex: /^[A-Z]{1,4}$/
       },
       {
         accessorKey: 'kiwisaver',
@@ -127,7 +114,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Kiwisaver must be: >0 and <100, Number/Float",
+        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
       },
       {
         accessorKey: 'student_loan',
@@ -135,7 +123,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Student loan must be: >0 and <100, Number/Float",
+        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
       },
       {
         accessorKey: 'one_off_deduction',
@@ -143,7 +132,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "One off deduction must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'tax_rate',
@@ -151,7 +141,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Tax rate must be: >0 and <100, Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'final_pay',
@@ -159,7 +150,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Final pay must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'weekly_allowance',
@@ -167,7 +159,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Weekly allowance must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'weekly_allowance_nontax',
@@ -175,7 +168,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Weekly allowance non-tax must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'year_to_date',
@@ -188,7 +182,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "'Child support must be: >0 and <100, Number/Float",
+        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
       },
       {
         accessorKey: 'tax_credit',
@@ -196,7 +191,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Tax credit must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'benefits',
@@ -204,7 +200,8 @@ function EmployeeTable() {
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
         }),
-        type: 'number'
+        helperText: "Benefits must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'created_on',
@@ -221,121 +218,92 @@ function EmployeeTable() {
       {
         accessorKey: 'username',
         header: 'Username',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        })
+        helperText: "User name must be: Alphanumerical",
+        regex: /^[a-zA-Z0-9]{1,30}$/
       },
       {
         accessorKey: 'pay_rate',
         header: 'Pay rate',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "Pay rate must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'bank_account',
         header: 'Bank account',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "Bank account must be: 8-12 digits",
+        regex: /^\d{8,12}$/
       },
       {
         accessorKey: 'ird_number',
         header: 'IRD Number',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "IRD number must be: 9 digits (optional '-')",
+        regex: /^\d{3}-?\d{3}-?\d{3}$/
       },
       {
         accessorKey: 'tax_code',
         header: 'Tax Code',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "Tax code must be: <5 charaters, Captial letters",
+        regex: /^[A-Z]{1,4}$/
       },
       {
         accessorKey: 'student_loan',
         header: 'Student loan',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "Student loan must be: >0 and <100, Number/Float",
+        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
       },
       {
         accessorKey: 'kiwisaver',
         header: 'Kiwisaver',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "Kiwisaver must be: >0 and <100, Number/Float",
+        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
       },
       {
         accessorKey: 'one_off_deduction',
         header: 'One off deduction',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "One off deduction must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'tax_rate',
         header: 'Tax rate',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "Tax rate must be: >0 and <100, Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'final_pay',
         header: 'Final pay',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "Final pay must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'weekly_allowance',
         header: 'Weekly Allowance',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "Weekly allowance must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'weekly_allowance_nontax',
         header: 'Weekly allowance Non tax',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "Weekly allowance non-tax must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'child_support',
         header: 'Child support',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "'Child support must be: >0 and <100, Number/Float",
+        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
       },
       {
         accessorKey: 'tax_credit',
         header: 'Tax credit',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "Tax credit must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       },
       {
         accessorKey: 'benefits',
         header: 'Benefits',
-        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
-          ...validateCheck(cell),
-        }),
-        type: 'number'
+        helperText: "Benefits must be: Positve Number/Float",
+        regex: /^\d+(\.\d+)?$/
       }
     ],
     [],
@@ -384,9 +352,11 @@ const handleCreateNewRow = async (values) => {
 
   if (data.success === 'Success') {
     alert(`Employee was created successfully\n\tUsername: '${values.username}'\n\tPassword: '${data.password}'`)
-    setChange(true)}
-    else {
-      alert(`An error occured.\n\n\n\n${data.error}`) }
+    setChange(true)
+    setCreateModalOpen(false)
+} else {
+      alert(`An error occured.\n\n\n\n${data.error}`)
+    }
 };
 const DeleteAccount = async (row) => {
   console.log(row)
@@ -464,6 +434,7 @@ export default EmployeeTable;
 
 //example of creating a mui dialog modal for creating new rows
 const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
+const { register, handleSubmit, formState: { errors } } = useForm();
 const [values, setValues] = useState(() =>
 columns.reduce((acc, column) => {
 acc[column.accessorKey ?? ''] = '';
@@ -471,10 +442,14 @@ return acc;
 }, {}),
 );
 
-const handleSubmit = () => {
-//put your validation logic here
-onSubmit(values);
-onClose();
+const validateSubmit = (information) => {
+  
+  if ([information.child_support,information.kiwisaver,information.student_loan].reduce((acc, curr) => acc + parseFloat(curr), 0) > 0) {
+    alert('Kiwisaver, child support, Student loan must be a sum less than 100 ')
+  } else {
+    onSubmit(information)
+  }
+
 };
 
 return (
@@ -482,31 +457,34 @@ return (
 <div className={'mui-box-container-form'} >
 <DialogTitle textAlign="center">Create New Account</DialogTitle>
 <DialogContent>
-<form onSubmit={(e) => e.preventDefault()}>
+<form onSubmit={handleSubmit(validateSubmit)}>
   <Stack
     sx={{
       minWidth: { xs: '300px', sm: '360px', md: '400px' },
       gap: '1.5rem',
+      h6: {color: 'red',padding: '0rem'}
+      
     }}
   >
     {columns.map((column) => (
+      <>
       <TextField
         key={column.accessorKey}
         label={column.header}
-        name={column.accessorKey}
-        onChange={(e) =>
-          setValues({ ...values, [e.target.name]: e.target.value })
-        }
+        {...register(column.accessorKey, { required: true,pattern: column.pattern })}
       />
+      {errors[column.accessorKey] && <h6>{column.helperText}</h6>}
+      </>
     ))}
   </Stack>
-</form>
-<div className='buttons-for-form'>
+  <div className='buttons-for-form'>
 <Button onClick={onClose}>Cancel</Button>
-<Button color="secondary" onClick={handleSubmit} variant="contained">
+<Button color="secondary" type="submit" variant="contained">
   Create New Account
 </Button>
 </div>
+</form>
+
 </DialogContent>
 
 </div></div>

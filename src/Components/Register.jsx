@@ -128,7 +128,7 @@ function RegisterForm() {
                 type="text"
                 placeholder="First Name..." 
                 value={firstName}
-                {...register("firstName", { required: true, pattern: /^[^/0-9 ]*$/ })}
+                {...register("firstName", { required: true, pattern: /^[A-Za-z]*$/ })}
             />{errors.firstName && <h6>First Name must be valid</h6>}
             <p>Last Name:</p>
               <input 
@@ -136,7 +136,7 @@ function RegisterForm() {
                 type="text"
                 placeholder="Last Name..." 
                 value={lastName}
-                {...register("lastName", { required: true, pattern: /^[^/0-9 ]*$/ })}
+                {...register("lastName", { required: true, pattern: /^[A-Za-z]*$/ })}
             />{errors.lastName && <h6>Last Name must be valid</h6>}
             <br></br>
         </div>
