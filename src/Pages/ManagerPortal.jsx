@@ -83,7 +83,7 @@ background-image: linear-gradient(45deg, transparent 20%, black 25%, transparent
                       linear-gradient(-45deg, transparent 20%, black 25%, transparent 25%),
                       linear-gradient(-45deg, transparent 75%, black 80%, transparent 0%),
                       radial-gradient(gray 2px, transparent 0);
-background-size: 900px 900px, 900px 900px;
+background-size: 600px 500px, 600px 500px;
 `
 
 const Layout = styled.div`
