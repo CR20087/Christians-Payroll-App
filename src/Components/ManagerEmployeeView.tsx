@@ -15,14 +15,33 @@ function EmployeeTable() {
 
   const validateCheck = useCallback(
     (cell) => {
-      
-      console.log(`${cell.id}\t${cell.column.columnDef.regex.test(cell.getValue())}`)
       return {
-        error: true,
-        helperText: cell.column.columnDef.helperText,
+        onBlur: (event) => {
+          if (event.target.value === "") {
+            console.log("String")
+            setValidationErrors(prevErrors => ({
+              ...prevErrors,
+              [cell.id]: `${cell.column.columnDef.header} is required`,
+            }));
+          } else if (!cell.column.columnDef.regex.test(event.target.value)) {
+            console.log('REGEX')
+            setValidationErrors(prevErrors => ({
+              ...prevErrors,
+              [cell.id]: cell.column.columnDef.helperText,
+            }));
+          } else {
+            setValidationErrors(prevErrors => {
+              const updatedErrors = { ...prevErrors };
+              delete updatedErrors[cell.id];
+              return updatedErrors;
+            });
+          }
+        },
+        error: !!validationErrors[cell.id],
+        helperText: validationErrors[cell.id],
       };
     },
-    [validationErrors],
+    [validationErrors]
   );
 
   const columns = useMemo(
