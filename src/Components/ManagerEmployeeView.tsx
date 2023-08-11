@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
 import { Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon, Save as SaveIcon } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
@@ -10,33 +10,29 @@ function EmployeeTable() {
   let params = useParams()
   const [data, setData] = useState({});
   const [change, setChange] = useState(false);
-  const [createModalOpen, setCreateModalOpen] = useState(false);
-  const [validationErrors, setValidationErrors] = useState({});
+  const [createModalOpen, setCreateModalOpen] = useState(false)
+  const [validationErrors, setValidationErrors] = useState({})
 
   const validateCheck = useCallback(
     (cell) => {
+      const handleBlur = (event) => {
+        const updatedValidationErrors = { ...validationErrors };
+
+        if (event.target.value === "") {
+          updatedValidationErrors[cell.id] = `${cell.column.columnDef.header} is required`;
+          console.log("STRING")
+        } else if (!cell.column.columnDef.regex.test(event.target.value)) {
+          updatedValidationErrors[cell.id] = cell.column.columnDef.helperText;
+          console.log("REGEX")
+        } else {
+          delete updatedValidationErrors[cell.id];
+        }
+
+        setValidationErrors(updatedValidationErrors);
+        console.log(updatedValidationErrors)
+      };
       return {
-        onBlur: (event) => {
-          if (event.target.value === "") {
-            console.log("String")
-            setValidationErrors(prevErrors => ({
-              ...prevErrors,
-              [cell.id]: `${cell.column.columnDef.header} is required`,
-            }));
-          } else if (!cell.column.columnDef.regex.test(event.target.value)) {
-            console.log('REGEX')
-            setValidationErrors(prevErrors => ({
-              ...prevErrors,
-              [cell.id]: cell.column.columnDef.helperText,
-            }));
-          } else {
-            setValidationErrors(prevErrors => {
-              const updatedErrors = { ...prevErrors };
-              delete updatedErrors[cell.id];
-              return updatedErrors;
-            });
-          }
-        },
+        onBlur: handleBlur,
         error: !!validationErrors[cell.id],
         helperText: validationErrors[cell.id],
       };
@@ -44,8 +40,13 @@ function EmployeeTable() {
     [validationErrors]
   );
 
-  const columns = useMemo(
-    () => [
+  useEffect(() => {
+    // This will run after each render when validationErrors changes
+    console.log('Validation errors updated:', validationErrors);
+  }, [validationErrors]);
+
+  const columns = 
+    [
       {
         accessorKey: 'first_name',
         header: 'First Name',
@@ -228,9 +229,8 @@ function EmployeeTable() {
         enableEditing: false,
         
       }
-    ],
-    [],
-  );
+    ]
+  ;
 
   const columns2 = useMemo(
     () => [
@@ -348,8 +348,6 @@ const handleCancelRowEdits = () => {
 };
 
 const handleSaveRow = async ({ exitEditingMode, row, values }) => {
-  //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
-  console.log(values)
   if (!Object.keys(validationErrors).length) {
   const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/update/'${values.bank_account}'/'${values.benefits}'/'${values.child_support}'/'${values.email}'/'${values.final_pay}'/'${values.first_name}'/'${values.kiwisaver}'/'${values.last_name}'/'${values.one_off_deduction}'/'${values.pay_rate}'/'${values.phone}'/'${values.student_loan}'/'${values.tax_credit}'/'${values.tax_rate}'/'${values.username}'/'${row.original.username}'/'${values.weekly_allowance}'/'${values.weekly_allowance_nontax}'/'${values.ird_number}'/'${values.tax_code}'`)
   const data = await res.json()
@@ -490,7 +488,7 @@ return (
       <TextField
         key={column.accessorKey}
         label={column.header}
-        {...register(column.accessorKey, { required: true,pattern: column.pattern })}
+        {...register(column.accessorKey, { required: true,pattern: column.regex })}
       />
       {errors[column.accessorKey] && <h6>{column.helperText}</h6>}
       </>

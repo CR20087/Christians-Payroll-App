@@ -5,17 +5,17 @@ import { useEffect } from "react";
 function ManagerSettingsForm() {
     const [isLoading, setIsLoading] = useState(false)
     const [inputValues, setInputValues] = useState({
-        userName: '',og_userName: '',
-        password: '',og_password: '',
-        email: '',og_email: '',
-        lastName: '',og_lastName: '',
-        firstName: '',og_firstName: '',
-        address: '',og_address: '',
-        suburb: '',og_suburb: '',
-        contactMethod: '',og_contactMethod: '',
-        businessName: '',og_businessName: '',
-        entityName: '',og_entityName: '',
-        phone: '',og_phone: ''
+        userName: '',
+        password: '',
+        email: '',
+        lastName: '',
+        firstName: '',
+        address: '',
+        suburb: '',
+        contactMethod: '',
+        businessName: '',
+        entityName: '',
+        phone: '',
       });
     const [isAuthorised, setIsAuthorised] = useState("")
     const [errors, setErrors] = useState({});
@@ -29,17 +29,17 @@ function ManagerSettingsForm() {
 
             console.log(data)
 
-            setInputValue('userName',data.userName); setInputValue('og_userName',data.userName);  
-            setInputValue('password',data.password); setInputValue('og_password',data.password);  
-            setInputValue('email',data.email); setInputValue('og_email',data.email);  
-            setInputValue('lastName',data.lastName); setInputValue('og_lastName',data.lastName);  
-            setInputValue('firstName',data.firstName); setInputValue('og_firstName',data.firstName);  
-            setInputValue('address',data.address); setInputValue('og_address',data.address);  
-            setInputValue('suburb',data.suburb); setInputValue('og_suburb',data.suburb);  
-            setInputValue('contactMethod',data.contactMethod); setInputValue('og_contactMethod',data.contactMethod);  
-            setInputValue('businessName',data.businessName); setInputValue('og_businessName',data.businessName);  
-            setInputValue('entityName',data.entityName); setInputValue('og_entityName',data.entityName);  
-            setInputValue('phone',data.phone); setInputValue('og_phone',data.phone); 
+            setInputValue('userName',data.userName)  
+            setInputValue('password',data.password)  
+            setInputValue('email',data.email)  
+            setInputValue('lastName',data.lastName)  
+            setInputValue('firstName',data.firstName)  
+            setInputValue('address',data.address)  
+            setInputValue('suburb',data.suburb)  
+            setInputValue('contactMethod',data.contactMethod)  
+            setInputValue('businessName',data.businessName)  
+            setInputValue('entityName',data.entityName)  
+            setInputValue('phone',data.phone) 
         } 
             
         fetchData()
@@ -49,20 +49,8 @@ function ManagerSettingsForm() {
     const InfoLog = async (information) => {
         setIsLoading(true)
        
-        if ((getInputValue('userName') !== getInputValue('og_userName'))
-        || (getInputValue('password') !== getInputValue('og_password'))
-        || (getInputValue('lastName') !== getInputValue('og_lastName'))
-        || (getInputValue('firstName') !== getInputValue('og_firstName'))
-        || (getInputValue('email') !== getInputValue('og_email'))
-        || (getInputValue('address') !== getInputValue('og_address'))
-        || (getInputValue('suburb') !== getInputValue('og_suburb'))
-        || (getInputValue('contactMethod') !== getInputValue('og_contactMethod'))
-        || (getInputValue('businessName') !== getInputValue('og_businessName'))
-        || (getInputValue('entityName') !== getInputValue('og_entityName'))
-        || (getInputValue('phone') !== getInputValue('og_phone')) ) {
-            console.log("Change detected")
             const res = await fetch(
-                `https://cpa-flask.azurewebsites.net/settings/manager/update/${sessionStorage.getItem('userID')}/${getInputValue('userName')}/${getInputValue('password')}/${getInputValue('firstName')}/${getInputValue('lastName')}/${getInputValue('email')}/${getInputValue('phone')}/${getInputValue('address')}/${getInputValue('suburb')}/${getInputValue('contactMethod')}/${getInputValue('businessName')}/${getInputValue('entityName')}`
+                `https://cpa-flask.azurewebsites.net/settings/manager/update/'${sessionStorage.getItem('userID')}'/'${getInputValue('userName')}'/'${getInputValue('password')}'/'${getInputValue('firstName')}'/'${getInputValue('lastName')}'/'${getInputValue('email')}'/'${getInputValue('phone')}'/'${getInputValue('address')}'/'${getInputValue('suburb')}'/'${getInputValue('contactMethod')}'/'${getInputValue('businessName')}'/'${getInputValue('entityName')}'`
                 )
             const data = await res.json()
 
@@ -73,10 +61,6 @@ function ManagerSettingsForm() {
             } else {
                 alert(`An error occured please check information and try again\n\n\n\n${data.error}`)
                 setIsAuthorised('border-red')
-            }
-            
-            } else {
-                setIsAuthorised('border-green')
             }
 
         setIsLoading(false)
@@ -96,47 +80,95 @@ function ManagerSettingsForm() {
       
       const handleSubmit = (event) => {
         event.preventDefault();
-      
+        
+        console.log(event)
         const newErrors = {};
-      
-            if (!inputValues.userName) {
+       
+          if (!event.target[0].value) {
             newErrors.userName = 'Username cannot be empty';
-            }
-            if (!inputValues.password) {
-            newErrors.password = 'Password cannot be empty';
-            }
-            if (!inputValues.firstName) {
-                newErrors.firstName = 'First name cannot be empty';
-            }
-            if (!inputValues.lastName) {
-                newErrors.lastName = 'Last name cannot be empty';
-            }
-          if (!inputValues.email) {
-            newErrors.email = 'Email cannot be empty';
           } else {
-            const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-            if (!emailPattern.test(inputValues.email)) {
-              newErrors.email = 'Invalid email address';
+            const userNamePattern = /^[a-zA-Z0-9]{1,30}$/
+            if (!userNamePattern.test(event.target[0].value)) {
+              newErrors.userName = 'Username must be valid';
                 }
             }
-          if (!inputValues.phone) {
-            newErrors.phone = 'Phone cannot be empty';
-          }
-          if (!inputValues.contactMethod) {
+            if (!event.target[1].value) {
+              newErrors.password = 'Password cannot be empty';
+              } else {
+                const passwordPattern = /^[a-zA-Z0-9 ]{1,30}$/
+                if (!passwordPattern.test(event.target[1].value)) {
+                  newErrors.password = 'Password valid';
+                    }
+                }
+                if (!event.target[2].value) {
+                  newErrors.firstName = 'First name cannot be empty';
+              } else {
+                const firstNamePattern = /^[A-Za-z]*$/
+                if (!firstNamePattern.test(event.target[2].value)) {
+                  newErrors.firstName = 'First name must be valid';
+                    }
+                }
+              if (!event.target[3].value) {
+                  newErrors.lastName = 'Last name cannot be empty';
+              } else {
+                const lastNamePattern = /^[A-Za-z]*$/
+                if (!lastNamePattern.test(event.target[3].value)) {
+                  newErrors.lastName = 'Last name must be valid';
+                    }
+                }
+            if (!event.target[4].value) {
+              newErrors.email = 'Email cannot be empty';
+            } else {
+              const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+              if (!emailPattern.test(event.target[4].value)) {
+                newErrors.email = 'Email address must be valid';
+                  }
+              }
+            if (!event.target[5].value) {
+              newErrors.phone = 'Phone cannot be empty';
+            } else {
+              const phonePattern = /^[+#]?\d{1,13}$/
+              if (!phonePattern.test(event.target[5].value)) {
+                newErrors.phone = 'Phone must be valid';
+                  }
+              }
+          if (!event.target[6].value) {
             newErrors.contactMethod = 'Contact method cannot be empty';
           }
-          if (!inputValues.businessName) {
+          if (!event.target[7].value) {
+                newErrors.address = 'Address cannot be empty';
+              } else {
+                const addressPattern = /^[a-zA-Z0-9 ]*$/
+                if (!addressPattern.test(event.target[7].value)) {
+                  newErrors.address = 'Address must be valid';
+                    }
+                }
+          if (!event.target[8].value) {
             newErrors.businessName = 'Business name cannot be empty';
-          }
-          if (!inputValues.entityName) {
+          } else {
+            const businessNamePattern = /^[a-zA-Z0-9 ]*$/
+            if (!businessNamePattern.test(event.target[8].value)) {
+              newErrors.businessName = 'Business name must be valid';
+                }
+              }
+              if (!event.target[9].value) {
+                newErrors.suburb = 'Business Suburb/City cannot be empty';
+              } else {
+                const suburbPattern = /^[a-zA-Z ]*$/
+                if (!suburbPattern.test(event.target[9].value)) {
+                  newErrors.suburb = 'Business suburb must be valid';
+                    }
+                }
+          if (!event.target[10].value) {
             newErrors.entityName = 'Entity name cannot be empty';
-          }
-          if (!inputValues.address) {
-            newErrors.address = 'Address cannot be empty';
-          }
-          if (!inputValues.suburb) {
-            newErrors.suburb = 'Business Suburb/City cannot be empty';
-          }
+          } else {
+            const entityNamePattern = /^[a-zA-Z0-9 ]*$/
+            if (!entityNamePattern.test(event.target[10].value)) {
+              newErrors.entityName = 'Entity name must be valid';
+                }
+              }
+              
+                
       
         setErrors(newErrors);
       
@@ -150,7 +182,7 @@ function ManagerSettingsForm() {
     
   return (
     <Form onSubmit={handleSubmit} >        
-         <div className={isAuthorised}>
+         <div className={isAuthorised} id="field-align-colour">
             <h1>Manager Settings</h1>
             <p>User Name:</p>
             <input 
@@ -232,7 +264,7 @@ function ManagerSettingsForm() {
             />{errors.entityName && <h6>{errors.entityName}</h6>}
             <br></br><br></br>
             </div>
-            <div><button type="submit">Save</button></div>
+            <button type="submit">Save</button>
             {isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> }
     </Form>
   )
@@ -241,10 +273,10 @@ const Form = styled.form`
     display: flex;
     justify-self: center;
     width: 40%;
+    flex-direction: column;
     height: fit-content;
     background: #dfdddd;
     border: 4px solid black;
-    justify-content: center;
     align-self: center;
     h6 {
         color: red;
@@ -275,10 +307,16 @@ const Form = styled.form`
         text-align: center;
     }
     input {
-        width: 100%;
+        width: 50%;
+        min-width: fit-content;
+        max-width: 100%;
+        text-align: center;
     }
     select {
-        width: 100%;
+        width: 50%;
+        min-width: fit-content;
+        max-width: 100%;
+        text-align: center;
     }
     h1 {
         text-align:center;
@@ -290,7 +328,15 @@ const Form = styled.form`
   .Hide {
     visibility: hidden;
   }
+ #field-align-colour {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ }
 
+ button {
+  width: 3rem;
+  align-self: center}
 `
 
 const Loading = styled.div `

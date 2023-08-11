@@ -2,18 +2,19 @@ import { useState } from "react"
 import styled from "styled-components"
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+
 function EmployeeSettingsForm() {
     const [isLoading, setIsLoading] = useState(false)
     const [inputValues, setInputValues] = useState({
-        userName: '',og_userName: '',
-        password: '',og_password: '',
-        email: '',og_email: '',
-        lastName: '',og_lastName: '',
-        firstName: '',og_firstName: '',
-        address: '',og_address: '',
-        suburb: '',og_suburb: '',
-        postCode: '',og_postCode: '',
-        phone: '',og_phone: ''
+        userName: '',
+        password: '',
+        email: '',
+        lastName: '',
+        firstName: '',
+        address: '',
+        suburb: '',
+        postCode: '',
+        phone: ''
       });
     const [isAuthorised, setIsAuthorised] = useState("")
     const [errors, setErrors] = useState({});
@@ -27,15 +28,15 @@ function EmployeeSettingsForm() {
 
             console.log(data)
 
-            setInputValue('userName',data.userName); setInputValue('og_userName',data.userName);  
-            setInputValue('password',data.password); setInputValue('og_password',data.password);  
-            setInputValue('email',data.email); setInputValue('og_email',data.email);  
-            setInputValue('lastName',data.lastName); setInputValue('og_lastName',data.lastName);  
-            setInputValue('firstName',data.firstName); setInputValue('og_firstName',data.firstName);  
-            setInputValue('address',data.address); setInputValue('og_address',data.address);  
-            setInputValue('suburb',data.suburb); setInputValue('og_suburb',data.suburb);  
-            setInputValue('postCode',data.postCode); setInputValue('og_postCode',data.postCode);    
-            setInputValue('phone',data.phone); setInputValue('og_phone',data.phone); 
+            setInputValue('userName',data.userName);   
+            setInputValue('password',data.password);   
+            setInputValue('email',data.email);   
+            setInputValue('lastName',data.lastName);   
+            setInputValue('firstName',data.firstName);   
+            setInputValue('address',data.address);   
+            setInputValue('suburb',data.suburb);   
+            setInputValue('postCode',data.postCode);     
+            setInputValue('phone',data.phone);  
         } 
             
         fetchData()
@@ -45,18 +46,9 @@ function EmployeeSettingsForm() {
     const InfoLog = async (information) => {
         setIsLoading(true)
        
-        if ((getInputValue('userName') !== getInputValue('og_userName'))
-        || (getInputValue('password') !== getInputValue('og_password'))
-        || (getInputValue('lastName') !== getInputValue('og_lastName'))
-        || (getInputValue('firstName') !== getInputValue('og_firstName'))
-        || (getInputValue('email') !== getInputValue('og_email'))
-        || (getInputValue('address') !== getInputValue('og_address'))
-        || (getInputValue('suburb') !== getInputValue('og_suburb'))
-        || (getInputValue('postCode') !== getInputValue('og_postcode'))
-        || (getInputValue('phone') !== getInputValue('og_phone')) ) {
             console.log("Change detected")
             const res = await fetch(
-                `https://cpa-flask.azurewebsites.net/settings/employee/update/${sessionStorage.getItem('userID')}/${getInputValue('userName')}/${getInputValue('password')}/${getInputValue('firstName')}/${getInputValue('lastName')}/${getInputValue('email')}/${getInputValue('phone')}/${getInputValue('address')}/${getInputValue('suburb')}/${getInputValue('postCode')}`
+                `https://cpa-flask.azurewebsites.net/settings/employee/update/'${sessionStorage.getItem('userID')}'/'${getInputValue('userName')}'/'${getInputValue('password')}'/'${getInputValue('firstName')}'/'${getInputValue('lastName')}'/'${getInputValue('email')}'/'${getInputValue('phone')}'/'${getInputValue('address')}'/'${getInputValue('suburb')}'/'${getInputValue('postCode')}'`
                 )
             const data = await res.json()
 
@@ -67,10 +59,6 @@ function EmployeeSettingsForm() {
             } else {
                 alert(`An error occured please check information and try again\n\n\n\n${data.error}`)
                 setIsAuthorised('border-red')
-            }
-            
-            } else {
-                setIsAuthorised('border-green')
             }
 
         setIsLoading(false)
@@ -89,41 +77,82 @@ function EmployeeSettingsForm() {
       };
       
       const handleSubmit = (event) => {
-        event.preventDefault();
-      
+        event.preventDefault()
+
+        console.log(event)
         const newErrors = {};
       
-            if (!inputValues.userName) {
-            newErrors.userName = 'Username cannot be empty';
-            }
-            if (!inputValues.password) {
-            newErrors.password = 'Password cannot be empty';
-            }
-            if (!inputValues.firstName) {
-                newErrors.firstName = 'First name cannot be empty';
-            }
-            if (!inputValues.lastName) {
-                newErrors.lastName = 'Last name cannot be empty';
-            }
-          if (!inputValues.email) {
-            newErrors.email = 'Email cannot be empty';
+        if (!event.target[0].value) {
+          newErrors.userName = 'Username cannot be empty';
           } else {
-            const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
-            if (!emailPattern.test(inputValues.email)) {
-              newErrors.email = 'Invalid email address';
+            const userNamePattern = /^[a-zA-Z0-9]{1,30}$/
+            if (!userNamePattern.test(event.target[0].value)) {
+              newErrors.userName = 'Username must be valid';
                 }
             }
-          if (!inputValues.phone) {
-            newErrors.phone = 'Phone cannot be empty';
+          if (!event.target[1].value) {
+          newErrors.password = 'Password cannot be empty';
+          } else {
+            const passwordPattern = /^[a-zA-Z0-9 ]{1,30}$/
+            if (!passwordPattern.test(event.target[1].value)) {
+              newErrors.password = 'Password valid';
+                }
+            }
+          if (!event.target[2].value) {
+              newErrors.firstName = 'First name cannot be empty';
+          } else {
+            const firstNamePattern = /^[A-Za-z]*$/
+            if (!firstNamePattern.test(event.target[2].value)) {
+              newErrors.firstName = 'First name must be valid';
+                }
+            }
+          if (!event.target[3].value) {
+              newErrors.lastName = 'Last name cannot be empty';
+          } else {
+            const lastNamePattern = /^[A-Za-z]*$/
+            if (!lastNamePattern.test(event.target[3].value)) {
+              newErrors.lastName = 'Last name must be valid';
+                }
+            }
+        if (!event.target[4].value) {
+          newErrors.email = 'Email cannot be empty';
+        } else {
+          const emailPattern = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i;
+          if (!emailPattern.test(event.target[4].value)) {
+            newErrors.email = 'Email address must be valid';
+              }
           }
-          if (!inputValues.postCode) {
-            newErrors.postCode = 'Post Code cannot be empty';
+        if (!event.target[5].value) {
+          newErrors.phone = 'Phone cannot be empty';
+        } else {
+          const phonePattern = /^[+#]\d{1,13}$/
+          if (!phonePattern.test(event.target[5].value)) {
+            newErrors.phone = 'Phone must be valid';
+              }
           }
-          if (!inputValues.address) {
-            newErrors.address = 'Address cannot be empty';
+        if (!event.target[6].value) {
+          newErrors.address = 'Address cannot be empty';
+        } else {
+          const addressPattern = /^[a-zA-Z0-9 ]*$/
+          if (!addressPattern.test(event.target[6].value)) {
+            newErrors.address = 'Address must be valid';
+              }
           }
-          if (!inputValues.suburb) {
-            newErrors.suburb = 'Business Suburb/City cannot be empty';
+        if (!event.target[7].value) {
+          newErrors.postCode = 'Post Code cannot be empty';
+        } else {
+          const postCodePattern = /^\d{4}$/
+          if (!postCodePattern.test(event.target[7].value)) {
+            newErrors.postCode = 'Post code must be valid';
+              }
+          }
+        if (!event.target[8].value) {
+          newErrors.suburb = 'Business Suburb/City cannot be empty';
+        } else {
+          const suburbPattern = /^[a-zA-Z]*$/
+          if (!suburbPattern.test(event.target[8].value)) {
+            newErrors.suburb = 'Business suburb must be valid';
+              }
           }
       
         setErrors(newErrors);
@@ -138,7 +167,7 @@ function EmployeeSettingsForm() {
     
   return (
     <Form onSubmit={handleSubmit} >        
-         <div className={isAuthorised}>
+         <div className={isAuthorised} id="field-align-colour">
             <h1>Employee Settings</h1>
             <p>User Name:</p>
             <input 
@@ -214,10 +243,10 @@ const Form = styled.form`
     display: flex;
     justify-self: center;
     width: 40%;
+    flex-direction: column;
     height: fit-content;
     background: #dfdddd;
     border: 4px solid black;
-    justify-content: center;
     align-self: center;
     h6 {
         color: red;
@@ -248,14 +277,20 @@ const Form = styled.form`
         text-align: center;
     }
     input {
-        width: 100%;
+        width: 50%;
+        min-width: fit-content;
+        max-width: 100%;
+        text-align: center;
     }
     select {
-        width: 100%;
+        width: 50%;
+        min-width: fit-content;
+        max-width: 100%;
+        text-align: center;
     }
     h1 {
-        font-weight:400;
         text-align:center;
+        font-weight:400;
     }
     .Show {
       visibility: visible;
@@ -263,7 +298,15 @@ const Form = styled.form`
   .Hide {
     visibility: hidden;
   }
+ #field-align-colour {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+ }
 
+ button {
+  width: 3rem;
+  align-self: center}
 `
 
 const Loading = styled.div `
