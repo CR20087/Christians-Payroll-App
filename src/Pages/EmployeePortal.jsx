@@ -51,19 +51,20 @@ function EmployeePortal() {
       <IoMdTime></IoMdTime>
       <h1>Timesheets</h1>
       <hr></hr>
-      <p>Small description</p>
+      <p>View your current timesheet
+        <br></br>Add, Change, Edit your current timesheet Entrys</p>
       </Bubble>
       <Bubble to={`/Portal/employee/${params.userID}/leave`}>
       <IoMdCalendar></IoMdCalendar>
       <h1>Leave</h1>
       <hr></hr>
-      <p>Small description</p>
+      <p>Add, edit, delete your upcoming leave requests<br></br>See the approval status</p>
       </Bubble>
       <Bubble to={`/Portal/employee/${params.userID}/settings`} className="centered">
       <IoMdSettings></IoMdSettings>
       <h1>Settings</h1>
       <hr></hr>
-      <p>Small description</p>
+      <p>Edit your settings</p>
       </Bubble>
     </Layout>
     </>
@@ -85,10 +86,15 @@ const Layout = styled.div`
 
 `
 const Bubble = styled(Link)`
+display: flex;
+justify-content: center;
+align-items: center;
+flex-direction: column;
 text-decoration: none;
 color: #00060b;
 height: 37vh;
 width: 37vw;
+align-items: center;
 max-width: 53vh;
 border-radius: 30px;
 background: #a6b8c7;

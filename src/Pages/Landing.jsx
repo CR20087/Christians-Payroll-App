@@ -44,7 +44,7 @@ function Landing() {
                         <TextBox>
                             <p>Christian's Payroll App's original logo required improving... There was no pre-determined concepts related to colour scheme, nor image selection.</p>
                         </TextBox>
-                        <img src="./Christian-Payroll-App-Logo-2.png"/>
+                        <img src="./Christian-Payroll-App-Logo-2.png" alt=""/>
                         </div>
                         
                         <div>
@@ -52,12 +52,22 @@ function Landing() {
                         <TextBox>
                             <p>Our current logo  has been designed with the correct concepts. The orange text and border are matching and are the warm (opposite) colour to the blue background. Our image represents CPA (Christian's Payroll App), making they design more complex. </p>
                         </TextBox>
-                        <img src="./Christian-Payroll-App-Logo-3.png"/>
+                        <img src="./Christian-Payroll-App-Logo-3.png" alt=""/>
                         </div>
                     </LogoDesign>
                     <MaterialReactTable>
-                        <img src="https://www.material-react-table.com/mrt_logo.svg"/>
+                        <img src="https://www.material-react-table.com/mrt_logo.svg" alt=""/>
                         <h2>Material React Table</h2>
+                        <TextBox className="large-textbox">
+                            Throughout Christian's Payroll app, I used Material React Table to display the data to users, and allow it to be editable.
+                            Material React Table has many customizable components available. From Styling to whole new functionalities!
+                            <br></br><br></br>
+                            Material React Table is easy to use and a singular component Christian's Payroll App could embrace. Thus is it used for majourity
+                            of menus and view.
+                            <br></br><br></br>
+                            An example of the usefullness of this component is the abilty to add custom action. Christian's Payroll App has used this feature in
+                            multiple pages, such as the Manager leave request page. Where actions to approve or decline the request are available.
+                        </TextBox>
                     </MaterialReactTable>
                 </DualDetail>
             </Info>
@@ -76,8 +86,6 @@ const DualDetail = styled.div`
 display: flex;
 justify-items:center;
 width:100%;
-min-height: 40rem;
-height: fit-content;
 `
 const LogoDesign = styled.div`
 div { margin-left: 18%; }
@@ -87,6 +95,8 @@ flex-direction: column;
 gap: 5rem;
 background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #0b3048 3%, #0b3048 98.5%, rgba(255,255,255,0) 100%);
 width: 50%;
+min-height: fit-content;
+height: inherit;
 
 
 img {
@@ -98,10 +108,16 @@ const MaterialReactTable = styled.div`
 padding-top:2rem;
 width: 50%;
 background: linear-gradient(180deg, rgba(255,255,255,0) 0%, #0a3756 3%, #0a3756 98.5%, rgba(255,255,255,0) 100%);
+min-height: fit-content;
+height: inherit;
 
 img {
     width: 10%;
     min-width: 6rem;
+}
+
+.large-textbox {
+    width: 80%;
 }
 `
 const Logo = styled(Link)`

@@ -50,25 +50,31 @@ function ManagerPortal() {
         <IoMdCard></IoMdCard>
         <h1>Pay Run</h1>
         <hr></hr>
-        <p>Small description</p>
+        <p>View the Projected next Payrun Or View past employee payruns that are yet to be paid
+          <br></br>Either Pay all employees or Select employees
+        </p>
       </Bubble>
       <Bubble to={`/Portal/manager/${params.userID}/employee-timesheets`}>
       <IoMdTime></IoMdTime>
       <h1>Timesheets</h1>
       <hr></hr>
-      <p>Small description</p>
+      <p>View and track active employee timesheets</p>
       </Bubble>
       <Bubble to={`/Portal/manager/${params.userID}/leave`}>
       <IoMdCalendar></IoMdCalendar>
       <h1>Leave</h1>
       <hr></hr>
-      <p>Small description</p>
+      <p>View and Manage current/upcoming leave requests
+        <br></br>Accept or Decline requests
+      </p>
       </Bubble>
       <Bubble to={`/Portal/manager/${params.userID}/employee-view`}>
       <IoMdPerson></IoMdPerson>
       <h1>Employee Settings</h1>
       <hr></hr>
-      <p>Small description</p>
+      <p>View and Manage employee accounts
+        <br></br>Add new accounts, edit current accounts
+        </p>
       </Bubble>
     </Layout>
     </>
