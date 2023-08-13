@@ -130,7 +130,7 @@ def pdf_generator_from_template(payslip_data):
     
 #    Render the template with the context variables
 
-    config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
+    #config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
 
         # Load the HTML template using Jinja2
     template_dir = os.path.join(os.getcwd(), 'src','Flask','templates')
@@ -148,7 +148,7 @@ def pdf_generator_from_template(payslip_data):
 
         # Generate the PDF using pdfkit
     pdf_file = './src/Flask/Payslip_Generator/Pdf_Generator/Generated_PDF.pdf'
-    pdfkit.from_file(temp_html_file, pdf_file, options={"enable-local-file-access": ""}, css='./src/Flask/static/PaySliptemplate.css',configuration=config)
+    pdfkit.from_file(temp_html_file, pdf_file, options={"enable-local-file-access": ""}, css='./src/Flask/static/PaySliptemplate.css')#,configuration=config)
 
         # Clean up temporary HTML file
     os.remove(temp_html_file)
