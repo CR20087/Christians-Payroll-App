@@ -20,7 +20,8 @@ function Login() {
  const Page = styled.div`
   display: grid;
   background: #0b3048;
-  min-height:fit-content + 5rem;
+  min-height: 100%;
+  height: fit-content;
 
 p {
   font-family: sans-serif;

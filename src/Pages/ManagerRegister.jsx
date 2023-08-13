@@ -20,6 +20,8 @@ function ManagerRegister() {
  const Page = styled.div`
   display: grid;
   background: grey;
+  min-height: 100%;
+  height: fit-content;
 p {
   font-family: sans-serif;
   font-size: 20pt;
