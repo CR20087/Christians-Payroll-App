@@ -1,17 +1,24 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import { CiLock } from "react-icons/ci";
-
+import Footer from "../Components/Footer";
 function Landing() {
 
     return (
-        <body>
+        <>
             <Nav>
                 <Logo to={"/"}>
                     <img src="./Christian-Payroll-App-Logo.svg" alt="logo" />
                     <p>Christian's Payroll App</p>
                 </Logo>
-                <Hyperlinks> 
+                <Hyperlinks>
+                    <Register>
+                        Register
+                        <div className="hover-content">
+                        <li><a href="/Register/manager/1">Manager</a></li>
+                        <li><a href="/Register/1">Employee</a></li>
+                        </div>
+                    </Register>
                     <Support to={"/Support"}>Support & Doccumentation</Support>
                     <LoginButton to={"/Login"}>Login</LoginButton>
                 </Hyperlinks>
@@ -70,17 +77,11 @@ function Landing() {
                         </TextBox>
                     </MaterialReactTable>
                 </DualDetail>
+                <Footer/>
             </Info>
-        </body>
+        </>
     )
 }
-
-
-const Nav = styled.div`
-padding: 1.5rem;
-background: linear-gradient(90deg, rgba(255,255,255,1) 6%, #0b3048 80%);
-height: 100pt;
-`
 
 const DualDetail = styled.div`
 display: flex;
@@ -120,6 +121,12 @@ img {
     width: 80%;
 }
 `
+
+const Nav = styled.div`
+padding: 1.5rem;
+background: linear-gradient(90deg, rgba(255,255,255,1) 6%, #0b3048 80%);
+height: 100pt;
+`
 const Logo = styled(Link)`
 display: flex;
 text-decoration: none;
@@ -128,20 +135,22 @@ font-weight: 500;
 font-family: 'Rockwell';
 color: #06151f;
 width: 30%;
+height: 8rem;
 float: left;
 font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
 p {
 padding-top: 1rem;
+
 }
 `
-
 const Hyperlinks = styled.div`
 padding-top: 2.5rem;
 display: flex;
 justify-content: space-between;
 font-size: 1rem;
-width: 30%;
+width: 40%;
 float: right;
+height: fit-content;
 p {
     text-align: center;
 }
@@ -154,6 +163,7 @@ text-decoration: none;
 font-family: 'Comic-Sans';
 color: #313131;
 background: white;
+box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.7);
 border: 2px solid black;
 margin-right: 2rem;
 font-weight: 600;
@@ -174,6 +184,7 @@ const Support = styled(Link)`
     font-family: 'Comic-Sans';
     font-weight: 400;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    height: fit-content;
 `
 
 const Payslips = styled.div`
@@ -194,6 +205,37 @@ const TextBox = styled.div`
     word-break: break-word;
     width: 30%;
     text-align: left;
+`
+
+const Register = styled.div`
+     padding-top: 1rem;
+    text-decoration: none;
+    color: white;
+    font-family: 'Comic-Sans';
+    font-weight: 400;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    height: fit-content;
+
+    .hover-content {
+        padding-top: 1rem;
+        display: none;
+        position: absolute;
+        flex-direction: column;
+        gap: 1rem;
+        z-index: 1;
+        height: fit-content;
+        
+        a {
+            color: white;
+            text-decoration: none;
+        }
+    }
+    :hover {
+        .hover-content {
+            display: flex;
+            
+        }
+    }
 `
 
 const Info = styled.div`
