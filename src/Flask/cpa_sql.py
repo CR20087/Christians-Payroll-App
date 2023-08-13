@@ -50,6 +50,8 @@ def register_account(userName,firstName,lastName,email,address,suburb,postCode,p
       ,[address_2]
       ,[post_code]
       ,[phone]) VALUES ({userName},{firstName},{lastName},{email},{address},{suburb},{postCode},{phone})""")
+        
+        cur.execute(f"""Insert into leave_details(username) VALUES ({userName})""")
         cur.commit()
     except Exception as e:
         cur.close()
@@ -823,14 +825,30 @@ def get_payslip_leave_entrys(period_end,username):
     results = cur.fetchall()
     return results
 
-def exit_payrun_update(id):
+def exit_payrun_update(id, bal,username):
     cur = init()
     cur.execute(f"""Select [pay_period_start],[pay_period_end] FROM payslips WHERE payslip_id = {id}""")
 
     period = cur.fetchone()
 
-    cur.execute(f"""UPDATE timesheet_entry SET completed = 'True' WHERE date BETWEEN '{period[0].isoformat()}' AND '{period[1].isoformat()}'""")
+    cur.execute(f"""UPDATE timesheet_entry SET completed = 'True' WHERE username = '{username}' AND date BETWEEN '{period[0].isoformat()}' AND '{period[1].isoformat()}'""")
+
+    cur.execute(f"""SELECT 
+                FORMAT(AVG(CAST(total_hours_worked AS DECIMAL(7, 3)))*(CAST(leave_balance as decimal(18,2))), '0.00') AS avg_hours       
+            FROM timesheet
+            INNER JOIN leave_details on timesheet.username = leave_details.username
+            WHERE timesheet.username = '{username}'
+            GROUP BY timesheet.username,leave_balance """)
+    
+    hours_bal = cur.fetchone() 
+
+    cur.execute(f"""UPDATE leave_details SET
+                    leave_balance = {bal},
+                    leave_balance_hours = {hours_bal[0]}
+                    Where username = '{username}'""")
+    
     cur.commit()
+    cur.close()
 
 def new_manager_employee(password,bank_account,benefits,child_support,final_pay,kiwisaver,one_off_deduction,pay_rate,student_loan,tax_credit,tax_rate,username,weekly_allowance,weekly_allowance_nontax,ird_number,tax_code,manager):
     cur = init()

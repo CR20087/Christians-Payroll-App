@@ -28,4 +28,4 @@ def Payslip_Script(id):
 
     Email_Sender.email_sender(payslip_data[0],payslip_data[18],recipient,manager)   
 
-    cpa_sql.exit_payrun_update(id)
+    cpa_sql.exit_payrun_update(id,payslip_data[23],payslip_data[0])
