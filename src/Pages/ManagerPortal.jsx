@@ -88,9 +88,7 @@ display:grid;
 background-image: linear-gradient(45deg, transparent 20%, black 25%, transparent 25%),
                       linear-gradient(-45deg, transparent 20%, black 25%, transparent 25%),
                       linear-gradient(-45deg, transparent 75%, black 80%, transparent 0%),
-                      radial-gradient(gray 2px, transparent 0);
-background-size: 600px 500px, 600px 500px;
-`
+                      radial-gradient(gray 2px, transparent 0);`
 
 const Layout = styled.div`
   display: grid;
