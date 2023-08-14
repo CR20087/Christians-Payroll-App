@@ -461,7 +461,8 @@ return acc;
 
 const validateSubmit = (information) => {
   
-  if ([information.child_support,information.kiwisaver,information.student_loan].reduce((acc, curr) => acc + parseFloat(curr), 0) > 0) {
+  if ([information.child_support,information.kiwisaver,information.student_loan].reduce((acc, curr) => acc + parseFloat(curr), 0) >= 100) {
+    console.log([information.child_support,information.kiwisaver,information.student_loan].reduce((acc, curr) => acc + parseFloat(curr), 0))
     alert('Kiwisaver, child support, Student loan must be a sum less than 100 ')
   } else {
     onSubmit(information)
