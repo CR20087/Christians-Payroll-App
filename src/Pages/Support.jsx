@@ -4,7 +4,7 @@ import Footer from "../Components/Footer"
 
 function Support() {
     return (
-        <>
+        <SupportDiv>
         <Nav>
             <Logo to={"/"}>
                 <img src="./Christian-Payroll-App-Logo.svg" alt="logo" />
@@ -22,7 +22,7 @@ function Support() {
                 <LoginButton to={"/Login"}>Login</LoginButton>
             </Hyperlinks>
         </Nav>
-        <Page>
+        <Page className="transition">
             <h1>Registering</h1>
             <Text>
                 <h4>Manager</h4>
@@ -66,9 +66,12 @@ function Support() {
                 <li>a-z | A-Z | 0-9 </li>
                 <li>Business name</li>
                 <li>a-z | A-Z | 0-9 </li>
-                
-                
+            </Text>
 
+            <h1>Login</h1>
+            <Text>
+                <h4>Manager</h4>
+                sds
             </Text>
 
             <h1>Timesheets</h1>
@@ -93,9 +96,23 @@ function Support() {
             <Footer/>
         </Page>
         
-        </>
+        </SupportDiv>
     )
 }
+
+const SupportDiv = styled.div`
+    .transition {
+        animation: fade 0.5s linear;
+    @keyframes fade {
+      0% {
+      opacity:0%
+      }
+      100% {
+      opacity: 100%;
+      }
+    }
+    }
+`
 
 const Nav = styled.div`
 padding: 1.5rem;
@@ -208,6 +225,7 @@ const Text = styled.div`
     word-wrap: break-word;
     word-break: break-word;
     width: 40%;
+    height: fit-content;
 
     li {
         display: inline-flex;

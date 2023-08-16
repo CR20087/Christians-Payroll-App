@@ -6,16 +6,31 @@ import LoginForm from "../Components/login";
 function Login() {
 
   return (
-    <Page>
-      <GoBack to={'/'} >
-        <BiArrowBack size={50}></BiArrowBack>
-        <p>Go Home</p>
-      </GoBack>
-      <LoginForm/>
-    </Page> 
+    <LoginDiv>
+      <Page className="transition">
+        <GoBack to={'/'} >
+          <BiArrowBack size={50}></BiArrowBack>
+          <p>Go Home</p>
+        </GoBack>
+        <LoginForm/>
+      </Page>
+    </LoginDiv>
   )  
 }
 
+const LoginDiv = styled.div`
+    .transition {
+        animation: fade 0.3s linear;
+        @keyframes fade {
+            0% {
+            opacity:80%
+            }
+            100% {
+            opacity: 100%;
+            }
+        }
+    }
+`
 
  const Page = styled.div`
   display: grid;

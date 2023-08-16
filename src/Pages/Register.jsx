@@ -6,16 +6,31 @@ import RegisterForm from "../Components/Register";
 function Register() {
 
   return (
-    <Page>
-      <GoBack to={'/'} >
-        <BiArrowBack size={50}></BiArrowBack>
-        <p>Go Home</p>
-      </GoBack>
-      <RegisterForm/>
-    </Page> 
+    <RegisterDiv>
+      <Page className="transition">
+        <GoBack to={'/'} >
+          <BiArrowBack size={50}></BiArrowBack>
+          <p>Go Home</p>
+        </GoBack>
+        <RegisterForm/>
+      </Page>
+    </RegisterDiv>
   )  
 }
 
+const RegisterDiv = styled.div`
+      .transition {
+        animation: fade 0.5s linear;
+        @keyframes fade {
+            0% {
+            opacity:0%
+            }
+            100% {
+            opacity: 100%;
+            }
+        }
+    }
+`
 
  const Page = styled.div`
   display: grid;

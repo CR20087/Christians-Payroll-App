@@ -5,7 +5,7 @@ import Footer from "../Components/Footer";
 function Landing() {
 
     return (
-        <>
+        <LandingDiv>
             <Nav>
                 <Logo to={"/"}>
                     <img src="./Christian-Payroll-App-Logo.svg" alt="logo" />
@@ -23,7 +23,7 @@ function Landing() {
                     <LoginButton to={"/Login"}>Login</LoginButton>
                 </Hyperlinks>
             </Nav>
-            <Info>
+            <Info className="transition">
                 <h1>Evolution of Christian's Payroll App</h1>
                 <Payslips>
                     <h4>Payslips</h4>
@@ -79,10 +79,23 @@ function Landing() {
                 </DualDetail>
                 <Footer/>
             </Info>
-        </>
+        </LandingDiv>
     )
 }
 
+const LandingDiv = styled.div`
+    .transition {
+        animation: fade 0.5s linear;
+        @keyframes fade {
+            0% {
+            opacity:0%
+            }
+            100% {
+            opacity: 100%;
+            }
+        }
+    }
+`
 const DualDetail = styled.div`
 display: flex;
 justify-items:center;
