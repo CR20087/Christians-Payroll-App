@@ -136,6 +136,7 @@ padding-top: 1rem;
 `
 const Hyperlinks = styled.div`
 padding-top: 2.5rem;
+gap: 1rem;
 display: flex;
 justify-content: space-between;
 font-size: 1rem;

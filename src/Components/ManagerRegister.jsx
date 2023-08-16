@@ -157,7 +157,7 @@ function ManagerRegisterForm() {
                 type="text"
                 placeholder="Phone..." 
                 value={phone}
-                {...register("phone", { required: true,pattern: /^[+#]\d{1,13}$/ })}
+                {...register("phone", { required: true,pattern: /^[+#]?\d{1,13}$/ })}
                 />{errors.phone && <h6>Phone must be valid</h6>}
             <p>Contact Method For Employees:</p>
             <select 
