@@ -21,7 +21,7 @@ function RegisterForm() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [formPage, setFormPage] = useState('1')
     let params = useParams()
-  
+    sessionStorage.setItem('role','employee')
 
     const FetchLogin = async (information) => {
 

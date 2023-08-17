@@ -22,7 +22,7 @@ function ManagerRegisterForm() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [formPage, setFormPage] = useState('1')
     let params = useParams()
-  
+    sessionStorage.setItem("role","manager")
 
     useEffect(() => {
       setFormPage(params.pagenum);
@@ -108,7 +108,7 @@ function ManagerRegisterForm() {
                 type="password"
                 placeholder="Enter Password" 
                 value={password}
-                {...register("password", { required: true,pattern: /^[a-zA-Z0-9^"'\/]*$/ })}
+                {...register("password", { required: true,pattern: /^[a-zA-Z0-9 ]*$/ })}
               />{errors.password && <h6>Password must be valid</h6>}
               <br></br>
         </div>

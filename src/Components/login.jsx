@@ -37,7 +37,7 @@ function LoginForm() {
         sessionStorage.clear()
         sessionStorage.setItem('authKey',authKey)
         sessionStorage.setItem('userID', userID)
-        sessionStorage.setItem('role',data.role)
+        
 
         const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/add/'${userID}'/'${authKey}'`)
         const auth_data = await res.json()
@@ -57,6 +57,7 @@ function LoginForm() {
         setIsAuthorised('border-red')
       } else if (data.setup === 'False') {
         setIsAuthorised('border-red')
+        sessionStorage.setItem('role',data.role)
         alert("Please see the Register menu as your account has not yet been registered, thankyou.")
     }
   

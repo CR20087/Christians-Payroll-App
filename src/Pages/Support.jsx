@@ -22,17 +22,17 @@ function Support() {
                 <LoginButton to={"/Login"}>Login</LoginButton>
             </Hyperlinks>
         </Nav>
-        <Page className="transition">
+        <Page className={`transition ${sessionStorage.getItem('role')}`}>
             <h1>Registering</h1>
             <Text>
-                <h4>Manager</h4>
+                <h4 className="manager-header">Manager</h4>
                 Managers get set-up by first registering. Completing the registration form
                 creates a login based on the username and password entered. Details such as
                 business name, suburb and entity name will be viewed on employee payslips. Personal details
                 such as first, last name and contact details will be available to employees in the payslip email.
                 Contact method may be selected as either email or phone number.
                 <br></br><br></br><br></br>
-                <h4>Employees</h4>
+                <h4 className="employee-header">Employees</h4>
                 Employees get registered by first receiving login details from their manager. If employees try to login
                 without first registerging their account, they will receive a notifcation explaining to register and 
                 activate their account by completing the registration form.<br></br>
@@ -46,7 +46,7 @@ function Support() {
                 <li>Username</li>
                 <li>a-z | A-Z | 0-9 | 1-30chars | no spaces</li>
                 <li>Password</li>
-                <li>a-z | A-Z | 0-9 | 1-30chars | no spaces</li>
+                <li>a-z | A-Z | 0-9 | 1-30chars</li>
                 <li>First name</li>
                 <li>a-z | A-Z | no spaces</li>
                 <li>Last Name</li>
@@ -70,28 +70,50 @@ function Support() {
 
             <h1>Login</h1>
             <Text>
-                <h4>Manager</h4>
-                sds
+                <h4 className="manager-header">Manager</h4>
+                Once a manager have created their account, their login will become functional immediately.
+                When entered manager's will be transported  to the Manager portal.
+                <br></br><br></br>
+                <h4 className="employee-header">Employee</h4>
+                If you have recentley received a login from your manager you will be required to register the account
+                before you can gain acces to your portal. To register, go to the <a href="/Register/1">Employee Register</a> page.
+                <br></br>
+                Once registered enter your login details and you will be granted access to your portal now. If issues persist, observe
+                the error returned when attempting to login, otherwise contatct your manager.
             </Text>
 
             <h1>Timesheets</h1>
             <Text>
-                text stuff
+                <h4 className="manager-header">Manager</h4>
+                Managers can view their employee's timesheets within their portal. This view represent what the employee sees aswell.
+                Maanagers cannot edit an employees timesheet, they will have to contctc the employee to sort the issue. This allows a good model
+                for mangers an employee's work.
+                <br></br><br></br>
+                <h4 className="employee-header">Employee</h4>
+                Employees can create a new timesheet by creaating a new entry, this will autiomatically create a timesheet.
+                <br></br>
+                A timesheet entry requires the date of work and the start / end time
             </Text>
 
             <h1>Leave</h1>
             <Text>
-                text stuff
+                <h4 className="manager-header">Manager</h4>
+                
+                <br></br><br></br>
+                <h4 className="employee-header">Employee</h4>
             </Text>
 
             <h1>Pay Run</h1>
             <Text>
-                text stuff
+                <h4 className="manager-header">Manager</h4>
             </Text>
 
             <h1>Payslips</h1>
             <Text>
-                text stuff
+                <h4 className="manager-header">Manager</h4>
+
+                <br></br><br></br>
+                <h4 className="employee-header">Employee</h4>
             </Text>
             <Footer/>
         </Page>
@@ -111,6 +133,18 @@ const SupportDiv = styled.div`
       opacity: 100%;
       }
     }
+    }
+    .manager {
+        .manager-header {
+            background-color: yellow;
+            width: fit-content;
+        }
+    }
+    .employee {
+        .employee-header {
+            background-color: yellow;
+            width: fit-content;
+        }
     }
 `
 
