@@ -193,7 +193,7 @@ def delete_timesheet_entrys():
     data_array = request.get_json()
     print(data_array)
     
-    data_tuple = tuple(data_array)
+    data_tuple = tuple(data_array.split(','))
     print(data_tuple)
 
     result = cpa_sql.delete_timesheet_entrys(data_tuple)
