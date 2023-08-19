@@ -187,18 +187,16 @@ def update_timesheet_entry(timesheet_entry_id: str,date: str,start_time: str,end
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 
-@app.route("/employee/timesheet-entrys/delete/<string:entry_ids>")
-def delete_timesheet_entrys(entry_ids: str):
+@app.route("/employee/timesheet-entrys/delete", methods=['POST'])
+def delete_timesheet_entrys():
 
-    entrys = entry_ids
-    listed= list(tuple(entrys))
-    listed.remove("'")
-    listed.remove("'")
-    final_entrys = tuple(listed)
-    if len(final_entrys) == 1:
-        final_entrys = tuple(final_entrys[0])*2
+    data_array = request.get_json()
+    print(data_array)
+    
+    data_tuple = tuple(data_array)
+    print(data_tuple)
 
-    result = cpa_sql.delete_timesheet_entrys(final_entrys)
+    result = cpa_sql.delete_timesheet_entrys(data_tuple)
 
     return jsonify(success=str(result[0]),error=str(result[1]))
 
