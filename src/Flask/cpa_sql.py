@@ -330,13 +330,19 @@ def get_timesheet(username):
   FROM [dbo].[timesheet]
     WHERE username = {username} AND completed = 'false' ORDER BY WeekStartDate ASC""")
 
-    start_date = cur.fetchone()[0].__str__()
+    try: 
+        start_date = cur.fetchone()[0].__str__() 
+    except:
+        start_date='' 
 
     cur.execute(f"""SELECT [WeekEndDate] 
   FROM [dbo].[timesheet]
     WHERE username = {username} AND completed = 'false' ORDER BY WeekEndDate DESC""")
 
-    end_date = cur.fetchone()[0].__str__()
+    try: 
+        end_date = cur.fetchone()[0].__str__() 
+    except:
+        end_date=''
 
     cur.close()
     response = []
