@@ -79,7 +79,7 @@ function LoginForm() {
                 type="text"
                 placeholder="Enter Username" 
                 value={userName}
-                {...register("userName", { required: true })}
+                {...register("userName", { required: true, pattern: /^[a-zA-Z0-9]{1,30}$/ })}
               />{errors.userName && <h6>Username is required</h6>}
             <p>Password:</p>
               <input 
@@ -87,7 +87,7 @@ function LoginForm() {
                 type="password"
                 placeholder="Enter Password" 
                 value={password}
-                {...register("password", { required: true })}
+                {...register("password", { required: true,pattern: /^[a-zA-Z0-9 ]{1,30}$/  })}
               />{errors.password && <h6>Password is required</h6>}
           </div>
           <button type="submit">Login</button>

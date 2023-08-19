@@ -108,7 +108,7 @@ function ManagerRegisterForm() {
                 type="password"
                 placeholder="Enter Password" 
                 value={password}
-                {...register("password", { required: true,pattern: /^[a-zA-Z0-9 ]*$/ })}
+                {...register("password", { required: true,pattern: /^[a-zA-Z0-9 ]{1,30}$/ })}
               />{errors.password && <h6>Password must be valid</h6>}
               <br></br>
         </div>

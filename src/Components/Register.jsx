@@ -104,7 +104,7 @@ function RegisterForm() {
                 type="text"
                 placeholder="Enter Username" 
                 value={userName}
-                {...register("userName", { required: true })}
+                {...register("userName", { required: true, pattern: /^[a-zA-Z0-9]{1,30}$/ })}
               />{errors.userName && <h6>Username is required</h6>}
             <p>Password:</p>
               <input 
@@ -112,7 +112,7 @@ function RegisterForm() {
                 type="password"
                 placeholder="Enter Password" 
                 value={password}
-                {...register("password", { required: true })}
+                {...register("password", { required: true, pattern: /^[a-zA-Z0-9 ]{1,30}$/ })}
               />{errors.password && <h6>Password is required</h6>}
               <br></br>
         </div>
@@ -187,7 +187,7 @@ function RegisterForm() {
                 type="text"
                 placeholder="Phone..." 
                 value={phone}
-                {...register("phone", { required: true,pattern: /^[+#]\d{1,13}$/ })}
+                {...register("phone", { required: true,pattern: /^[+#]?\d{1,13}$/ })}
                 />{errors.phone && <h6>Phone must be valid</h6>}
             </div>
             <br></br>
