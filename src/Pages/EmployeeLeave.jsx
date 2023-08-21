@@ -96,8 +96,7 @@ function EmployeeLeave() {
         left: 0px;
         width:100%;
         height:100%;
-        background-color:black;
-        opacity:0.8;
+        background-color: rgb(0,0,0,0.8);
         z-index: 500;
     }
     .false {

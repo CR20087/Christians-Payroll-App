@@ -4,6 +4,8 @@ import { Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon,  } from '@m
 import { useParams } from 'react-router-dom';
 import {Box,Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,Stack,TextField ,Typography, MenuItem} from '@mui/material';
 import {Times, Pay_Type, Years, Month, Days} from './lists'
+import { useForm } from 'react-hook-form';
+
 
 function EmployeeTable() {
   let params = useParams()
@@ -12,9 +14,54 @@ function EmployeeTable() {
   const [change, setChange] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
-  
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  
+  const validateCheck = useCallback(
+    (cell) => {
+      const handleBlur = (event) => {
+        console.log(event)
+        const updatedValidationErrors = { ...validationErrors };
+
+
+        if (cell.column.id === 'start_time') {
+          updatedValidationErrors['min'] = new Date(`2000-01-01T${event.target.value}`)
+        } else if (cell.column.id === 'end_time') {
+          updatedValidationErrors['max'] = new Date(`2000-01-01T${event.target.value}`)
+        } 
+                
+        if (event.target.value === "") {
+          if (cell.column.id !== 'comment') {
+          updatedValidationErrors[cell.id] = `${cell.column.columnDef.header} is required`;
+          console.log("STRING")
+        }} else if (cell.column.id === 'comment') {
+            if (!cell.column.columnDef.regex.test(event.target.value)) {
+          updatedValidationErrors[cell.id] = cell.column.columnDef.helperText;
+          console.log("REGEX") 
+        }} else if (updatedValidationErrors['min'] > updatedValidationErrors['max']) {
+          updatedValidationErrors[cell.id] = cell.column.columnDef.helperText;
+        } else {
+          delete updatedValidationErrors[cell.id];
+        }
+         
+        
+
+        setValidationErrors(updatedValidationErrors);
+        console.log(updatedValidationErrors)
+      };  
+      
+      return {
+        onBlur: handleBlur,
+        error: !!validationErrors[cell.id],
+        helperText: validationErrors[cell.id],
+      };
+    },
+    [validationErrors]
+  );
+
+  useEffect(() => {
+    // This will run after each render when validationErrors changes
+    console.log('Validation errors updated:', validationErrors);
+  }, [validationErrors]);
 
   const columns = useMemo(
     () => [
@@ -71,42 +118,36 @@ function EmployeeTable() {
     [],
   );
 
-  const columns2 = useMemo(
-    () => [
+  const columns2 = [
       {
         accessorKey: 'date',
         header: 'Date',
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...validateCheck(cell),
+          type: 'date'
+        }),
       },
       {
         accessorKey: 'start_time',
         header: 'Start Time',
-        type: 'time',
-        muiTableBodyCellEditTextFieldProps: {
-          select: true, //change to select for a dropdown
-          children: Times.map((time) => (
-            <MenuItem key={time} value={time}>
-              {time}
-            </MenuItem>
-          )),
-        },
+        helperText: "Start time must be greater than End time",
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...validateCheck(cell),
+          type: 'time',
+        }),
       },
       {
         accessorKey: 'end_time',
         header: 'End Time',
-        type: 'time',
-        muiTableBodyCellEditTextFieldProps: {
-          select: true, //change to select for a dropdown
-          children: Times.map((time) => (
-            <MenuItem key={time} value={time}>
-              {time}
-            </MenuItem>
-          )),
-        },
+        helperText: "End time must be greater than Start time",
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...validateCheck(cell),
+          type: 'time',
+        }),
       },
       {
         accessorKey: 'unpaid_break',
         header: 'Unpaid Break',
-        type: 'time',
         muiTableBodyCellEditTextFieldProps: {
           select: true, //change to select for a dropdown
           children: Times.map((time) => (
@@ -131,20 +172,13 @@ function EmployeeTable() {
       {
         accessorKey: 'comment',
         header: 'Comments',
+        regex: /^[A-Za-z0-9,.() ]*$/,
+        helperText: "Comment must not include any special symbols, Allowed symbols: '(),.'",
+        muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
+          ...validateCheck(cell)
+        }),
       }
-    ],
-    [],
-  );
-
-  const columns3 = useMemo(
-    () => [
-      {
-        accessorKey: 'comment',
-        header: 'Comments',
-      }
-    ],
-    [],
-  );
+    ]
 
   useEffect(() => {
     console.log("fetch")    
@@ -187,13 +221,17 @@ const DeleteAccount = async (table) => {
   if (window.confirm(`Are you sure you want to delete${table.getSelectedRowModel().rows.map((row) => (`\n\t${row.original.date} (Entry ID no.${row.original.timesheet_entry_id})`))}`)) {
 
     console.log(`${table.getSelectedRowModel().rows.map((row) => (`${row.original.timesheet_entry_id}`))}`)
-    const stringF1 = `${table.getSelectedRowModel().rows.map((row) => (`${row.original.timesheet_entry_id}`))}`
-    const stringF2 = stringF1.replace(/,/g, '')
-    console.log(stringF2)
+    const selected_array = `${table.getSelectedRowModel().rows.map((row) => (`${row.original.timesheet_entry_id}`))}`
 
-    const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/delete/'${stringF2}'`)
+    const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/delete`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(selected_array)
+    })
     const data = await res.json()
-
+    console.log(data)
     if (data.success === 'Success') {
       alert(`Selected rows were deleted successfully`)
       setChange(true)}
@@ -205,8 +243,8 @@ const DeleteAccount = async (table) => {
 const handleCreateNewRow = async (values) => {
 
   console.log(values)
-  console.log([values.date_year,values.date_month,values.date_day].join('-'))
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/new/'${params.userID}'/'${[values.date_year,values.date_month,values.date_day].join('-')}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
+
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/new/'${params.userID}'/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${[values.unpaid_break_hours,values.unpaid_break_minutes].join(':')}'/'${values.pay_type}'/'${values.comment}'`)
   const data = await res.json()
 
   if (data.success === 'Success') {
@@ -216,7 +254,7 @@ const handleCreateNewRow = async (values) => {
       alert(`An error occured.\n\n\n\n${data.error}`) }
 };
 
-const CreateNewEntry = ({ open, columns, onClose, onSubmit }) => {
+const CreateNewEntry = ({ open,  onClose, onSubmit }) => {
 const [values, setValues] = useState(() =>
 columns.reduce((acc, column) => {
 acc[column.accessorKey ?? ''] = '';
@@ -224,32 +262,19 @@ return acc;
 }, {}),
 );
 
-const [daysF, setDaysF] = useState([])
-
-const handleSubmit = () => {
+const submitFunc = (information) => {
 //put your validation logic here
-onSubmit(values);
+onSubmit(information);
 onClose();
 };
 
-useEffect(() => {
-  if (['01','03','05','07','08','10','12'].includes(values.date_month)) {
-    setDaysF(Days)
-  } else if (values.date_month == '02') {
-    const days_alt = Days.slice(0,28)
-    setDaysF(days_alt)
-  } else {
-    const days_alt = Days.slice(0,30)
-    setDaysF(days_alt)
-  }
-},[values.date_month])
 
 return (
-  <div className={String(open)}>
+  <div className={String(open)} >
     <div className={'mui-box-container-form'} >
       <DialogTitle textAlign="center">New Timesheet Entry</DialogTitle>
         <DialogContent>
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form onSubmit={handleSubmit(submitFunc)} >
           <Stack
             sx={{
               minWidth: { xs: '300px', sm: '360px', md: '400px' },
@@ -259,68 +284,91 @@ return (
             }}
           >
             <div>
-            <select name='date_year' onChange={(e) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }>
-                  <option value="">Year</option>
-                  {Years.map((year) => (<option key={year} value={year}>{year}</option>))}
-              </select>
-              <select name='date_month' onChange={(e) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }>
-                  <option value="">Month</option>
-                  {Month.map((month) => (<option key={month} value={month}>{month}</option>))}
-              </select>
-              <select name='date_day' onChange={(e) =>
-                  setValues({ ...values, [e.target.name]: e.target.value })
-                }>
-                  <option value="">Day</option>
-                  {daysF.map((day) => (<option key={day} value={day}>{day}</option>))}
-              </select>
+              Date
+              <input
+              {...register("date", { required: true })}
+              type='date'
+              onChange={(e) => 
+                setValues({ ...values, [e.target.name]: e.target.value })
+              }
+              />
               </div>
+              <div>
+                {errors.date && <h6>Date is required</h6>}
+              </div>
+            <div>Start Time
+            <input 
+              type='time'
+              max={!!values['end_time'] ? values['end_time'] : '' }
+              {...register("start_time", { required: true })}
+              onChange={(e) => 
+                  setValues({ ...values, [e.target.name]: e.target.value })
+                }
+                />{errors.start_time && <h6>Start time is required</h6>}</div>
 
-            <select name='start_time' onChange={(e) =>
+                <div>End Time
+              <input 
+              {...register("end_time", { required: true })} 
+              type='time'
+              min={!!values['start_time'] ? values['start_time'] : '' }
+              onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
-                }>
-                  <option value="">Start Time</option>
-                  {Times.map((time) => (<option key={time} value={time}>{time}</option>))}
-              </select>
-              <select name='end_time' onChange={(e) =>
+                }/>{errors.end_time && <h6>End time is required</h6>}</div>
+                
+                <br></br>
+                <div>Unpaid Break</div>
+                <div>
+                  Hours
+              <input 
+              {...register("unpaid_break_hours", { required: true, pattern: /^\d{1,2}$/ })} 
+              type='number'
+              defaultValue='00'
+              min='00'
+              max='23'
+              style={{width:'5rem'}}
+              onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
-                }>
-                  <option value="">End Time</option>
-                  {Times.map((time) => (<option key={time} value={time}>{time}</option>))}
-              </select>
-              <select name='unpaid_break' onChange={(e) =>
+                }/>
+                Minutes
+                <input 
+              {...register("unpaid_break_minutes", { required: true, pattern: /^\d{1,2}$/ })} 
+              type='number'
+              defaultValue='00'
+              max='59'
+              min='00'
+              style={{width:'5rem'}}
+              onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
-                }>
-                  <option value="">Unpaid break</option>
-                  {Times.map((time) => (<option key={time} value={time}>{time}</option>))}
-              </select>
-              <select name='pay_type' onChange={(e) =>
+                }/></div>
+                <div>
+                {(errors.unpaid_break_hours || errors.unpaid_break_minutes) && <h6>Unpaid Break must be valid</h6>}
+                </div>
+              <select 
+              {...register("pay_type", { required: true })} 
+              onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }>
                   <option value="">Pay Type</option>
                   {Pay_Type.map((type) => (<option key={type} value={type}>{type}</option>))}
               </select>
-              {columns.map((column) => (
+              {errors.pay_type && <h6>Pay type is required</h6>}
               <TextField
-                key={column.accessorKey}
-                label={column.header}
-                name={column.accessorKey}
+                label='Comments'
+                {...register('comment', { pattern: /^[A-Za-z0-9 ]*$/ })} 
                 onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
                 }
               />
-            ))}
+              {errors.comment && <h6>Comments must be valid</h6>}
           </Stack>
-        </form>
-        <div className='buttons-for-form'>
+          <div className='buttons-for-form'>
           <Button onClick={onClose}>Cancel</Button>
-          <Button color="secondary" onClick={handleSubmit} variant="contained">
+          <Button color="secondary" type='submit' variant="contained">
             New Entry
           </Button>
         </div>
+        </form>
+        
       </DialogContent>
 
     </div>
@@ -374,7 +422,6 @@ return (
       }}/>
  </div>
       <CreateNewEntry
-      columns={columns3}
       open={createModalOpen}
       onClose={() => setCreateModalOpen(false)}
       onSubmit={handleCreateNewRow}
