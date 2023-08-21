@@ -194,6 +194,8 @@ def delete_timesheet_entrys():
     print(data_array)
     
     data_tuple = tuple(data_array.split(','))
+    if len(data_tuple) == 1:
+        data_tuple = data_tuple*2
     print(data_tuple)
 
     result = cpa_sql.delete_timesheet_entrys(data_tuple)
