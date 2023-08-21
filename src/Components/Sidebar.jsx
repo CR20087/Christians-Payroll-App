@@ -101,7 +101,8 @@ const Logo = styled.div`
 
 const Shortcuts = styled.div`
   display: grid;
-  padding-top: 1.5rem;
+  align-content: space-between;
+  padding-bottom: 1rem;
 `
 
 const MenuItem = styled(Link)`
@@ -121,6 +122,7 @@ const SideBarDiv = styled.div`
 position: fixed;
   display: flex;
   justify-content: center;
+  padding-top: 1rem;
   width: 5%;
   z-index: 10;
   transition: 1s;
@@ -129,6 +131,7 @@ position: fixed;
   align-items: center;
   p {
     visibility: hidden;
+    display: none;
   }
   h1{
     padding: 50px;
@@ -137,8 +140,7 @@ position: fixed;
   }
   img {
       visibility: hidden;
-      width: 0%;
-      height:0%
+      display: none;
     }
   :hover{
     background-color: #06151f;
@@ -146,16 +148,17 @@ position: fixed;
     p {
     visibility: visible;
     color: white;
+    display: block;
   }
     img {
       visibility: visible;
       width: 15vh;
       height:15vh;
+      display: block;
     }
     h1{
       visibility: hidden;
-      width: 0%;
-      height:0%
+      display: none;
       
   }
   }

@@ -37,7 +37,6 @@ const LoginDiv = styled.div`
   background: #0b3048;
   min-height: 100%;
   height: fit-content;
-
 p {
   font-family: sans-serif;
   font-size: 20pt;
@@ -50,6 +49,7 @@ background: white;
   display: flex;
   margin-top: 1rem;
   margin-left: 1rem;
+  padding-right: 1rem;
   height: fit-content;
   align-items: center;
   width: fit-content;
@@ -57,18 +57,19 @@ background: white;
   text-decoration: none;
   justify-self: left;
   border: 1px solid black;
+  
   svg {
   color: black;
   width: 2rem;
   }
   transition: 1s;
-  opacity: 0.5;
+  opacity: 0.8;
   :hover {
         opacity: 1;
   }
   p {
     color: black;
-    font-size: 1rem;
+    font-size: 1rem;font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   }
 `
 

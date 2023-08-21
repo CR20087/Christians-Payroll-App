@@ -61,6 +61,8 @@ display: grid;
 
 const Container = styled.div`
 .css-80pr5n-MuiPaper-root {width:70vw;}
+.css-8y3x9n {height: fit-content;}
+.css-1k51tf5-MuiTooltip-tooltip {height: fit-content;}
 .css-1hhu9xl {width:70vw;}
 display: flex;
 height:fit-content;

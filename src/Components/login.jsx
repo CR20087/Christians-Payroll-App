@@ -75,7 +75,7 @@ function LoginForm() {
               <p>Christian's Payroll App</p>
           </Head>
           <div className={isAuthorised} >
-            <p>User Name:</p>
+            <p>User Name</p>
               <input 
                 onChange={(e) => setUserName(e.target.value)}
                 type="text"
@@ -83,7 +83,7 @@ function LoginForm() {
                 value={userName}
                 {...register("userName", { required: true, pattern: /^[a-zA-Z0-9]{1,30}$/ })}
               />{errors.userName && <h6>Username is required</h6>}
-            <p>Password:</p>
+            <p>Password</p>
               <input 
                 onChange={(e) => setPassword(e.target.value)}
                 type="password"
@@ -117,6 +117,7 @@ function LoginForm() {
     font-weight: 600;
     transition: 1s;
     opacity: 0.92;
+    margin-bottom: 2rem;
     padding: 1rem 0rem 2rem 0rem;
     h6 {
       color: red;
