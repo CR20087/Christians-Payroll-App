@@ -561,14 +561,14 @@ def get_employee_leave(username):
 
     return details
 
-def update_employee_leave(username,leave_start,leave_end,leave_type):
+def update_employee_leave(leave_id,leave_start,leave_end,leave_type):
     cur = init()
     try:
         cur.execute(f"""Update leave_entry SET
                     [leave_start_date] = {leave_start}
                     ,[leave_end_date] = {leave_end}
                     ,[leave_type] = {leave_type}
-                    WHERE username = {username}""")
+                    WHERE leave_entry_id = {leave_id}""")
         cur.commit()
         cur.close()
     except Exception as e:

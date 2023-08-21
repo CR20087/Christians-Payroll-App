@@ -221,9 +221,9 @@ def get_employee_leave(userName: str):
 
     return jsonify(leave_balance = str(result[0]),leave_balance_hours = str(result[1]),leave_entrys = result[2])
 
-@app.route("/employee/leave/update/<string:userName>/<string:leave_start_date>/<string:leave_end_date>/<string:leave_type>")
-def update_employee_leave(userName: str,leave_start_date: str,leave_end_date: str,leave_type: str):
-    result = cpa_sql.update_employee_leave(userName,leave_start_date,leave_end_date,leave_type)
+@app.route("/employee/leave/update/<string:leave_id>/<string:leave_start_date>/<string:leave_end_date>/<string:leave_type>")
+def update_employee_leave(leave_id: str,leave_start_date: str,leave_end_date: str,leave_type: str):
+    result = cpa_sql.update_employee_leave(leave_id,leave_start_date,leave_end_date,leave_type)
 
     return jsonify(success = str(result[0]),error = str(result[1]))
 
