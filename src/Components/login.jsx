@@ -37,6 +37,7 @@ function LoginForm() {
         sessionStorage.clear()
         sessionStorage.setItem('authKey',authKey)
         sessionStorage.setItem('userID', userID)
+        sessionStorage.setItem('role',data.role)
         
 
         const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/add/'${userID}'/'${authKey}'`)
@@ -55,6 +56,7 @@ function LoginForm() {
             
       } else if(data.match === 'False') {
         setIsAuthorised('border-red')
+        sessionStorage.setItem('role',data.role)
       } else if (data.setup === 'False') {
         setIsAuthorised('border-red')
         sessionStorage.setItem('role',data.role)
@@ -115,6 +117,7 @@ function LoginForm() {
     font-weight: 600;
     transition: 1s;
     opacity: 0.92;
+    padding: 1rem 0rem 2rem 0rem;
     h6 {
       color: red;
     }
