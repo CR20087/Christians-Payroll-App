@@ -102,7 +102,7 @@ const Logo = styled.div`
 const Shortcuts = styled.div`
   display: grid;
   align-content: space-between;
-  padding-bottom: 1rem;
+  padding-bottom: 3rem;
 `
 
 const MenuItem = styled(Link)`

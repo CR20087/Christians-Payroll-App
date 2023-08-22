@@ -280,7 +280,8 @@ return (
               minWidth: { xs: '300px', sm: '360px', md: '400px' },
               gap: '1.5rem',
               select: {padding: '16.5px 14px',font:'inherit'},
-              div: {display:'flex',gap:'1rem',justifyContent:'center'}
+              div: {display:'flex',gap:'1rem',justifyContent:'center'},
+              padding: '20px 2px 2px 2px'
             }}
           >
             <div>

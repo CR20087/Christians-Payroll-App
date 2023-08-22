@@ -480,7 +480,8 @@ return (
     sx={{
       minWidth: { xs: '300px', sm: '360px', md: '400px' },
       gap: '1.5rem',
-      h6: {color: 'red',padding: '0rem'}
+      h6: {color: 'red',padding: '0rem'},
+      padding: '20px 2px 2px 2px'
       
     }}
   >
