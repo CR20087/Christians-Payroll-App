@@ -13,7 +13,8 @@ def init():
 
 def login_verify(username,password):
     cur = init()
-    cur.execute(f"SELECT role FROM login WHERE username = {username} AND password = {password};")
+    cur.execute(f"""SELECT role FROM login WHERE username = {username} AND password = {password}
+                COLLATE Latin1_General_CS_AS""")
     role = cur.fetchone()
     if bool(role):
         cur.execute(f"UPDATE login SET last_login = CURRENT_TIMESTAMP WHERE username = {username};")
@@ -29,7 +30,8 @@ def login_verify(username,password):
     
 def register_check(username,password):
     cur = init()
-    cur.execute(f"SELECT username FROM login WHERE login.username = {username} AND login.password = {password};")
+    cur.execute(f"""SELECT username FROM login WHERE login.username = {username} AND login.password = {password}
+                    COLLATE Latin1_General_CS_AS""")
     login_made = bool(cur.fetchone())
     cur.execute(f"Select * FROM employee where username = {username}")
     config = bool(cur.fetchone())
