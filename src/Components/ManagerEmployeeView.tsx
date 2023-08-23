@@ -238,91 +238,106 @@ function EmployeeTable() {
         accessorKey: 'username',
         header: 'Username',
         helperText: "User name must be: Alphanumerical",
-        regex: /^[a-zA-Z0-9]{1,30}$/
+        regex: /^[a-zA-Z0-9]{1,30}$/,
+        placeholder: 'A-Z a-z 0-9'
       },
       {
         accessorKey: 'pay_rate',
         header: 'Pay rate',
         helperText: "Pay rate must be: Positve Number/Float",
-        regex: /^\d+(\.\d+)?$/
+        regex: /^\d+(\.\d+)?$/,
+        placeholder: '00.00 (Hourly Rate)'
       },
       {
         accessorKey: 'bank_account',
         header: 'Bank account',
         helperText: "Bank account must be: 8-12 digits",
-        regex: /^\d{8,12}$/
+        regex: /^\d{2}-?\d{4}-?\d{7}-?\d{2,3}$/,
+        placeholder: '##-####-#######-###'
       },
       {
         accessorKey: 'ird_number',
         header: 'IRD Number',
         helperText: "IRD number must be: 9 digits (optional '-')",
-        regex: /^\d{3}-?\d{3}-?\d{3}$/
+        regex: /^\d{3}-?\d{3}-?\d{3}$/,
+        placeholder: '###-###-###'
       },
       {
         accessorKey: 'tax_code',
         header: 'Tax Code',
         helperText: "Tax code must be: <5 charaters, Captial letters",
-        regex: /^[A-Z]{1,4}$/
+        regex: /^[A-Z]{1,4}$/,
+        placeholder: 'A-Z'
       },
       {
         accessorKey: 'student_loan',
         header: 'Student loan',
         helperText: "Student loan must be: >0 and <100, Number/Float",
-        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
+        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/,
+        placeholder: '00.00%'
       },
       {
         accessorKey: 'kiwisaver',
         header: 'Kiwisaver',
         helperText: "Kiwisaver must be: >0 and <100, Number/Float",
-        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
+        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/,
+        placeholder: '00.00%'
       },
       {
         accessorKey: 'one_off_deduction',
         header: 'One off deduction',
         helperText: "One off deduction must be: Positve Number/Float",
-        regex: /^\d+(\.\d+)?$/
+        regex: /^\d+(\.\d+)?$/,
+        placeholder: '00.00'
       },
       {
         accessorKey: 'tax_rate',
         header: 'Tax rate',
         helperText: "Tax rate must be: >0 and <100, Number/Float",
-        regex: /^\d+(\.\d+)?$/
+        regex: /^\d+(\.\d+)?$/,
+        placeholder: '0.00%'
       },
       {
         accessorKey: 'final_pay',
         header: 'Final pay',
         helperText: "Final pay must be: Positve Number/Float",
-        regex: /^\d+(\.\d+)?$/
+        regex: /^\d+(\.\d+)?$/,
+        placeholder: '00.00'
       },
       {
         accessorKey: 'weekly_allowance',
         header: 'Weekly Allowance',
         helperText: "Weekly allowance must be: Positve Number/Float",
-        regex: /^\d+(\.\d+)?$/
+        regex: /^\d+(\.\d+)?$/,
+        placeholder: '00.00'
       },
       {
         accessorKey: 'weekly_allowance_nontax',
         header: 'Weekly allowance Non tax',
         helperText: "Weekly allowance non-tax must be: Positve Number/Float",
-        regex: /^\d+(\.\d+)?$/
+        regex: /^\d+(\.\d+)?$/,
+        placeholder: '00.00'
       },
       {
         accessorKey: 'child_support',
         header: 'Child support',
         helperText: "'Child support must be: >0 and <100, Number/Float",
-        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
+        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/,
+        placeholder: '00.00%'
       },
       {
         accessorKey: 'tax_credit',
         header: 'Tax credit',
         helperText: "Tax credit must be: Positve Number/Float",
-        regex: /^\d+(\.\d+)?$/
+        regex: /^\d+(\.\d+)?$/,
+        placeholder: '00.00'
       },
       {
         accessorKey: 'benefits',
         header: 'Benefits',
         helperText: "Benefits must be: Positve Number/Float",
-        regex: /^\d+(\.\d+)?$/
+        regex: /^\d+(\.\d+)?$/,
+        placeholder: '00.00'
       }
     ],
     [],
@@ -490,6 +505,7 @@ return (
       <TextField
         key={column.accessorKey}
         label={column.header}
+        placeholder={column.placeholder}
         {...register(column.accessorKey, { required: true,pattern: column.regex })}
       />
       {errors[column.accessorKey] && <h6>{column.helperText}</h6>}

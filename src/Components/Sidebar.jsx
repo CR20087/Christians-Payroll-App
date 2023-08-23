@@ -134,7 +134,7 @@ position: fixed;
     display: none;
   }
   h1{
-    padding: 50px;
+    padding: 0px 0px 50px 0px;
     visibility: visible;
     color: white;
   }

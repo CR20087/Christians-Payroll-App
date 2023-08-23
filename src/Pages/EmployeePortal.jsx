@@ -83,7 +83,8 @@ const Layout = styled.div`
   grid-template-columns: repeat(2, minmax(20rem, 1fr));
   justify-self: center;
   align-items: center;
-
+  height: 80%;
+  align-self: center;
 `
 const Bubble = styled(Link)`
 display: flex;
