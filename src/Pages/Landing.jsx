@@ -139,6 +139,7 @@ const Nav = styled.div`
 padding: 1.5rem;
 background: linear-gradient(90deg, rgba(255,255,255,1) 6%, #0b3048 80%);
 height: 100pt;
+overflow: auto;
 `
 const Logo = styled(Link)`
 display: flex;
@@ -147,7 +148,7 @@ font-size: 2rem;
 font-weight: 500;
 font-family: 'Rockwell';
 color: #06151f;
-width: 30%;
+width: fit-content;
 height: 8rem;
 float: left;
 font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
@@ -160,6 +161,7 @@ const Hyperlinks = styled.div`
 padding-top: 2.5rem;
 gap: 1rem;
 display: flex;
+margin-left: 1rem;
 justify-content: space-between;
 font-size: 1rem;
 width: 40%;
@@ -229,7 +231,6 @@ const Register = styled.div`
     font-weight: 400;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     height: fit-content;
-
     .hover-content {
         padding-top: 1rem;
         display: none;
