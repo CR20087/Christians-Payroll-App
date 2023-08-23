@@ -15,3 +15,5 @@ code {
 html, body, div {
   height: 100%;
 }
+
+.MuiTooltip-tooltip {height: fit-content;}
