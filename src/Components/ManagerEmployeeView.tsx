@@ -52,6 +52,7 @@ function EmployeeTable() {
         header: 'First Name',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: 'A-Z a-z'
         }),
         helperText: "First Name must be: Letters",
         regex: /^[A-Za-z]*$/
@@ -61,6 +62,7 @@ function EmployeeTable() {
         header: 'Last Name',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: 'A-Z a-z'
         }),
         helperText: "Last Name must be: Letters",
         regex: /^[A-Za-z]*$/
@@ -70,6 +72,7 @@ function EmployeeTable() {
         header: 'Phone',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '0-9'
         }),
         helperText: "Phone must be: 1-13 characters, (Optional '#,+')",
         regex: /^[+#]\d{1,13}$/
@@ -88,6 +91,7 @@ function EmployeeTable() {
         header: 'Username',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: 'A-Z a-z 0-9'
         }),
         helperText: "User name must be: Alphanumerical",
         regex: /^[a-zA-Z0-9]{1,30}$/
@@ -97,6 +101,7 @@ function EmployeeTable() {
         header: 'Pay rate',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '00.00 (Hourly Rate)'
         }),
         helperText: "Pay rate must be: Positve Number/Float",
         regex: /^\d+(\.\d+)?$/
@@ -106,15 +111,17 @@ function EmployeeTable() {
         header: 'Bank account',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '##-####-#######-###'
         }),
         helperText: "Bank account must be: 8-12 digits",
-        regex: /^\d{8,12}$/
+        regex: /^\d{2}-?\d{4}-?\d{7}-?\d{2,3}$/
       },
       {
         accessorKey: 'ird_number',
         header: 'IRD Number',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '###-###-###'
         }),
         helperText: "IRD number must be: 9 digits (Optional '-')",
         regex: /^\d{3}-?\d{3}-?\d{3}$/
@@ -124,6 +131,7 @@ function EmployeeTable() {
         header: 'Tax Code',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: 'A-Z'
         }),
         helperText: "Tax code must be: <5 charaters, Captial letters",
         regex: /^[A-Z]{1,4}$/
@@ -133,24 +141,27 @@ function EmployeeTable() {
         header: 'Kiwisaver',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '0%'
         }),
-        helperText: "Kiwisaver must be: >0 and <100, Number/Float",
-        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
+        helperText: "Kiwisaver must be either; 0,3,4,6,10 %",
+        regex: /^(0|3|4|6|10)$/
       },
       {
         accessorKey: 'student_loan',
         header: 'Student loan',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '00.00%'
         }),
         helperText: "Student loan must be: >0 and <100, Number/Float",
-        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
+        regex: /^(?:\d{1,2}(?:\.\d+)?|99(?:\.\d+)?)$/
       },
       {
         accessorKey: 'one_off_deduction',
         header: 'One off deduction',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '00.00'
         }),
         helperText: "One off deduction must be: Positve Number/Float",
         regex: /^\d+(\.\d+)?$/
@@ -160,15 +171,17 @@ function EmployeeTable() {
         header: 'Tax rate',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '0.00%'
         }),
-        helperText: "Tax rate must be: >0 and <100, Number/Float",
-        regex: /^\d+(\.\d+)?$/
+        helperText: "Tax rate must be: >=0 and <100, Number/Float",
+        regex: /^(?:\d{1,2}(?:\.\d+)?|99(?:\.\d+)?)$/
       },
       {
         accessorKey: 'final_pay',
         header: 'Final pay',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '00.00'
         }),
         helperText: "Final pay must be: Positve Number/Float",
         regex: /^\d+(\.\d+)?$/
@@ -178,6 +191,7 @@ function EmployeeTable() {
         header: 'Weekly Allowance',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '00.00'
         }),
         helperText: "Weekly allowance must be: Positve Number/Float",
         regex: /^\d+(\.\d+)?$/
@@ -187,6 +201,7 @@ function EmployeeTable() {
         header: 'Weekly allowance Non tax',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '00.00'
         }),
         helperText: "Weekly allowance non-tax must be: Positve Number/Float",
         regex: /^\d+(\.\d+)?$/
@@ -201,15 +216,17 @@ function EmployeeTable() {
         header: 'Child support',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '00.00%'
         }),
         helperText: "'Child support must be: >0 and <100, Number/Float",
-        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/
+        regex: /^(?:\d{1,2}(?:\.\d+)?|99(?:\.\d+)?)$/
       },
       {
         accessorKey: 'tax_credit',
         header: 'Tax credit',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '00.00'
         }),
         helperText: "Tax credit must be: Positve Number/Float",
         regex: /^\d+(\.\d+)?$/
@@ -219,6 +236,7 @@ function EmployeeTable() {
         header: 'Benefits',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
+          placeholder: '00.00'
         }),
         helperText: "Benefits must be: Positve Number/Float",
         regex: /^\d+(\.\d+)?$/
@@ -251,14 +269,14 @@ function EmployeeTable() {
       {
         accessorKey: 'bank_account',
         header: 'Bank account',
-        helperText: "Bank account must be: 8-12 digits",
+        helperText: "Bank account must be: 15-16 digits (Optional '-')",
         regex: /^\d{2}-?\d{4}-?\d{7}-?\d{2,3}$/,
         placeholder: '##-####-#######-###'
       },
       {
         accessorKey: 'ird_number',
         header: 'IRD Number',
-        helperText: "IRD number must be: 9 digits (optional '-')",
+        helperText: "IRD number must be: 9 digits (Optional '-')",
         regex: /^\d{3}-?\d{3}-?\d{3}$/,
         placeholder: '###-###-###'
       },
@@ -272,16 +290,16 @@ function EmployeeTable() {
       {
         accessorKey: 'student_loan',
         header: 'Student loan',
-        helperText: "Student loan must be: >0 and <100, Number/Float",
-        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/,
+        helperText: "Student loan must be: >=0 and <100, Number/Float",
+        regex: /^(?:\d{1,2}(?:\.\d+)?|99(?:\.\d+)?)$/,
         placeholder: '00.00%'
       },
       {
         accessorKey: 'kiwisaver',
         header: 'Kiwisaver',
-        helperText: "Kiwisaver must be: >0 and <100, Number/Float",
-        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/,
-        placeholder: '00.00%'
+        helperText: "Kiwisaver must be either; 0,3,4,6,10 %",
+        regex: /^(0|3|4|6|10)$/,
+        placeholder: '0%'
       },
       {
         accessorKey: 'one_off_deduction',
@@ -293,8 +311,8 @@ function EmployeeTable() {
       {
         accessorKey: 'tax_rate',
         header: 'Tax rate',
-        helperText: "Tax rate must be: >0 and <100, Number/Float",
-        regex: /^\d+(\.\d+)?$/,
+        helperText: "Tax rate must be: >=0 and <100, Number/Float",
+        regex: /^(?:\d{1,2}(?:\.\d+)?|99(?:\.\d+)?)$/,
         placeholder: '0.00%'
       },
       {
@@ -321,8 +339,8 @@ function EmployeeTable() {
       {
         accessorKey: 'child_support',
         header: 'Child support',
-        helperText: "'Child support must be: >0 and <100, Number/Float",
-        regex: /^(0*(?:[1-9][0-9]?|99)(?:\.\d+)?|0?\.\d+)$/,
+        helperText: "'Child support must be: >=0 and <100, Number/Float",
+        regex: /^(?:\d{1,2}(?:\.\d+)?|99(?:\.\d+)?)$/,
         placeholder: '00.00%'
       },
       {
