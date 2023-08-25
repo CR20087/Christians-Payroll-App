@@ -4,7 +4,7 @@ def pdf_generator_from_template(payslip_data):
     from jinja2 import Environment, FileSystemLoader
     from ... import cpa_sql
     
-    leave_entrys = cpa_sql.get_payslip_leave_entrys(payslip_data[19].isoformat(),payslip_data[0])
+    leave_entrys = cpa_sql.get_payslip_leave_entrys(payslip_data[18].isoformat(),payslip_data[0])
 
 
 
