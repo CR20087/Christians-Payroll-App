@@ -77,7 +77,7 @@ function PayTable() {
         console.log(data)
         setData(data.results)
         setChange(false)
-        const names = [...new Set(data.results.map((emp) => (emp.name)))]
+        const names = [...new Set(data.results.map((emp) => ({ name: emp.name, username: emp.username })))];
         setEmpNameArray(names)
     } 
         
@@ -165,7 +165,7 @@ const CreateNewEntry = ({ open, onClose, onSubmit }) => {
                     setValues({ ...values, [e.target.name]: e.target.value })
                   }>
                     <option value="">Employee</option>
-                    {EmpNameArray.map((username) => (<option key={username} value={username}>{username}</option>))}
+                    {EmpNameArray.map((object) => (<option key={object.username} value={object.username}>{object.name}</option>))}
                 </select><div>{errors.username && <h6>Username is required</h6>}</div>
                 <div>Date
                   <input
