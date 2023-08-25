@@ -113,7 +113,7 @@ const PaySelectedEmployees = async (table) => {
     const data = await res.json()
 
     if (data.success === 'Success') {
-      alert(`Selected rows were deleted successfully`)
+      alert(`Pay run for selected rows was successful`)
       setChange(true)}
     else {
       alert(`An error occured.\n\n\n\n${data.error}`) }
