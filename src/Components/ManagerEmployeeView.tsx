@@ -1,8 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon, Save as SaveIcon } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
-import {Box,Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,MenuItem,Stack,TextField,Tooltip } from '@mui/material';
+import { Button,DialogContent,DialogTitle,Stack,TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 
@@ -10,19 +9,25 @@ function EmployeeTable() {
   let params = useParams()
   const [data, setData] = useState({});
   const [change, setChange] = useState(false);
-  const [createModalOpen, setCreateModalOpen] = useState(false)
+  const [newEmployeeModalOpen, setNewEmployeeModalOpen] = useState(false)
   const [validationErrors, setValidationErrors] = useState({})
 
   const validateCheck = useCallback(
+
+    //Function executed when component is interacted with
+
     (cell) => {
       const handleBlur = (event) => {
+
+        //Validation logic executed each time the field is 'un-focussed'
+
         const updatedValidationErrors = { ...validationErrors };
 
         if (event.target.value === "") {
-          updatedValidationErrors[cell.id] = `${cell.column.columnDef.header} is required`;
+          updatedValidationErrors[cell.id] = `${cell.column.columnDef.header} is required`; //If empty have a required error
           console.log("STRING")
         } else if (!cell.column.columnDef.regex.test(event.target.value)) {
-          updatedValidationErrors[cell.id] = cell.column.columnDef.helperText;
+          updatedValidationErrors[cell.id] = cell.column.columnDef.helperText; //When the entered vaalue doesn't match the acceptable regular expressio, error
           console.log("REGEX")
         } else {
           delete updatedValidationErrors[cell.id];
@@ -40,12 +45,7 @@ function EmployeeTable() {
     [validationErrors]
   );
 
-  useEffect(() => {
-    // This will run after each render when validationErrors changes
-    console.log('Validation errors updated:', validationErrors);
-  }, [validationErrors]);
-
-  const columns = 
+  const columns = //Each column has a header,pattern,Error message predetermined.
     [
       {
         accessorKey: 'first_name',
@@ -250,7 +250,7 @@ function EmployeeTable() {
     ]
   ;
 
-  const columns2 = useMemo(
+  const columns2 = useMemo( //Columns defenitions used for new Employee Modal
     () => [
       {
         accessorKey: 'username',
@@ -362,68 +362,69 @@ function EmployeeTable() {
   );
 
   useEffect(() => {
-    console.log("fetch")    
+    
+    //Fetching page data
+
     async function fetchData()  {
         const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/'${params.userID}'`)
         const data = await res.json()
 
-        console.log(data)
-
-        setData(data.results)
+        setData(data.results) //Setting page data
     } 
         
     fetchData()
 
-},[params.userID,change])
+},[change]) // Executed every time variable 'change' is changed
 
 const handleCancelRowEdits = () => {
+  
+  //Remove errors if editing is cancelled
+
   setValidationErrors({});
 };
 
 const handleSaveRow = async ({ exitEditingMode, row, values }) => {
-  if (!Object.keys(validationErrors).length) {
+
+  //Function to save edited row / employee
+
   const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/update/'${values.bank_account}'/'${values.benefits}'/'${values.child_support}'/'${values.email}'/'${values.final_pay}'/'${values.first_name}'/'${values.kiwisaver}'/'${values.last_name}'/'${values.one_off_deduction}'/'${values.pay_rate}'/'${values.phone}'/'${values.student_loan}'/'${values.tax_credit}'/'${values.tax_rate}'/'${values.username}'/'${row.original.username}'/'${values.weekly_allowance}'/'${values.weekly_allowance_nontax}'/'${values.ird_number}'/'${values.tax_code}'`)
   const data = await res.json()
 
   if (data.success === 'Success') {
+
+    //If the update was successful
+
     alert(`${values.first_name} ${values.last_name} (${values.username}) was updated successfully`)
     setChange(true)}
     else {
+
+      //If the update waas unsuccessful
+
       alert(`An error occured.\n\n\n\n${data.error}`) }
 
   exitEditingMode(); 
-  }
 };
 const handleCreateNewRow = async (values) => {
-  console.log(values)
+
+  //Function to crete new row / employee
 
   const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/new/'${values.bank_account}'/'${values.benefits}'/'${values.child_support}'/'${values.final_pay}'/'${values.kiwisaver}'/'${values.one_off_deduction}'/'${values.pay_rate}'/'${values.student_loan}'/'${values.tax_credit}'/'${values.tax_rate}'/'${values.username}'/'${values.weekly_allowance}'/'${values.weekly_allowance_nontax}'/'${values.ird_number}'/'${values.tax_code}'/'${params.userID}'`)
   const data = await res.json()
 
   if (data.success === 'Success') {
-    alert(`Employee was created successfully\n\tUsername: '${values.username}'\n\tPassword: '${data.password}'`)
+
+    //If the new employee account is successfully created
+
+    alert(`Employee was created successfully\n\tUsername: '${values.username}'\n\tPassword: '${data.password}'`) //Generated password is returned
     setChange(true)
-    setCreateModalOpen(false)
+    setNewEmployeeModalOpen(false)
 } else {
+
+  //If the new employee account was unsuccessful
+
       alert(`An error occured.\n\n\n\n${data.error}`)
     }
 };
-const DeleteAccount = async (row) => {
-  console.log(row)
-  if (window.confirm(`Are you sure you want to permanently delete\n\t ${row.original.first_name} ${row.original.last_name} (${row.original.username}) `)) {
-    
-      const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/delete/'${row.origninal.username}'`)
-      const data = await res.json()
-
-      console.log(data)
-      if (data.success === 'true') {
-        alert(`${row.original.first_name} ${row.original.last_name} (${row.original.username}) was deleted successfully`)
-        setChange(true)}
-        else {
-          alert(`An error occured.\n\n\n\n${data.error}`)
-        }
-  }
-}
 
   return (
     <>
@@ -437,41 +438,18 @@ const DeleteAccount = async (row) => {
       enablePinning
       initialState={{ columnPinning: { left: ['first_name']} }}
       onEditingRowSave={handleSaveRow}
-      /*renderRowActions={({ row }) => (
-        <Box sx={{ display: 'flex', flexWrap: 'nowrap', gap: '8px' }}>
-          <IconButton
-            color= 'secondary'
-            onClick={() =>
-              window.open(
-                `mailto:${row.original.email}`,
-              )
-            }
-          >
-            <EmailIcon />
-          </IconButton>
-          <IconButton
-            color="error"
-            onClick={() => {
-              DeleteAccount(row)
-            }}
-          >
-            <DeleteIcon />
-          </IconButton>
-        </Box>
-      )} */ //Fix in future
       renderTopToolbarCustomActions={() => (
   <Button
-    color="secondary"
-    onClick={() => setCreateModalOpen(true)}
+    onClick={() => setNewEmployeeModalOpen(true)}
     variant="contained"
   >
     Create New Account
   </Button>
 )}/>
-      <CreateNewAccountModal
+      <NewEmployeeModal
       columns={columns2}
-      open={createModalOpen}
-      onClose={() => setCreateModalOpen(false)}
+      open={newEmployeeModalOpen}
+      onClose={() => setNewEmployeeModalOpen(false)}
       onSubmit={handleCreateNewRow}
       />
   </>
@@ -483,24 +461,20 @@ export default EmployeeTable;
 
 
 //example of creating a mui dialog modal for creating new rows
-const CreateNewAccountModal = ({ open, columns, onClose, onSubmit }) => {
+const NewEmployeeModal = ({ open, columns, onClose, onSubmit }) => {
 const { register, handleSubmit, formState: { errors } } = useForm();
-const [values, setValues] = useState(() =>
-columns.reduce((acc, column) => {
-acc[column.accessorKey ?? ''] = '';
-return acc;
-}, {}),
-);
 
 const validateSubmit = (information) => {
   
   if ([information.child_support,information.kiwisaver,information.student_loan].reduce((acc, curr) => acc + parseFloat(curr), 0) >= 100) {
+
+    //Checking to see if the sum of percentages is less than 100%
+
     console.log([information.child_support,information.kiwisaver,information.student_loan].reduce((acc, curr) => acc + parseFloat(curr), 0))
-    alert('Kiwisaver, child support, Student loan must be a sum less than 100 ')
+    alert('Kiwisaver, child support, Student loan must be a sum less than 100')
   } else {
     onSubmit(information)
   }
-
 };
 
 return (
@@ -514,8 +488,7 @@ return (
       minWidth: { xs: '300px', sm: '360px', md: '400px' },
       gap: '1.5rem',
       h6: {color: 'red',padding: '0rem'},
-      padding: '20px 2px 2px 2px'
-      
+      padding: '20px 2px 2px 2px' 
     }}
   >
     {columns.map((column) => (
@@ -532,14 +505,12 @@ return (
   </Stack>
   <div className='buttons-for-form'>
 <Button onClick={onClose}>Cancel</Button>
-<Button color="secondary" type="submit" variant="contained">
+<Button type="submit" variant="contained">
   Create New Account
 </Button>
 </div>
 </form>
-
 </DialogContent>
-
 </div></div>
 );
 };

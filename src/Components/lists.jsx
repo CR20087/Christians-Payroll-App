@@ -1,4 +1,4 @@
-export const Times = [
+export const Times = [ //Basic Array of Time values (5 minute intervals)
 '00:00:00',
 '00:05:00',
 '00:10:00',
@@ -289,72 +289,14 @@ export const Times = [
 '23:55:00'
 ]
 
-export const Pay_Type = [
+export const Pay_Type = [ //Array of possible types of Pay
     'Wages'
 ]
 
-export const Leave_Type = [
+export const Leave_Type = [ //Array of different types of leave
     'Annual leave',
     'Bereavement',
     'Sick',
     'Parental'
 ]
 
-export const Years = [
-    '2018',
-    '2019',
-    '2020',
-    '2021',
-    '2022',
-    '2023',
-    '2024',
-    '2025'
-]
-
-export const Month = [
-    '01',
-    '02',
-    '03',
-    '04',
-    '05',
-    '06',
-    '07',
-    '08',
-    '09',
-    '10',
-    '11',
-    '12'
-]
-export const Days = [
-    '01',
-    '02',
-    '03',
-    '04',
-    '05',
-    '06',
-    '07',
-    '08',
-    '09',
-    '10',
-    '11',
-    '12',
-    '13',
-    '14',
-    '15',
-    '16',
-    '17',
-    '18',
-    '19',
-    '20',
-    '21',
-    '22',
-    '23',
-    '24',
-    '25',
-    '26',
-    '27',
-    '28',
-    '29',
-    '30',
-    '31'
-]

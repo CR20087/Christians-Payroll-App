@@ -16,14 +16,18 @@ import ManagerTimesheetView from '../Pages/ManagerTimesheetView'
 import ManagerLeaveView from '../Pages/ManagerLeaveView'
 import ManagerPayRun from '../Pages/ManagerPayRun'
 
+//Importing all pages of application
+
 function Pages() {
   const location = useLocation();
   return (
+    //Mapping all pges to url routes
+    //Routes with ':___' are values which can be used by the apps
     <Routes location={location} key={location.pathname}>
         <Route path="/" element={<Landing />} />
         <Route path="/Login" element={<Login/>} />
         <Route path="/Support" element={<Support/>} />
-        <Route path="/Portal/manager/:userID" element={<ManagerPortal/>} />
+        <Route path="/Portal/manager/:userID" element={<ManagerPortal/>} /> 
         <Route path="/Portal/manager/:userID/settings" element={<ManagerSettings/>} />
         <Route path="/Portal/employee/:userID/settings" element={<EmployeeSettings/>} />
         <Route path="/Portal/employee/:userID" element={<EmployeePortal/>} />

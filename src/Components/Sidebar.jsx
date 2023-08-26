@@ -6,10 +6,12 @@ function SideBar() {
 
   let params = useParams()
 
-  const portalType = sessionStorage.getItem('role')
+  const portalType = sessionStorage.getItem('role') //Getting the type of account
 
   function NavType() {
     if (portalType === 'manager') {
+
+      //If the account is a Manager render theese accessible pages
       return(
         <Shortcuts>
           <MenuItem to={`/Portal/manager/${params.userID}`}>
@@ -39,6 +41,9 @@ function SideBar() {
         </Shortcuts>
       )
     } else if (portalType === 'employee') {
+
+      //If the account is an employee render theese accessible pages
+
       return(
         <Shortcuts>
           <MenuItem to={`/Portal/employee/${params.userID}`}>
@@ -59,10 +64,6 @@ function SideBar() {
         </MenuItem>
         </Shortcuts>
       )
-    } else {
-      <MenuItem>
-          <p>Authentication Error please login again</p>
-      </MenuItem>
     }
   }
 
@@ -82,6 +83,7 @@ function SideBar() {
   )
 }
 
+//Styling
 
 const Logo = styled.div`
   display: flex;

@@ -2,6 +2,7 @@ import { useState } from "react"
 import styled from "styled-components"
 import { useParams } from "react-router-dom";
 import { useEffect } from "react";
+import Loading from "./Loading"
 
 function EmployeeSettingsForm() {
     const [isLoading, setIsLoading] = useState(false)
@@ -15,7 +16,8 @@ function EmployeeSettingsForm() {
         suburb: '',
         postCode: '',
         phone: ''
-      });
+      }); //Making default field values empty
+
     const [isAuthorised, setIsAuthorised] = useState("")
     const [errors, setErrors] = useState({});
     let params = useParams()
@@ -23,6 +25,9 @@ function EmployeeSettingsForm() {
     useEffect(() => {
         
         async function fetchData()  {
+
+          //Fetching stored employee settings data
+
             const res = await fetch(`https://cpa-flask.azurewebsites.net/settings/employee/'${params.userID}'`)
             const data = await res.json()
 
@@ -36,27 +41,37 @@ function EmployeeSettingsForm() {
             setInputValue('address',data.address);   
             setInputValue('suburb',data.suburb);   
             setInputValue('postCode',data.postCode);     
-            setInputValue('phone',data.phone);  
+            setInputValue('phone',data.phone);
+            
+            //Setting the returned data to the relevant text field
         } 
             
         fetchData()
 
     },[params.userID])
 
-    const InfoLog = async (information) => {
+    const InfoLog = async () => {
+
+      //Function to send the update request, after input validation
+
         setIsLoading(true)
-       
-            console.log("Change detected")
+
             const res = await fetch(
                 `https://cpa-flask.azurewebsites.net/settings/employee/update/'${sessionStorage.getItem('userID')}'/'${getInputValue('userName')}'/'${getInputValue('password')}'/'${getInputValue('firstName')}'/'${getInputValue('lastName')}'/'${getInputValue('email')}'/'${getInputValue('phone')}'/'${getInputValue('address')}'/'${getInputValue('suburb')}'/'${getInputValue('postCode')}'`
                 )
             const data = await res.json()
 
             if (data.success === 'Success') {
+              
+              //If update was successful
+
                 alert("Changes updated successfully")
                 setIsAuthorised('border-green')
                 sessionStorage.setItem('userID',getInputValue('userName'))
             } else {
+
+              //If it was unsuccesful
+
                 alert(`An error occured please check information and try again\n\n\n\n${data.error}`)
                 setIsAuthorised('border-red')
             }
@@ -64,8 +79,11 @@ function EmployeeSettingsForm() {
         setIsLoading(false)
     }
 
-    //Error Handling
+    
       const setInputValue = (fieldName, value) => {
+
+        //Function used each time field is updated to update the stored value
+
         setInputValues((prevInputValues) => ({
           ...prevInputValues,
           [fieldName]: value,
@@ -73,10 +91,16 @@ function EmployeeSettingsForm() {
       };
       
       const getInputValue = (fieldName) => {
+
+        //Used to return a field value
+
         return inputValues[fieldName] || '';
       };
       
       const handleSubmit = (event) => {
+        
+        //Input Validation
+        
         event.preventDefault()
 
         console.log(event)
@@ -161,7 +185,7 @@ function EmployeeSettingsForm() {
           return;
         }
       
-        InfoLog(event);
+        InfoLog();
       };
       
     
@@ -239,6 +263,9 @@ function EmployeeSettingsForm() {
     </Form>
   )
 }
+
+//Styling
+
 const Form = styled.form`
     display: flex;
     justify-self: center;
@@ -308,29 +335,5 @@ const Form = styled.form`
   width: 3rem;
   align-self: center}
 `
-
-const Loading = styled.div `
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    width: 40px;
-    height: 40px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #383636;
-    border-radius: 50%;
-    animation: spinner 1.5s linear infinite;
-    @keyframes spinner {
-      0% {
-      transform: rotate(0deg);
-      }
-      100% {
-      transform: rotate(360deg);
-      }
-    }
-    
-  
-  `
 
 export default EmployeeSettingsForm

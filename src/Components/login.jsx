@@ -3,6 +3,7 @@ import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
+import { Loading2 as Loading } from "./Loading";
 
 function LoginForm() {
     const navigate = useNavigate()
@@ -13,21 +14,24 @@ function LoginForm() {
     const { register, handleSubmit, formState: { errors } } = useForm();
 
     const FetchLogin = async (information) => {
+      
+      //Function is executed on a login attempt
 
       setIsLoading(true)
 
-      console.log(information)
-
       const res = await fetch(`https://cpa-flask.azurewebsites.net/login/'${information.userName}'/'${information.password}'`)
       const data = await res.json()
-      console.log(data)
-      console.log(information.userName+' '+information.password)
+
+      //Returned data contains bool of if login was a match, employee account haas been registered, role of account
     
       if ((data.match === 'True' && data.role === 'employee' && data.setup ==='True') || (data.match === 'True' && data.role === 'manager')) { 
         const userID = information.userName
         setIsAuthorised('border-green')
         
         function randomString(length, chars) {
+
+          //Function to generate a random authentication key
+
           var result = '';
           for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
           return result;
@@ -39,30 +43,37 @@ function LoginForm() {
         sessionStorage.setItem('userID', userID)
         sessionStorage.setItem('role',data.role)
         
-
-        const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/add/'${userID}'/'${authKey}'`)
+        const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/add/'${userID}'/'${authKey}'`) //Aadding Auth Key to database
         const auth_data = await res.json()
-        console.log(auth_data)
 
         if (auth_data.success === 'Failed') {
+          
+          //If the authentication was unsuccesful (unexpected event)
+
           setIsAuthorised('border-red')
           sessionStorage.clear()
           alert(`There was an error authenticating your credentials.\n\n\n\n${auth_data.error}`)
         } else {
+
+          //If the authentication was successful
+
           navigate('/Portal/' +data.role + '/'+ userID )  
         }
-        
-  
-            
+
       } else if(data.match === 'False') {
+
+        //If there is no match for the specified username and password
+
         setIsAuthorised('border-red')
         sessionStorage.setItem('role',data.role)
       } else if (data.setup === 'False') {
+
+        //If the employee account is unregistered
+
         setIsAuthorised('border-red')
         sessionStorage.setItem('role',data.role)
         alert("Please see the Register menu as your account has not yet been registered, thankyou.")
     }
-  
       setIsLoading(false)
     }
 
@@ -101,8 +112,8 @@ function LoginForm() {
     )  
   }
   
+  //Styling
 
-  
   const Window = styled.form`
     justify-self: center;
     display: grid;
@@ -155,24 +166,6 @@ function LoginForm() {
     visibility: hidden;
   }`
   
-  
-  const Loading = styled.div `
-    width: 40px;
-    height: 40px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #383636;
-    border-radius: 50%;
-    animation: spinner 1.5s linear infinite;
-    @keyframes spinner {
-      0% {
-      transform: rotate(0deg);
-      }
-      100% {
-      transform: rotate(360deg);
-      }
-    }
-  
-  `
   const Signup = styled(Link)`
     text-decoration: none;
     color: #313131;

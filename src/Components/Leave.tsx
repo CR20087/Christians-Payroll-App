@@ -1,50 +1,70 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon,  } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
-import {Box,Button,Dialog,DialogActions,DialogContent, MenuItem, DialogTitle,IconButton,Stack,TextField ,Typography} from '@mui/material';
-import {Leave_Type, Years, Month, Days} from './lists'
+import { Button,DialogContent, MenuItem, DialogTitle,Stack } from '@mui/material';
+import { Leave_Type } from './lists'
 import { useForm } from 'react-hook-form';
 
 function EmployeeLeave() {
+
   let params = useParams()
   const [data, setData] = useState({});
-  const [leaveBalance, setLeaveBalance] = useState('...');
-  const [leaveBalanceHours, setLeaveBalanceHours] = useState('...');
+  const [leaveBalance, setLeaveBalance] = useState('...'); //Placeholder whislt data is fetched
+  const [leaveBalanceHours, setLeaveBalanceHours] = useState('...'); //Placeholder whislt data is fetched
   const [change, setChange] = useState(false);
-  const [createModalOpen, setCreateModalOpen] = useState(false);
+  const [leaveEntryModalOpen, setLeaveEntryModalOpen] = useState(false);
   const [validationErrors, setValidationErrors] = useState({})
 
   const validateCheck = useCallback(
+
+    //Function is executed every change of a cell
+
     (cell) => {
+
+      if (cell.column.id === 'leave_start_date' && !validationErrors['start']) {
+        console.log(cell)
+        setValidationErrors({...validationErrors, 'start' : new Date(`${cell.row.original.leave_start_date}T12:00:00`)}) //Saving the leave start to validate against
+      } else if (cell.column.id === 'leave_end_date' && !validationErrors['end']) {
+        setValidationErrors({...validationErrors, 'end' : new Date(`${cell.row.original.leave_end_date}T12:00:00`)}) //Saving the leave end to validate against
+      }
+      
       const handleBlur = (event) => {
+        
+        //Validation logic executed each time the field is 'un-focussed'
+
         const updatedValidationErrors = { ...validationErrors };
         
         if (cell.column.id === 'leave_start_date') {
-          updatedValidationErrors['start'] = new Date(`${event.target.value}T12:00:00`)
+          updatedValidationErrors['start'] = new Date(`${event.target.value}T12:00:00`) //Saving the updated leave start to validate against
         } else if (cell.column.id === 'leave_end_date') {
-          updatedValidationErrors['end'] = new Date(`${event.target.value}T12:00:00`)
+          updatedValidationErrors['end'] = new Date(`${event.target.value}T12:00:00`)//Saving the updated leave end to validate against
         }
 
 
-        if (updatedValidationErrors['start'] > updatedValidationErrors['end']) {
-          updatedValidationErrors[cell.id] = cell.column.columnDef.helperText;
+        if (updatedValidationErrors['start'] > updatedValidationErrors['end']) { 
+          updatedValidationErrors[cell.id] = cell.column.columnDef.helperText; //If the leave start is greater than leave end an error is given
         } else {
-          delete updatedValidationErrors[cell.id];
+          delete updatedValidationErrors[cell.id]; //If no further errors, delete the current ones
         }
 
-        setValidationErrors(updatedValidationErrors);
+        setValidationErrors(updatedValidationErrors); //Setting the validation errors to the updated object
         console.log(updatedValidationErrors)
       };
       return {
         onBlur: handleBlur,
-        error: !!validationErrors[cell.id],
-        helperText: validationErrors[cell.id],
+        error: !!validationErrors[cell.id], //Boolean of if there is an error (for the cell executing validation function)
+        helperText: validationErrors[cell.id], //Error text 
       };
     },
     [validationErrors]
   );
 
+  const handleCancelRowEdits = () => {
+
+    //Remove errors if editing is cancelled
+
+    setValidationErrors({});
+  };
 
   const columns = [
       {
@@ -69,8 +89,8 @@ function EmployeeLeave() {
         accessorKey: 'leave_type',
         header: 'Leave Type',
         muiTableBodyCellEditTextFieldProps: {
-          select: true, //change to select for a dropdown
-          children: Leave_Type.map((type) => (
+          select: true, //Changed to select for dropdown
+          children: Leave_Type.map((type) => ( //Mapping the values of the dropdown
             <MenuItem key={type} value={type}>
               {type}
             </MenuItem>
@@ -80,51 +100,68 @@ function EmployeeLeave() {
       {
         accessorKey: 'status',
         header: 'Status',
-        enableEditing: false,
+        enableEditing: false, //This is unable to be edited
       }
     ]
 
   useEffect(() => {
-    console.log("fetch")    
+    
+    //Fetching page data
+
     async function fetchData()  {
         const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/'${params.userID}'`)
         const data = await res.json()
 
-        console.log(data)
-        setData(data.leave_entrys)
+        setData(data.leave_entrys) //Setting Table data
         setLeaveBalance(data.leave_balance)
-        setLeaveBalanceHours(data.leave_balance_hours)
+        setLeaveBalanceHours(data.leave_balance_hours) //Setting the leave balance display values
     } 
         
     fetchData()
 
-},[change])
+},[change]) // Executed every time variable 'change' is changed
 
 const handleSaveRow = async ({ exitEditingMode, row, values }) => {
-  //if using flat data and simple accessorKeys/ids, you can just do a simple assignment here.
+
+  //Function for saving a edited row / editing a leave entry
+
   console.log(values)
   const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/update/'${row.original.leave_entry_id}'/'${values.leave_start_date}'/'${values.leave_end_date}'/'${values.leave_type}'`)
   const data = await res.json()
 
   if (data.success === 'Success') {
+
+    //If new leave entry returned a success response
+
     alert(`Leave entry\n\tFrom: ${values.leave_start_date}   To ${values.leave_end_date}\n was updated successfully`)
     setChange(true)}
     else {
+
+      //If new leave entry returned a failed response
+
       alert(`An error occured.\n\n\n\n${data.error}`) }
-  //send/receive api updates here
   exitEditingMode(); //required to exit editing mode
 };
 
 
-const handleCreateNewRow = async (values) => {
+const handleNewLeaveEntry = async (values) => {
+
+  //Creating a new row / leave entry
+
   console.log(values)
   const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/new/'${params.userID}'/'${values.start_date}'/'${values.end_date}'/'${values.leave_type}'`)
   const data = await res.json()
 
   if (data.success === 'Success') {
+    
+    //If new leave entry returned a success response
+
     alert(`Leave from\n\t${values.start_date} to ${values.start_date}\nWas created successfully`)
     setChange(true)}
     else {
+
+      //If new leave entry returned a failed response
+
       alert(`An error occured.\n\n\n\n${data.error}`) }
 };
 
@@ -147,21 +184,20 @@ const handleCreateNewRow = async (values) => {
       enablePinning
       enableEditing
       editingMode='row'
-      onEditingRowSave={handleSaveRow}
-      
+      onEditingRowCancel={handleCancelRowEdits}
+      onEditingRowSave={handleSaveRow}     
       renderTopToolbarCustomActions={() => (
   <Button
-    color="secondary"
-    onClick={() => setCreateModalOpen(true)}
+    onClick={() => setLeaveEntryModalOpen(true)}
     variant="contained"
   >
     New leave Entry
   </Button>
 )}/>
-      <CreateNewAccountModal
-      open={createModalOpen}
-      onClose={() => setCreateModalOpen(false)}
-      onSubmit={handleCreateNewRow}
+      <NewLeaveEntry
+      open={leaveEntryModalOpen}
+      onClose={() => setLeaveEntryModalOpen(false)}
+      onSubmit={handleNewLeaveEntry}
       />
       </>
   
@@ -173,7 +209,7 @@ export default EmployeeLeave;
 
 
 //example of creating a mui dialog modal for creating new rows
-const CreateNewAccountModal = ({ open, onClose, onSubmit }) => {
+const NewLeaveEntry = ({ open, onClose, onSubmit }) => {
 const [values, setValues] = useState([]);
 const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -228,7 +264,7 @@ return (
   </Stack>
   <div className='buttons-for-form'>
 <Button onClick={onClose}>Cancel</Button>
-<Button color="secondary" type='submit' variant="contained">
+<Button type='submit' variant="contained">
   New Entry
 </Button>
 </div>

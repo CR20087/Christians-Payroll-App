@@ -1,9 +1,7 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon,  } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
-import {Box,Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,Stack,TextField ,Typography, MenuItem} from '@mui/material';
-import {Times, Years, Month, Days} from './lists'
+import { Button,DialogContent,DialogTitle,Stack } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 function PayTable() {
@@ -16,7 +14,7 @@ function PayTable() {
 
   
 
-  const columns = useMemo(
+  const columns = useMemo( //Column defenitions
     () => [
       
       {
@@ -71,14 +69,17 @@ function PayTable() {
   useEffect(() => {
     console.log("fetch")    
     async function fetchData()  {
+
+      //Fetching page data
+
         const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/'${params.userID}'`)
         const data = await res.json()
 
         console.log(data)
-        setData(data.results)
+        setData(data.results) //Setting data
         setChange(false)
         const names = [...new Set(data.results.map((emp) => ({ name: emp.name, username: emp.username })))];
-        setEmpNameArray(names)
+        setEmpNameArray(names) //This is a object array of names with values of the person's username
     } 
         
     fetchData()
@@ -86,6 +87,8 @@ function PayTable() {
 },[change])
 
 const handleAddStatutoryHoliday = async (values) => {
+
+  //Functions to add a sttutory holiday
 
   const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/add-stat/'${values.username}'/'${values.date}'/'${[values.stat_length_hours,values.stat_length_minutes].join(':')}'`)
   const data = await res.json()
@@ -99,7 +102,8 @@ const handleAddStatutoryHoliday = async (values) => {
 
 const PaySelectedEmployees = async (table) => {
 
-  
+  //Functions to execute pay run with selected employees
+
   if (window.confirm(`Are you sure you want execute payrun(s) for:${table.getSelectedRowModel().rows.map((row) => (`\n\t${row.original.name}\nPeriod ending ${row.original.pay_period_end}`))}`)) {
 
     const selected_array = table.getSelectedRowModel().rows.map((row) => (`${row.original.username},${row.original.pay_period_end}`))
@@ -113,33 +117,49 @@ const PaySelectedEmployees = async (table) => {
     const data = await res.json()
 
     if (data.success === 'Success') {
+
+      //If the payrun returned a success status
+
       alert(`Pay run for selected rows was successful`)
       setChange(true)}
     else {
+
+      //If the payrun returned a failed status
+
       alert(`An error occured.\n\n\n\n${data.error}`) }
     }
   }
 
 const PayAllEmployees = async (table) => {
 
+  //Function to pay all employees
+
   if (window.confirm(`Are you sure you want execute payrun(s) for:${table.getRowModel().rows.map((row) => (`\n\t${row.original.name}\nPeriod ending ${row.original.pay_period_end}`))}`)) {
     const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/execute/all/${params.userID}`)
     const data = await res.json()
 
     if (data.success === 'Success') {
+
+      //If the payrun returned a success status
+
       alert(`All employees were paid successfully`)
       setChange(true)}
     else {
+
+      //If the payrun returned a failed status
+
       alert(`An error occured.\n\n\n\n${data.error}`) }
     }
   }
 
-const CreateNewEntry = ({ open, onClose, onSubmit }) => {
+const StatutoryHolidayModal = ({ open, onClose, onSubmit }) => {
   const [values, setValues] = useState([])
   const { register, handleSubmit, formState: { errors } } = useForm();
   
   const submitFunc = (information) => {
-  //put your validation logic here
+
+    //Function to submit statutory holiday
+
   onSubmit(information);
   onClose();
   };
@@ -234,24 +254,21 @@ const CreateNewEntry = ({ open, onClose, onSubmit }) => {
         return(
         <>
   <Button
-    color="secondary"
     onClick={() => PayAllEmployees(table)}
     variant="contained"
   >Pay All</Button>
   <Button
-    color="secondary"
     onClick={() => PaySelectedEmployees(table)}
     variant="contained"
   >Pay selected</Button>
   <Button
-    color="secondary"
     onClick={() => setStatutoryModalOpen(true)}
     variant="contained"
   >Add Statutory holiday</Button>
     </>
   )}}
   />
-  <CreateNewEntry
+  <StatutoryHolidayModal //Modal for new statutory holiday
       open={statutoryOpen}
       onClose={() => setStatutoryModalOpen(false)}
       onSubmit={handleAddStatutoryHoliday}

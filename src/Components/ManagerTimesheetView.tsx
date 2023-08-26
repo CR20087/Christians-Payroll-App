@@ -7,7 +7,7 @@ function TimesheetView() {
   let params = useParams()
   const [data, setData] = useState({});
 
-  const columns = useMemo(
+  const columns = useMemo( //Column Defenitions
     () => [
       {
         accessorKey: 'username',
@@ -67,12 +67,13 @@ function TimesheetView() {
   useEffect(() => {
     console.log("fetch")    
     async function fetchData()  {
+
+      //Fetching page data
+
         const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/timesheets/'${params.userID}'`)
         const data = await res.json()
 
-        console.log(data)
-
-        setData(data.results)
+        setData(data.results) //Setting data
     } 
         
     fetchData()
@@ -90,7 +91,7 @@ function TimesheetView() {
         enableFullScreenToggle={false}
         enablePinning
         initialState={{ columnPinning: { left: ['username']} }}
-        renderDetailPanel={({ row }) => (
+        renderDetailPanel={({ row }) => ( //Shows the Entrys within each timesheet in a dropdown menu
           <Box
             sx={{
               display: 'grid',
@@ -98,7 +99,7 @@ function TimesheetView() {
               gridTemplateColumns: '1fr 1fr 1fr 1fr 1fr 1fr 1fr',
               width: '50%',
               float: 'left'
-            }}
+            }} //deail paanel styling
           >
             <Typography className='title-details'>Entry ID</Typography>
             <Typography className='title-details'>Date</Typography>

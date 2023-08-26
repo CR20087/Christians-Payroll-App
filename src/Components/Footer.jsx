@@ -2,6 +2,7 @@ import styled from "styled-components"
 
 function Footer() {
 
+  //Footer Element
 
   return (
       <FooterDiv>
@@ -13,7 +14,7 @@ function Footer() {
   )
 }
 
-
+//Styling
 
 const FooterDiv = styled.div`
   display: flex;

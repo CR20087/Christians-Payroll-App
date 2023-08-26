@@ -8,6 +8,7 @@ import { useEffect } from "react";
 function ManagerRegisterForm() {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
+    //All field values
     const [userName, setUserName] = useState()
     const [password, setPassword] = useState()
     const [lastName, setLastName] = useState()
@@ -25,10 +26,12 @@ function ManagerRegisterForm() {
     sessionStorage.setItem("role","manager")
 
     useEffect(() => {
-      setFormPage(params.pagenum);
+      setFormPage(params.pagenum); //Used to know which form page to show
   },[params.pagenum]);
 
   const InfoLog = async (information) => {
+
+    //Function that saves information, different functions based on the form page
 
     if (formPage === '1') {navigate('/Register/manager/' + (parseInt(params.pagenum)+1).toString() ) }
 
@@ -62,6 +65,7 @@ function ManagerRegisterForm() {
 
       if (data.success=== 'Success') {
         navigate('/Register/manager/' + (parseInt(params.pagenum)+1).toString()  )
+        //Removing stored values after completing 
         sessionStorage.removeItem('userName')
         sessionStorage.removeItem('password')
         sessionStorage.removeItem('firstName')
@@ -75,13 +79,16 @@ function ManagerRegisterForm() {
         sessionStorage.removeItem('entityName')
 
       } else {
-        alert(`Registering failed .Please check information and try again.\n\n\n\n${data.error}`)
+        alert(`Registering failed .Please try again.\n\n\n\n${data.error}`)
       }
     }
   }
 
 
   function page(pagenum) {
+
+    //Introduction to register form
+
     if (pagenum === '1') {
       return(
         <div>
@@ -92,6 +99,9 @@ function ManagerRegisterForm() {
     }
 
     if (pagenum === '2') {
+
+      //Making a login for the new manager
+
       return(
         <div>
             <p>User Name:</p>
@@ -116,6 +126,9 @@ function ManagerRegisterForm() {
     }
 
     if (pagenum === '3') {
+
+      //Personal details
+
       return(
         <div>
             <p>First Name:</p>
@@ -141,6 +154,9 @@ function ManagerRegisterForm() {
 
     if (pagenum === '4') {
       return(
+
+        //Business related details
+
         <div >
           <div className="large1 column">
             <p>Email:</p>
@@ -232,17 +248,17 @@ function ManagerRegisterForm() {
             <img src="/Christian-Payroll-App-Logo.svg" alt="logo" />
               <p>Christian's Payroll App</p>
           </Head>
+          
+          {page(formPage) /*This function returns the different page depending on the formpage number*/} 
 
-          {page(formPage)}
-
-          <div>{(isLoading && formPage==='5') || (formPage==='6') ? <button type="submit" hidden >Next</button> : <button type="submit">Next</button>}</div><br></br>
-          <div>{isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> }</div>
+          <div>{(isLoading && formPage==='5') || (formPage==='6') ? <button type="submit" hidden >Next</button> : <button type="submit">Next</button> /*Show or hide the button whislt loading */}</div><br></br>
+          <div>{isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> /*Show or hide the loading element*/}</div>
           <Signup to={"/Login"}>Go to Login Page</Signup>
         </Window>      
     )  
   }
   
-
+  //Styling
   
   const Window = styled.form`
     justify-self: center;

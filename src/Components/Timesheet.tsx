@@ -1,58 +1,67 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { Edit as EditIcon, Delete as DeleteIcon, Email as EmailIcon,  } from '@mui/icons-material';
 import { useParams } from 'react-router-dom';
-import {Box,Button,Dialog,DialogActions,DialogContent,DialogTitle,IconButton,Stack,TextField ,Typography, MenuItem} from '@mui/material';
-import {Times, Pay_Type, Years, Month, Days} from './lists'
+import { Button,DialogContent,DialogTitle,Stack,TextField,MenuItem } from '@mui/material';
+import {Times, Pay_Type } from './lists'
 import { useForm } from 'react-hook-form';
 
 
 function EmployeeTable() {
   let params = useParams()
-  const [data, setData] = useState({});
-  const [data2, setData2] = useState({});
+  const [data, setData] = useState({}); //Timesheet data
+  const [data2, setData2] = useState({}); //Timesheet entry data
   const [change, setChange] = useState(false);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [validationErrors, setValidationErrors] = useState({});
   const { register, handleSubmit, formState: { errors } } = useForm();
 
   const validateCheck = useCallback(
+
+    //Input Validation
     (cell) => {
+
+      if (cell.column.id === 'start_time' && !validationErrors['start']) {
+        console.log(cell)
+        setValidationErrors({...validationErrors, 'min' : new Date(`2000-01-01T${cell.row.original.start_time}`)}) //Saving the entry start to validate against
+      } else if (cell.column.id === 'end_time' && !validationErrors['end']) {
+        setValidationErrors({...validationErrors, 'max' : new Date(`2000-01-01T${cell.row.original.end_time}`)}) //Saving the entry end to validate against
+      }
+
       const handleBlur = (event) => {
+        
+        //Validation function
+
         console.log(event)
         const updatedValidationErrors = { ...validationErrors };
 
 
         if (cell.column.id === 'start_time') {
-          updatedValidationErrors['min'] = new Date(`2000-01-01T${event.target.value}`)
+          updatedValidationErrors['min'] = new Date(`2000-01-01T${event.target.value}`) //Saving the updated entry start to validate against
         } else if (cell.column.id === 'end_time') {
-          updatedValidationErrors['max'] = new Date(`2000-01-01T${event.target.value}`)
+          updatedValidationErrors['max'] = new Date(`2000-01-01T${event.target.value}`) //Saving the updated entry end to validate against
         } 
                 
-        if (event.target.value === "") {
+        if (event.target.value === "") { //Special validation for comments if empty
           if (cell.column.id !== 'comment') {
           updatedValidationErrors[cell.id] = `${cell.column.columnDef.header} is required`;
           console.log("STRING")
-        }} else if (cell.column.id === 'comment') {
+        }} else if (cell.column.id === 'comment') { //Special validation for comments if matching pattern
             if (!cell.column.columnDef.regex.test(event.target.value)) {
           updatedValidationErrors[cell.id] = cell.column.columnDef.helperText;
           console.log("REGEX") 
         }} else if (updatedValidationErrors['min'] > updatedValidationErrors['max']) {
           updatedValidationErrors[cell.id] = cell.column.columnDef.helperText;
         } else {
-          delete updatedValidationErrors[cell.id];
+          delete updatedValidationErrors[cell.id]; //If no further errors, delete the current ones
         }
          
-        
-
-        setValidationErrors(updatedValidationErrors);
-        console.log(updatedValidationErrors)
+        setValidationErrors(updatedValidationErrors); //Setting the validation errors to the updated object
       };  
       
       return {
         onBlur: handleBlur,
-        error: !!validationErrors[cell.id],
-        helperText: validationErrors[cell.id],
+        error: !!validationErrors[cell.id], //Boolean of if there is an error (for the cell executing validation function)
+        helperText: validationErrors[cell.id], //Error text 
       };
     },
     [validationErrors]
@@ -63,17 +72,18 @@ function EmployeeTable() {
     console.log('Validation errors updated:', validationErrors);
   }, [validationErrors]);
 
-  const columns = useMemo(
+  const columns = useMemo( //Timesheet column defenitions
     () => [
       
+      // Various column sizing to reduce gap between columns
       {
         accessorKey: 'period_start',
         header: 'Period Start',
-        size:150
       },
       {
         accessorKey: 'period_end',
         header: 'Period End',
+        size: 100
       },
       {
         accessorKey: 'monday_hours_worked',
@@ -118,13 +128,13 @@ function EmployeeTable() {
     [],
   );
 
-  const columns2 = [
+  const columns2 = [ //Timesheet entry column defenitions
       {
         accessorKey: 'date',
         header: 'Date',
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
-          type: 'date'
+          type: 'date' //Type 'data' to have an inbuilt select menu
         }),
       },
       {
@@ -133,7 +143,7 @@ function EmployeeTable() {
         helperText: "Start time must be greater than End time",
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
-          type: 'time',
+          type: 'time', //Type 'time' to have an inbuilt select menu
         }),
       },
       {
@@ -142,7 +152,7 @@ function EmployeeTable() {
         helperText: "End time must be greater than Start time",
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell),
-          type: 'time',
+          type: 'time', //Type 'time' to have an inbuilt select menu
         }),
       },
       {
@@ -161,7 +171,7 @@ function EmployeeTable() {
         accessorKey: 'pay_type',
         header: 'Pay Type',
         muiTableBodyCellEditTextFieldProps: {
-          select: true, //change to select for a dropdown
+          select: true, //Changed to a dropdown
           children: Pay_Type.map((type) => (
             <MenuItem key={type} value={type}>
               {type}
@@ -172,7 +182,7 @@ function EmployeeTable() {
       {
         accessorKey: 'comment',
         header: 'Comments',
-        regex: /^[A-Za-z0-9,.() ]*$/,
+        regex: /^[A-Za-z0-9,.() ]*$/, //Regex pattern for validation checking
         helperText: "Comment must not include any special symbols, Allowed symbols: '(),.'",
         muiTableBodyCellEditTextFieldProps: ({ cell }) => ({
           ...validateCheck(cell)
@@ -181,19 +191,19 @@ function EmployeeTable() {
     ]
 
   useEffect(() => {
-    console.log("fetch")    
+    
+    //Fetch page data
+
     async function fetchData()  {
         const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet/'${params.userID}'`)
         const data = await res.json()
 
-        console.log(data)
-        setData(data.results)
+        setData(data.results) //Set timesheet data
 
         const res2 = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/'${params.userID}'/'${data.entry_start_date}'/'${data.entry_end_date}'`)
         const data2 = await res2.json()
 
-        console.log(data2)
-        setData2(data2.results)
+        setData2(data2.results) //Set timesheet entry data
 
         setChange(false)
     } 
@@ -203,21 +213,32 @@ function EmployeeTable() {
 },[change])
 
 const handleSaveRow = async ({ exitEditingMode, row, values }) => {
+
+  //Function to save an edited entry
+
   console.log(values)
   const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/update/'${row.original.timesheet_entry_id}'/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
   const data = await res.json()
 
   if (data.success === 'Success') {
+
+    //If the update returned a success status
+
     alert(`Entry updated succesfully (ID no.${row.original.timesheet_entry_id})`)
     setChange(true)}
     else {
+
+      //If the update returned a failed status
+
       alert(`An error occured.\n\n\n\n${data.error}`) }
 
   exitEditingMode(); 
 };
 
-const DeleteAccount = async (table) => {
-  console.log(table.getSelectedRowModel())
+const DeleteEntry = async (table) => {
+
+  //Function to delete a timesheet entry
+
   if (window.confirm(`Are you sure you want to delete${table.getSelectedRowModel().rows.map((row) => (`\n\t${row.original.date} (Entry ID no.${row.original.timesheet_entry_id})`))}`)) {
 
     console.log(`${table.getSelectedRowModel().rows.map((row) => (`${row.original.timesheet_entry_id}`))}`)
@@ -233,28 +254,40 @@ const DeleteAccount = async (table) => {
     const data = await res.json()
     console.log(data)
     if (data.success === 'Success') {
+
+      //If the delete returned a success status
+  
       alert(`Selected rows were deleted successfully`)
       setChange(true)}
     else {
+
+      //If the delete returned a failed status
+
       alert(`An error occured.\n\n\n\n${data.error}`) }
   }
 }
 
-const handleCreateNewRow = async (values) => {
+const handleCreateNewEntry = async (values) => {
 
-  console.log(values)
+  //Function to submit a new timesheet entry
 
   const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/new/'${params.userID}'/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${[values.unpaid_break_hours,values.unpaid_break_minutes].join(':')}'/'${values.pay_type}'/'${values.comment}'`)
   const data = await res.json()
 
   if (data.success === 'Success') {
+
+    //If the new entry was successful
+
     alert(`${values.date} was created successfully`)
     setChange(true)}
-    else {
-      alert(`An error occured.\n\n\n\n${data.error}`) }
+  else {
+
+    //If the new entry failed
+
+    alert(`An error occured.\n\n\n\n${data.error}`) }
 };
 
-const CreateNewEntry = ({ open,  onClose, onSubmit }) => {
+const CreateNewEntry = ({ open,  onClose, onSubmit }) => { //New timesheet entry modal
 const [values, setValues] = useState(() =>
 columns.reduce((acc, column) => {
 acc[column.accessorKey ?? ''] = '';
@@ -282,13 +315,13 @@ return (
               select: {padding: '16.5px 14px',font:'inherit'},
               div: {display:'flex',gap:'1rem',justifyContent:'center'},
               padding: '20px 2px 2px 2px'
-            }}
+            }} //Styling for new entry form
           >
             <div>
               Date
               <input
               {...register("date", { required: true })}
-              type='date'
+              type='date' //Date type
               onChange={(e) => 
                 setValues({ ...values, [e.target.name]: e.target.value })
               }
@@ -299,7 +332,7 @@ return (
               </div>
             <div>Start Time
             <input 
-              type='time'
+              type='time' //Time type
               max={!!values['end_time'] ? values['end_time'] : '' }
               {...register("start_time", { required: true })}
               onChange={(e) => 
@@ -310,7 +343,7 @@ return (
                 <div>End Time
               <input 
               {...register("end_time", { required: true })} 
-              type='time'
+              type='time' //Time type
               min={!!values['start_time'] ? values['start_time'] : '' }
               onChange={(e) =>
                   setValues({ ...values, [e.target.name]: e.target.value })
@@ -323,7 +356,7 @@ return (
               <input 
               {...register("unpaid_break_hours", { required: true, pattern: /^\d{1,2}$/ })} 
               type='number'
-              defaultValue='00'
+              defaultValue='00' //So the user can not touch the form if they want to hve a default '00:00' unpaid break
               min='00'
               max='23'
               style={{width:'5rem'}}
@@ -364,14 +397,12 @@ return (
           </Stack>
           <div className='buttons-for-form'>
           <Button onClick={onClose}>Cancel</Button>
-          <Button color="secondary" type='submit' variant="contained">
+          <Button type='submit' variant="contained">
             New Entry
           </Button>
         </div>
         </form>
-        
       </DialogContent>
-
     </div>
   </div>
 );
@@ -383,11 +414,10 @@ return (
       columns={columns}
       data={data}
       enableFullScreenToggle={false}
-      initialState={{ columnPinning: { left: ['period_start','period_end']} }}
+      initialState={{ columnPinning: { left: ['period_start','period_end']} }} //Pinned the Start and End columns to the left
       enablePinning
       renderTopToolbarCustomActions={() => (
   <Button
-    color="secondary"
     onClick={() => setCreateModalOpen(true)}
     variant="contained"
   >
@@ -409,13 +439,12 @@ return (
         return (
           <div style={{ display: 'flex', gap: '0.5rem' }}>
             <Button
-              color="secondary"
               onClick={() => setCreateModalOpen(true)}
               variant="contained"
             >New Time sheet Entry</Button>
             <Button
                 color="error"
-                onClick={() => DeleteAccount(table)}
+                onClick={() => DeleteEntry(table)}
                 variant="contained"
             >Delete</Button>
           </div>
@@ -425,7 +454,7 @@ return (
       <CreateNewEntry
       open={createModalOpen}
       onClose={() => setCreateModalOpen(false)}
-      onSubmit={handleCreateNewRow}
+      onSubmit={handleCreateNewEntry}
       />  
   </>
   );

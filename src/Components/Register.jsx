@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { useEffect } from "react";
-
+import { Loading2 as Loading } from './Loading'
 function RegisterForm() {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
@@ -21,28 +21,35 @@ function RegisterForm() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const [formPage, setFormPage] = useState('1')
     let params = useParams()
-    sessionStorage.setItem('role','employee')
+
+    sessionStorage.setItem('role','employee') //This is used by the support documentation to highlight appicable sections assuming the user is an 'employee' as they have visted this page.
 
     const FetchLogin = async (information) => {
 
-      setIsLoading(true)
+      //Function to fetch login
 
-      console.log(information)
+      setIsLoading(true) //Loading symbol
 
       const res = await fetch(`https://cpa-flask.azurewebsites.net/register/'${information.userName}'/'${information.password}'`)
       const data = await res.json()
-      console.log(data)
-      console.log(information.userName+' '+information.password)
     
       if (data.match === 'True' && data.config === 'False') { 
+
+        //If the request returns that the account is a unregistered employee
         
         sessionStorage.setItem('userName',information.userName)
         navigate('/Register/' + (parseInt(params.pagenum)+1).toString()  )
 
       } else if (data.match === 'False') {
+
+        //If the login did not match
+
         setIsAuthorised('border-red')
         alert("Please check your login details and try again.\n\n If this persists please contact your manager and ask them check the login details OR configure your account (if not done yet).")
       } else if (data.config === 'True') {
+
+        //If the account has already been registered
+
         setIsAuthorised('border-red')
         alert("You already have a registered account. Please see 'Forgot password' for password assitance. OR Contact your manager for username assistance.")
       }
@@ -51,10 +58,16 @@ function RegisterForm() {
     }
 
     useEffect(() => {
+
+      //Used to render different form pages
+
       setFormPage(params.pagenum);
   },[params.pagenum]);
 
   const InfoLog = async (information) => {
+
+    //Function which saaves form information and submits it
+
     if (formPage === '2') {sessionStorage.setItem('firstName',information.firstName); sessionStorage.setItem('lastName',information.lastName)
       navigate('/Register/' + (parseInt(params.pagenum)+1).toString()  )
     }
@@ -68,6 +81,9 @@ function RegisterForm() {
       navigate('/Register/' + (parseInt(params.pagenum)+1).toString()  )
     }
     if (formPage === '4') {
+
+      //Submission Page
+
       setIsLoading(true)
 
       const res = await 
@@ -76,6 +92,8 @@ function RegisterForm() {
       console.log(data)
 
       if (data.success=== 'Success') {
+
+        //If the account is successfully registered
         navigate('/Register/' + (parseInt(params.pagenum)+1).toString()  )
         sessionStorage.removeItem('userName')
         sessionStorage.removeItem('firstName')
@@ -86,6 +104,9 @@ function RegisterForm() {
         sessionStorage.removeItem('postCode')
         sessionStorage.removeItem('phone')
       } else {
+
+        //If the registration fails
+
         alert(`Registering failed .Please check information and try again.\n\n\n\n${data.error}`)
       }
 
@@ -95,6 +116,9 @@ function RegisterForm() {
 
 
   function page(pagenum) {
+
+    //Function which returns different pages per formpage
+
     if (pagenum === '1') {
       return(
         <div className={isAuthorised} >
@@ -220,7 +244,7 @@ function RegisterForm() {
               <p>Christian's Payroll App</p>
           </Head>
 
-          {page(formPage)}
+          {page(formPage) /*Different Form pages are rendered here */}
 
           <div>{(isLoading && formPage==='4') || (formPage==='5') ? <button type="submit" hidden >Next</button> : <button type="submit">Next</button>}</div><br></br>
           <div>{isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> }</div>
@@ -230,7 +254,8 @@ function RegisterForm() {
   }
   
 
-  
+//Styling
+
   const Window = styled.form`
     justify-self: center;
     display: grid;
@@ -292,24 +317,6 @@ function RegisterForm() {
     visibility: hidden;
   }`
   
-  
-  const Loading = styled.div `
-    width: 40px;
-    height: 40px;
-    border: 3px solid #f3f3f3;
-    border-top: 3px solid #383636;
-    border-radius: 50%;
-    animation: spinner 1.5s linear infinite;
-    @keyframes spinner {
-      0% {
-      transform: rotate(0deg);
-      }
-      100% {
-      transform: rotate(360deg);
-      }
-    }
-  
-  `
   const Signup = styled(Link)`
     text-decoration: none;
     color: #313131;

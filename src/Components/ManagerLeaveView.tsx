@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from 'react';
-import { Box, Typography,IconButton } from '@mui/material';
-import { Check, CancelSharp} from '@mui/icons-material';
+import { Box,IconButton } from '@mui/material';
+import { Check, CancelSharp } from '@mui/icons-material';
 import { MaterialReactTable } from 'material-react-table';
 import { useParams } from 'react-router-dom';
 
@@ -9,7 +9,7 @@ function LeaveView() {
   const [data, setData] = useState({});
   const [change, setChange] = useState(false);
 
-  const columns = useMemo(
+  const columns = useMemo( //Column Defenitions
     () => [
       {
         accessorKey: 'username',
@@ -41,14 +41,14 @@ function LeaveView() {
 
 
   useEffect(() => {
-    console.log("fetch")    
+    
+    //Fetching page data
+
     async function fetchData()  {
         const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-leave/'${params.userID}'`)
         const data = await res.json()
 
-        console.log(data)
-
-        setData(data.results)
+        setData(data.results) //Setting Table data
     } 
         
     fetchData()
@@ -56,25 +56,43 @@ function LeaveView() {
 },[change])
 
   const DeclineLeave = async (row) => {
+
+    //Function to decline an employee leave request
+
     const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-leave/decline/'${row.original.leave_entry_id}'`)
     const data = await res.json()
 
   if (data.success === 'Success') {
+
+    //If the decline function is successful
+
     alert(`${row.original.username}'s leave\n\tFrom ${row.original.leave_start_date}  To ${row.original.leave_end_date}\nWas declined successfully`)
     setChange(true)}
     else {
+
+      //If the decline function is unsuccessful
+
       alert(`An error occured.\n\n\n\n${data.error}`) }
   }
 
   const AcceptLeave = async (row) => {
+
+    //Function to accept an employee leave request
+
     console.log(row)
     const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-leave/accept/'${row.original.leave_entry_id}'`)
     const data = await res.json()
 
   if (data.success === 'Success') {
+
+    //If the accept function is successful
+
     alert(`${row.original.username}'s leave\n\tFrom ${row.original.leave_start_date}  To ${row.original.leave_end_date}\nWas granted successfully`)
     setChange(true)}
     else {
+
+      //If the accept function is unsuccessful
+
       alert(`An error occured.\n\n\n\n${data.error}`) }
   }
 

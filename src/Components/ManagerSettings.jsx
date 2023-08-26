@@ -4,7 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect } from "react";
 function ManagerSettingsForm() {
     const [isLoading, setIsLoading] = useState(false)
-    const [inputValues, setInputValues] = useState({
+    const [inputValues, setInputValues] = useState({ //Setting the default values
         userName: '',
         password: '',
         email: '',
@@ -29,6 +29,8 @@ function ManagerSettingsForm() {
 
             console.log(data)
 
+            //Setting the returned values to their fields
+
             setInputValue('userName',data.userName)  
             setInputValue('password',data.password)  
             setInputValue('email',data.email)  
@@ -46,7 +48,7 @@ function ManagerSettingsForm() {
 
     },[params.userID])
 
-    const InfoLog = async (information) => {
+    const InfoLog = async () => {
         setIsLoading(true)
        
             const res = await fetch(
@@ -55,10 +57,16 @@ function ManagerSettingsForm() {
             const data = await res.json()
 
             if (data.success === 'Success') {
+
+              //If the update was successful
+
                 alert("Changes updated successfully")
                 setIsAuthorised('border-green')
                 sessionStorage.setItem('userID',getInputValue('userName'))
             } else {
+
+              //If the update failed
+
                 alert(`An error occured please check information and try again\n\n\n\n${data.error}`)
                 setIsAuthorised('border-red')
             }
@@ -81,7 +89,8 @@ function ManagerSettingsForm() {
       const handleSubmit = (event) => {
         event.preventDefault();
         
-        console.log(event)
+        //Input validation
+
         const newErrors = {};
        
           if (!event.target[0].value) {
@@ -167,16 +176,10 @@ function ManagerSettingsForm() {
               newErrors.entityName = 'Entity name must be valid';
                 }
               }
-              
-                
-      
+
         setErrors(newErrors);
       
-        if (Object.keys(newErrors).length > 0) {
-          return;
-        }
-      
-        InfoLog(event);
+        InfoLog(); //Function which saves the information if the infomration is acceptable
       };
       
     
@@ -269,6 +272,9 @@ function ManagerSettingsForm() {
     </Form>
   )
 }
+
+//Styling
+
 const Form = styled.form`
     display: flex;
     justify-self: center;
