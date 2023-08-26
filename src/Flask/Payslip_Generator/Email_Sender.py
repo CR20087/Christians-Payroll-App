@@ -5,16 +5,17 @@ def email_sender(username,date,recipient,manager):
     import smtplib
     import os
 
+    #Establish connection
 
     server = smtplib.SMTP('smtp.gmail.com', 587)
     server.starttls()
 
-
     payslip_email_acc = 'payslip.christianspayrollapp@gmail.com'
-
 
     server.login(payslip_email_acc,'ezpkrdjwrbvjtzhl')
     msg = MIMEMultipart()
+
+    #Generate Messgae
 
     message = f"""Dear {recipient.name},
 
@@ -29,11 +30,15 @@ WARNING: This e-mail contains information which is CONFIDENTIAL, and may be subj
     msg['From'] = payslip_email_acc
     msg['To'] = recipient.email
 
+    #Attach Payslip
+
     msg.attach(MIMEText(message, "plain"))
 
     with open(os.getcwd()+'/src/Flask/Payslip_Generator/Pdf_Generator/Generated_PDF.pdf', "rb") as f:
         attach = MIMEApplication(f.read(),_subtype="pdf")
         attach.add_header('Content-Disposition','attachment',filename=str(f'PAYSLIP {username} {date}'))
         msg.attach(attach)
+        
+        #Send Message
         
         server.send_message(msg)

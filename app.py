@@ -3,8 +3,12 @@ from src.Flask.Payslip_Generator import Payslip_Script
 from src.Flask import cpa_sql
 import random
 
+#Flask App configuration
+
 app = Flask(__name__, template_folder='src/Flask/templates')
 app.config['WKHTMLTOPDF_PATH'] = '/usr/bin/wkhtmltopdf' 
+
+#Routes
 
 @app.route('/')
 def index():
@@ -191,12 +195,10 @@ def update_timesheet_entry(timesheet_entry_id: str,date: str,start_time: str,end
 def delete_timesheet_entrys():
 
     data_array = request.get_json()
-    print(data_array)
     
     data_tuple = tuple(data_array.split(','))
     if len(data_tuple) == 1:
         data_tuple = data_tuple*2
-    print(data_tuple)
 
     result = cpa_sql.delete_timesheet_entrys(data_tuple)
 
@@ -290,10 +292,8 @@ def add_new_stat_day(username: str,date: str,stat_length:str):
 @app.route("/manager/pay-run/execute/selected", methods=['POST'])
 def pay_run_execute_selected():
     data_array = request.get_json()
-    print(data_array)
     
     list_of_tuples = [tuple(data.split(',')) for data in data_array]
-    print(list_of_tuples)
     result = cpa_sql.pay_run_execute_selected(list_of_tuples)
 
     if result[0] == 'Failed':

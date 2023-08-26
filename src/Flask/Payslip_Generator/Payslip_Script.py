@@ -23,9 +23,12 @@ def Payslip_Script(id):
             self.contact = email_details[3]
 
     #send the email
+
     recipient=recipient()
     manager=manager()
 
     Email_Sender.email_sender(payslip_data[0],payslip_data[18],recipient,manager)   
+
+    #Make final updates
 
     cpa_sql.exit_payrun_update(id,payslip_data[23],payslip_data[0])

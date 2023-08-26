@@ -2,8 +2,10 @@
     <head>
         <meta content="text/html; charset=UTF-8" http-equiv="content-type">
     </head>
-    <body class="c16 doc-content">
+    <!-- Class 'c16' wraps the whole payslip and gives width limits and font family specifications -->
+    <body class="c16">
         <div>
+            <!-- Sender details -->
         <p class="c4">
         <span class="c1">{{entity_name}} T/A {{business_name}}</span>
     </p>
@@ -16,6 +18,7 @@
             <p class="c4"><span class="c1">New Zealand</span></p>
         </div>
         <hr>
+            <!-- Receiver Details -->
             <p class="c13">
                 <span class="c8 c2">Pay Slip</span>
             </p>
@@ -41,6 +44,8 @@
                 <span class="c1"></span>
             </p>
             <hr>
+        <!-- Class 'column' makes the width 50% to have a 2 column side-by-side style (display is flex) -->
+        <!-- First Column of the side-by-side display -->
         <div class="column">
             <p class="c11">
                 <span class="c2">Period End</span>
@@ -56,6 +61,7 @@
             </p>
             <hr class="hr1">
         </div>
+        <!-- Second column of the side-by-side display -->
         <div class="column">
             <p class="c4 c7">
                 <span class="c2 c19">Tax Code</span>
@@ -74,15 +80,20 @@
             <p class="c4 c7 c10">
                 <span class="c1"></span>
             </p>
+            <!-- Payments Section -->
+            <!-- Class 'c14' has a grey bckground to highlight the section heading -->
             <p class="c4 c14">
                 <span class="c6 c66 c2 column2 alignright">Amount</span>
+                <!-- Class 'alignright' makes the element float to the right -->
                 <span class="c6 c2 column2">Hours</span>
                 <span class="c6 c2 column2">Rate</span>
                 <span class="c6 c2 column2">Type</span>
                 <span class="c6 c2 column2">Payments</span>
             </p>
+            <!-- As there are 5 columns within the paayments section, class 'columns2' has a width of 20% to equally fit them -->
             <p class="c4">
                 <span class="c1 c66 column2 alignright">{{pay_amt}}</span>
+                <!-- Class 'alignright' makes the element float to the right -->
                 <span class="c1 column2">{{pay_time_length}}</span>
                 <span class="c1 column2">{{pay_rate}}</span>
                 <span class="c1 column2">{{pay_type}}</span>
@@ -93,10 +104,15 @@
                 <span class="column2 c66 c2">{{total_payments}}</span>
                 <span class="column2 c2">{{total_time_length}}</span>
                 <span class="column3 c2">Total Ordinary Payment</span>
+                <!-- Class 'column3' makes the width 60% to fit with the other objects of 20% width (2x20%, 1x60%) -->
             </p>
             <p><span>&nbsp;</span></p>
+
+            <!-- Leave section is inserted here -->
             {{leave_insert}}
+
             <p class="c4 c14">
+                <!-- Summary Section -->
                 <span class="c2 c14">Summary</span>
             </p>
         <div class="column">
@@ -159,6 +175,7 @@
                 <span class="c1 alignright">{{pay_net}}</span>
             </p>
             <p class="c3">
+                <!-- There is an uneven mmount of elements in the side-by-side view of the summary, so benefits is not symmetrical -->
                 <span class="c2">Benefits</span>
                 <span class="c1 alignright">{{summary_benefits}}</span>
             </p>
@@ -167,6 +184,7 @@
                 <span class="c2 c6"></span>
             </p>
             <p><span>&nbsp;</span></p>
+            <!-- Leave balances section -->
             <p class="c4 c14">
                 <span class="c6 c2">Leave Balances</span>
             </p>

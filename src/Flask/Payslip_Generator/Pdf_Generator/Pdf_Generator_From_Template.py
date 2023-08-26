@@ -4,6 +4,7 @@ def pdf_generator_from_template(payslip_data):
     from jinja2 import Environment, FileSystemLoader
     from ... import cpa_sql
     
+    #Get leave entries
     leave_entrys = cpa_sql.get_payslip_leave_entrys(payslip_data[18].isoformat(),payslip_data[0])
 
 
@@ -47,6 +48,9 @@ def pdf_generator_from_template(payslip_data):
             self.leave_taken = payslip_data[22] != 'False'
             self.leave_weekly_ammount = payslip_data[23]  
             self.total_leave_paid = payslip_data[24] 
+        
+        #Create html leave Insert
+
         def html_start(self,f):
             if f: 
                 return f"""<p class="c4 c14">
@@ -130,7 +134,7 @@ def pdf_generator_from_template(payslip_data):
     
 #    Render the template with the context variables
 
-    #config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
+    #For Development Purposes: config = pdfkit.configuration(wkhtmltopdf=r"C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe")
 
         # Load the HTML template using Jinja2
     template_dir = os.path.join(os.getcwd(), 'src','Flask','templates')
@@ -148,7 +152,7 @@ def pdf_generator_from_template(payslip_data):
 
         # Generate the PDF using pdfkit
     pdf_file = './src/Flask/Payslip_Generator/Pdf_Generator/Generated_PDF.pdf'
-    pdfkit.from_file(temp_html_file, pdf_file, options={"enable-local-file-access": ""}, css='./src/Flask/static/PaySliptemplate.css')#,configuration=config)
+    pdfkit.from_file(temp_html_file, pdf_file, options={"enable-local-file-access": ""}, css='./src/Flask/static/PaySliptemplate.css')#For Development Purposes: configuration=config
 
         # Clean up temporary HTML file
     os.remove(temp_html_file)

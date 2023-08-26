@@ -1,6 +1,9 @@
 import pyodbc 
 
 def init():
+
+    #Inizializes connection to CPA SQL Server
+
     database = 'CPA'
     server = 'cpa-server.database.windows.net'
     username = 'CReid' 
@@ -10,6 +13,9 @@ def init():
     conn = pyodbc.connect('DRIVER='+driver+';SERVER='+server+';DATABASE='+database+';ENCRYPT=yes;UID='+username+';PWD='+ password)
     cur = conn.cursor()
     return cur
+
+
+#Functions designed for routes
 
 def login_verify(username,password):
     cur = init()
@@ -26,6 +32,7 @@ def login_verify(username,password):
 
         return [bool(role),role[0],setup]
     else:
+        cur.close()
         return [False,'n/a','n/a'] 
     
 def register_check(username,password):
@@ -55,11 +62,11 @@ def register_account(userName,firstName,lastName,email,address,suburb,postCode,p
         
         cur.execute(f"""Insert into leave_details(username) VALUES ({userName})""")
         cur.commit()
+        cur.close()
     except Exception as e:
         cur.close()
         return 'Failed',e
-    cur.close()
-
+     
     return 'Success','n/a'
 
 
@@ -208,7 +215,6 @@ def update_employee_settings(username_old,username,password,firstname,lastname,e
                 ,address_2 = {suburb} WHERE username = {username_old}""")
         
         cur.commit()
-
         cur.close()
     except Exception as e:
         cur.close()
@@ -618,7 +624,7 @@ def manager_employee_leave(username):
         dict_entry = {'username' : entry[0],'leave_entry_id' : entry[1],'leave_start_date' : entry[2].strftime('%a, %d %b'),'leave_end_date' : entry[3].strftime('%a, %d %b'),'leave_type' : entry[4],'status' : entry[5]}
         response.append(dict_entry)
 
-
+    cur.close()
     return response
 
 def manager_employee_leave_accept(entry_id):
@@ -669,6 +675,7 @@ def pay_run_info(username):
         dict_entry = {'name' : entry[0],'pay_period_start' : entry[1].__str__(),'pay_period_end' : entry[2].__str__(),'total_hours' : str(entry[3]),'pay_rate' : str(entry[4]),'leave_taken' : entry[5],'leave_days' : entry[6],'gross_pay' : str(entry[7]),'one_off_deduction' : str(entry[8]),'total_deductions' : str(entry[9]),'net_pay' : str(entry[10]),'username' : entry[11]}
         response.append(dict_entry)
 
+    cur.close()
     return response
 
 def pay_run_execute_all(username):
@@ -817,6 +824,7 @@ def get_payslip_data(id):
       ,[benefits]
   FROM [dbo].[payslip_data] WHERE payslip_id = {id}""")
     
+    cur.close()
     return cur.fetchone()
 
 def get_payslip_leave_entrys(period_end,username):
@@ -831,6 +839,7 @@ def get_payslip_leave_entrys(period_end,username):
     WHERE status = 'Approved' AND WeekEndDate = '{period_end}' AND username = '{username}'""")
 
     results = cur.fetchall()
+    cur.close()
     return results
 
 def exit_payrun_update(id, bal,username):
@@ -1062,6 +1071,7 @@ def auth_validate(username, auth_key):
                 [auth_token]
                     FROM Auth
                     Where username = {username} AND auth_token = '{auth_key}'
+                    COLLATE Latin1_General_CS_AS
                 """)
         result = cur.fetchone()
         
