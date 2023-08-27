@@ -14,6 +14,8 @@ function EmployeePortal() {
 
   useEffect(() => {
 
+    //Authentication process
+
     async function validate_auth() {
       try {
     const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/validate/'${params.userID}'/${sessionStorage.getItem('authKey')}`)
@@ -40,6 +42,7 @@ function EmployeePortal() {
     validate_auth()
   },[])
 
+  //Page
 
   return (
     <Dashboard>
@@ -73,6 +76,8 @@ function EmployeePortal() {
   )
 }
 
+//Styling
+
 const Dashboard = styled.div`
 display:grid;
 `
@@ -86,7 +91,7 @@ const Layout = styled.div`
   height: 80%;
   align-self: center;
 `
-const Bubble = styled(Link)`
+const Bubble = styled(Link)` //'Bubbles' are shortcuts to pages
 display: flex;
 justify-content: center;
 align-items: center;

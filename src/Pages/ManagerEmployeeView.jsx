@@ -13,7 +13,9 @@ function EmployeeView() {
     const navigate = useNavigate()
 
     useEffect(() => {
-  
+
+      //Authentication Process
+
       async function validate_auth() {
         try {
       const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/validate/'${params.userID}'/${sessionStorage.getItem('authKey')}`)
@@ -40,6 +42,8 @@ function EmployeeView() {
       validate_auth()
     },[])
 
+    //Page
+
   return (
     <Page>
         {authenticated ?
@@ -55,24 +59,26 @@ function EmployeeView() {
   )
 }
 
+//Styling
+
 const Page = styled.div`
 display: grid;
 `
 
 const Container = styled.div`
-.css-80pr5n-MuiPaper-root {width:70vw;}
-.css-1hhu9xl {width:70vw;}
-.css-1rs06yn {
+.css-80pr5n-MuiPaper-root {width:70vw;} //Table length
+.css-1hhu9xl {width:70vw;} //Table length -- Vercel
+.css-1rs06yn { //Button colours -- Vercel
         background-color: #4d6788;
         :hover {
             background-color: #2d4965
         }}
-.css-zcbmsk-MuiButtonBase-root-MuiButton-root {
+.css-zcbmsk-MuiButtonBase-root-MuiButton-root { //Button colours
         background-color: #4d6788;
         :hover {
             background-color: #2d4965
         }}
-.mui-box-container-form {
+.mui-box-container-form { //New employee form
     position: fixed;
     top: 45%;
     left: 50%;
@@ -89,9 +95,9 @@ const Container = styled.div`
     }
 
 }
-.true {
+.true { // Black background (active whislt modal is open)
     visibility: visible;
-    position:absolute;
+    position:fixed;
     top:0px;
     left: 0px;
     width:100%;

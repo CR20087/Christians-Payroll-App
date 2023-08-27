@@ -1,6 +1,6 @@
 import styled from "styled-components"
 import SideBar from "../Components/Sidebar"
-import {IoMdTime, IoMdHome, IoMdCalendar, IoMdCard, IoMdPerson} from "react-icons/io"
+import {IoMdTime, IoMdCalendar, IoMdCard, IoMdPerson} from "react-icons/io"
 import { Link, useParams, useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import Loading from "../Components/Loading"
@@ -13,6 +13,8 @@ function ManagerPortal() {
   const navigate = useNavigate()
 
   useEffect(() => {
+
+    //Authentication Process
 
     async function validate_auth() {
       try {
@@ -39,6 +41,8 @@ function ManagerPortal() {
 
     validate_auth()
   },[])
+
+  //Page
 
   return (
     <Dashboard>
@@ -83,12 +87,14 @@ function ManagerPortal() {
   )
 }
 
+//Styling
+
 const Dashboard = styled.div`
 display:grid;
 background-image: linear-gradient(45deg, transparent 20%, black 25%, transparent 25%),
                       linear-gradient(-45deg, transparent 20%, black 25%, transparent 25%),
                       linear-gradient(-45deg, transparent 75%, black 80%, transparent 0%),
-                      radial-gradient(gray 2px, transparent 0);`
+                      radial-gradient(gray 2px, transparent 0);` //Background pattern
 
 const Layout = styled.div`
   display: grid;
@@ -99,7 +105,7 @@ const Layout = styled.div`
   height: 80%;
   align-self: center;
 `
-const Bubble = styled(Link)`
+const Bubble = styled(Link)` //'Bubbles' are used as shortcuts to pages
 display: flex;
 justify-content: center;
 align-items: center;

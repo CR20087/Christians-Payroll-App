@@ -12,7 +12,9 @@ function ManagerLeave() {
     const navigate = useNavigate()
 
     useEffect(() => {
-  
+      
+      //Authentication Process
+
       async function validate_auth() {
         try {
       const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/validate/'${params.userID}'/${sessionStorage.getItem('authKey')}`)
@@ -39,6 +41,8 @@ function ManagerLeave() {
       validate_auth()
     },[])
 
+    //Page
+
     return (
         <Page>
             {authenticated ?
@@ -53,15 +57,16 @@ function ManagerLeave() {
         </Page>
       )
     }
-    
+
+//Styling
+
 const Page = styled.div`
     display: grid;
 `
     
 const Container = styled.div`
-    .css-80pr5n-MuiPaper-root {width:70vw;}
-
-    .css-1hhu9xl {width:70vw;}
+    .css-80pr5n-MuiPaper-root {width:70vw;} //Table length
+    .css-1hhu9xl {width:70vw;} //Table length -- Vercel
     display: flex;
     height:fit-content;
     justify-self:center;

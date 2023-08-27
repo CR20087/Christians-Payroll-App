@@ -5,6 +5,8 @@ import ManagerRegisterForm from "../Components/ManagerRegister";
 
 function ManagerRegister() {
 
+  //Page
+
   return (
     <ManagerRegisterDiv>
       <Page className="transition">
@@ -18,8 +20,10 @@ function ManagerRegister() {
   )  
 }
 
+//Styling
+
 const ManagerRegisterDiv = styled.div`
-      .transition {
+      .transition { //Entrance Animation
         animation: fade 0.5s linear;
         @keyframes fade {
             0% {

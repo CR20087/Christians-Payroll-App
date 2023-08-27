@@ -5,6 +5,8 @@ import LoginForm from "../Components/login";
 
 function Login() {
 
+  //Page
+
   return (
     <LoginDiv>
       <Page className="transition">
@@ -18,8 +20,10 @@ function Login() {
   )  
 }
 
+//Styling
+
 const LoginDiv = styled.div`
-    .transition {
+    .transition { //Entrance animation
         animation: fade 0.3s linear;
         @keyframes fade {
             0% {
@@ -44,7 +48,7 @@ p {
 
 `
 
-const GoBack = styled(Link)`
+const GoBack = styled(Link)` //Back Button
 background: white;
   display: flex;
   margin-top: 1rem;

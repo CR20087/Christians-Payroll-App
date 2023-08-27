@@ -15,6 +15,9 @@ function ManagerTimesheetView() {
   useEffect(() => {
 
     async function validate_auth() {
+
+      //Authentication Process
+
       try {
     const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/validate/'${params.userID}'/${sessionStorage.getItem('authKey')}`)
     const data = await res.json()
@@ -40,6 +43,8 @@ function ManagerTimesheetView() {
     validate_auth()
   },[])
 
+  //Page
+
   return (
     <Page>
       {authenticated ?
@@ -55,21 +60,23 @@ function ManagerTimesheetView() {
   )
 }
 
+//Styling
+
 const Page = styled.div`
 display: grid;
 `
 
 const Container = styled.div`
-.css-80pr5n-MuiPaper-root {width:70vw;}
+.css-80pr5n-MuiPaper-root {width:70vw;} //Table length
 
-.css-1hhu9xl {width:70vw;}
+.css-1hhu9xl {width:70vw;} //Table length -- Vercel
 display: flex;
 height:fit-content;
 justify-self:center;
 padding-top: 5rem;
 
-.title-details {
-  text-decoration: underline wavy;
+.title-details { //Entry list (in dropdown view)
+  text-decoration: underline;
   font-size: 17px;
 }
 `

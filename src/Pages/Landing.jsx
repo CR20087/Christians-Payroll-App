@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import { Link } from "react-router-dom";
-import { CiLock } from "react-icons/ci";
 import Footer from "../Components/Footer";
 function Landing() {
 
     return (
-        <LandingDiv>
-            <Nav>
+        <LandingDiv> 
+            <Nav /* Header of Page */>
                 <Logo to={"/"}>
                     <img src="./Christian-Payroll-App-Logo.svg" alt="logo" />
                     <p>Christian's Payroll App</p>
@@ -83,8 +82,10 @@ function Landing() {
     )
 }
 
+//Styling
+
 const LandingDiv = styled.div`
-    .transition {
+    .transition { //Animation when first rendered
         animation: fade 0.5s linear;
         @keyframes fade {
             0% {
@@ -96,7 +97,7 @@ const LandingDiv = styled.div`
         }
     }
 `
-const DualDetail = styled.div`
+const DualDetail = styled.div` //Side-by-side section section
 display: flex;
 justify-items:center;
 width:100%;
@@ -135,7 +136,7 @@ img {
 }
 `
 
-const Nav = styled.div`
+const Nav = styled.div` //Header
 padding: 1.5rem;
 background: linear-gradient(90deg, rgba(255,255,255,1) 6%, #0b3048 80%);
 height: 100pt;
@@ -157,7 +158,7 @@ padding-top: 1rem;
 
 }
 `
-const Hyperlinks = styled.div`
+const Hyperlinks = styled.div` //Hyperlinks
 padding-top: 2.5rem;
 gap: 1rem;
 display: flex;
@@ -172,7 +173,7 @@ p {
 }
 `
 
-const LoginButton = styled(Link)`
+const LoginButton = styled(Link)` //Login Button
 padding: 1rem 1.5rem;
 height: 20%;
 text-decoration: none;
@@ -203,7 +204,7 @@ const Support = styled(Link)`
     height: fit-content;
 `
 
-const Payslips = styled.div`
+const Payslips = styled.div` //Payslip evolution section
     iframe {
         margin-left: 18%;
         width: 30%;
@@ -223,7 +224,7 @@ const TextBox = styled.div`
     text-align: left;
 `
 
-const Register = styled.div`
+const Register = styled.div` //Register dropdown menu
      padding-top: 1rem;
     text-decoration: none;
     color: white;

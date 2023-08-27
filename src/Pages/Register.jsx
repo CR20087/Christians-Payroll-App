@@ -5,6 +5,8 @@ import RegisterForm from "../Components/Register";
 
 function Register() {
 
+  //Page
+
   return (
     <RegisterDiv>
       <Page className="transition">
@@ -19,7 +21,7 @@ function Register() {
 }
 
 const RegisterDiv = styled.div`
-      .transition {
+      .transition { //Entrance Animation
         animation: fade 0.5s linear;
         @keyframes fade {
             0% {
@@ -44,7 +46,7 @@ p {
 
 `
 
-const GoBack = styled(Link)`
+const GoBack = styled(Link)` //Back Button
 background: white;
   display: flex;
   margin-top: 1rem;

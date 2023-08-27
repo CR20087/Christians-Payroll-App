@@ -14,6 +14,8 @@ function EmployeeSettings() {
 
   useEffect(() => {
 
+    //Authentication Process
+
     async function validate_auth() {
       try {
     const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/validate/'${params.userID}'/${sessionStorage.getItem('authKey')}`)
@@ -40,6 +42,8 @@ function EmployeeSettings() {
     validate_auth()
   },[])
 
+  //Page
+
   return (
     <Page>
       {authenticated ?
@@ -52,6 +56,8 @@ function EmployeeSettings() {
     </Page>
   )
 }
+
+//Styling
 
 const Page = styled.div`
 display: grid;

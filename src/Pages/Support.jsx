@@ -3,6 +3,9 @@ import styled from "styled-components"
 import Footer from "../Components/Footer"
 
 function Support() {
+
+    //Page
+
     return (
         <SupportDiv>
         <Nav>
@@ -23,7 +26,7 @@ function Support() {
             </Hyperlinks>
         </Nav>
         <Page className={`transition ${sessionStorage.getItem('role')}`}>
-            <h1>Registering</h1>
+            <h1 /*Registering Section */>Registering</h1>
             <Text>
                 <h4 className="manager-header">Manager</h4>
                 Managers get set-up by first registering. Completing the registration form
@@ -70,7 +73,7 @@ function Support() {
                 <li>a-z | A-Z | 0-9 </li>
             </Text>
 
-            <h1>Login</h1>
+            <h1 /*Login Section */>Login</h1>
             <Text>
                 <h4 className="manager-header">Manager</h4>
                 Once a manager have created their account, their login will become functional immediately.
@@ -84,7 +87,7 @@ function Support() {
                 the error returned when attempting to login, otherwise contatct your manager.
             </Text>
 
-            <h1>Timesheets</h1>
+            <h1 /*Timesheet Section */>Timesheets</h1>
             <Text>
                 <h4 className="manager-header">Manager</h4>
                 Managers can view their employee's timesheets within their portal. This view represent what the employee sees aswell.
@@ -97,7 +100,7 @@ function Support() {
                 A timesheet entry requires the date of work, the start / end time, and total time of any unpaid break during the start to end time period.
             </Text>
 
-            <h1>Leave</h1>
+            <h1 /*Leave Section */>Leave</h1> 
             <Text>
                 <h4 className="manager-header">Manager</h4>
                 Managers can view employee leave requests and manage them by either clicking the 'check-mark' action button to aapprove, or the cross to decline the request. 
@@ -112,7 +115,7 @@ function Support() {
 
             </Text>
 
-            <h1>Pay Run</h1>
+            <h1 /*Pay run Section */>Pay Run</h1>
             <Text>
                 <h4 className="manager-header">Manager</h4>
                 Managers can view the pay-run page, where concise details of the payslip for each employee can be seen. The option to either pay all or selected employees is available and will generate a payslip and send it to the employee
@@ -122,7 +125,7 @@ function Support() {
                 Now the py-run is complete and no further actions are required. 
             </Text>
 
-            <h1>Payslips</h1>
+            <h1 /*Payslip Section */>Payslips</h1>
             <Text>
                 <h4 className="employee-header">Employee</h4>
                 Payslips will include the totl balances of various incomes and dedecutions of which affect your total pay. Ordinary Pay is your total hours paid by your hourly rate. Leave (if taken) can be seen within your payslip with information regarding the dates and pay for your leave. 
@@ -134,8 +137,11 @@ function Support() {
     )
 }
 
+
+//Styling
+
 const SupportDiv = styled.div`
-    .transition {
+    .transition { //Entrance Aniumation
         animation: fade 0.5s linear;
     @keyframes fade {
       0% {
@@ -160,12 +166,12 @@ const SupportDiv = styled.div`
     }
 `
 
-const Nav = styled.div`
+const Nav = styled.div` //Header
 padding: 1.5rem;
 background: linear-gradient(90deg, rgba(255,255,255,1) 6%, #0b3048 80%);
 height: 100pt;
 `
-const Logo = styled(Link)`
+const Logo = styled(Link)` //Logo and text
 display: flex;
 text-decoration: none;
 font-size: 2rem;
@@ -180,7 +186,7 @@ p {
 padding-top: 1rem;
 }
 `
-const Hyperlinks = styled.div`
+const Hyperlinks = styled.div` //Hyperlinks
 padding-top: 2.5rem;
 gap: 1rem;
 display: flex;
@@ -193,7 +199,7 @@ p {
     text-align: center;
 }
 `
-const LoginButton = styled(Link)`
+const LoginButton = styled(Link)` //Login Button
 padding: 1rem 1.5rem;
 height: 20%;
 text-decoration: none;
@@ -214,7 +220,7 @@ cursor: pointer;
 }
 `
 
-const Register = styled.div`
+const Register = styled.div` //Register dropdown menu
      padding-top: 1rem;
     text-decoration: none;
     color: white;

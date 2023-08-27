@@ -15,6 +15,9 @@ function ManagerSettings() {
   useEffect(() => {
 
     async function validate_auth() {
+
+      //Authentication Process
+
       try {
     const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/validate/'${params.userID}'/${sessionStorage.getItem('authKey')}`)
     const data = await res.json()
@@ -40,6 +43,8 @@ function ManagerSettings() {
     validate_auth()
   },[])
 
+  //Page
+
   return (
     <Page>
       {authenticated ?
@@ -52,6 +57,8 @@ function ManagerSettings() {
     </Page>
   )
 }
+
+//Styling
 
 const Page = styled.div`
 display: grid;
