@@ -260,6 +260,5 @@ const Info = styled.div`
     width: 100%;
     justify-content: center;
     text-align: center;
-    //background: linear-gradient(90deg, rgba(2,190,71,1) 6%, rgba(9,108,159,1) 96%);
 `
 export default Landing
