@@ -66,7 +66,7 @@ function EmployeeTimesheets() {
     const Container = styled.div`
     .css-80pr5n-MuiPaper-root {width:70vw;} //Table length
     .css-1hhu9xl {width:70vw;z-index:1} //Table length
-    ..css-1hw9j7s { //Button colours -- Vercel
+    .css-1hw9j7s { //Button colours -- Vercel
         background-color: #4d6788;
         :hover {
             background-color: #2d4965

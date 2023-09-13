@@ -61,7 +61,7 @@ function EmployeeLeave() {
     .css-80pr5n-MuiPaper-root {width:70vw;}
 
     .css-1hhu9xl {width:70vw;}
-    ..css-1hw9j7s {
+    .css-1hw9j7s {
         background-color: #4d6788;
         :hover {
             background-color: #2d4965
