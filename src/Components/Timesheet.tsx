@@ -21,7 +21,7 @@ function EmployeeTable() {
     (cell) => {
 
       if (cell.column.id === 'start_time' && !validationErrors['start']) {
-        console.log(cell)
+        
         setValidationErrors({...validationErrors, 'min' : new Date(`2000-01-01T${cell.row.original.start_time}`)}) //Saving the entry start to validate against
       } else if (cell.column.id === 'end_time' && !validationErrors['end']) {
         setValidationErrors({...validationErrors, 'max' : new Date(`2000-01-01T${cell.row.original.end_time}`)}) //Saving the entry end to validate against
@@ -31,7 +31,7 @@ function EmployeeTable() {
         
         //Validation function
 
-        console.log(event)
+        
         const updatedValidationErrors = { ...validationErrors };
 
 
@@ -216,7 +216,7 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
 
   //Function to save an edited entry
 
-  console.log(values)
+  
   const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/update/'${row.original.timesheet_entry_id}'/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
   const data = await res.json()
 
@@ -252,7 +252,7 @@ const DeleteEntry = async (table) => {
       body: JSON.stringify(selected_array)
     })
     const data = await res.json()
-    console.log(data)
+    
     if (data.success === 'Success') {
 
       //If the delete returned a success status

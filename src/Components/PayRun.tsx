@@ -75,7 +75,7 @@ function PayTable() {
         const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/'${params.userID}'`)
         const data = await res.json()
 
-        console.log(data)
+        
         setData(data.results) //Setting data
         setChange(false)
         const names = [...new Set(data.results.map((emp) => ({ name: emp.name, username: emp.username })))];

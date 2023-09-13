@@ -34,7 +34,7 @@ function EmployeeTable() {
         }
 
         setValidationErrors(updatedValidationErrors);
-        console.log(updatedValidationErrors)
+        
       };
       return {
         onBlur: handleBlur,

@@ -27,7 +27,7 @@ function ManagerSettingsForm() {
             const res = await fetch(`https://cpa-flask.azurewebsites.net/settings/manager/'${params.userID}'`)
             const data = await res.json()
 
-            console.log(data)
+            
 
             //Setting the returned values to their fields
 

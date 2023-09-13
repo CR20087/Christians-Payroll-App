@@ -79,7 +79,7 @@ function LeaveView() {
 
     //Function to accept an employee leave request
 
-    console.log(row)
+    
     const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-leave/accept/'${row.original.leave_entry_id}'`)
     const data = await res.json()
 

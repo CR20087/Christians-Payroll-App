@@ -22,7 +22,7 @@ function EmployeeLeave() {
     (cell) => {
 
       if (cell.column.id === 'leave_start_date' && !validationErrors['start']) {
-        console.log(cell)
+        
         setValidationErrors({...validationErrors, 'start' : new Date(`${cell.row.original.leave_start_date}T12:00:00`)}) //Saving the leave start to validate against
       } else if (cell.column.id === 'leave_end_date' && !validationErrors['end']) {
         setValidationErrors({...validationErrors, 'end' : new Date(`${cell.row.original.leave_end_date}T12:00:00`)}) //Saving the leave end to validate against
@@ -48,7 +48,7 @@ function EmployeeLeave() {
         }
 
         setValidationErrors(updatedValidationErrors); //Setting the validation errors to the updated object
-        console.log(updatedValidationErrors)
+        
       };
       return {
         onBlur: handleBlur,
@@ -125,7 +125,7 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
 
   //Function for saving a edited row / editing a leave entry
 
-  console.log(values)
+  
   const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/update/'${row.original.leave_entry_id}'/'${values.leave_start_date}'/'${values.leave_end_date}'/'${values.leave_type}'`)
   const data = await res.json()
 
@@ -148,7 +148,7 @@ const handleNewLeaveEntry = async (values) => {
 
   //Creating a new row / leave entry
 
-  console.log(values)
+  
   const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/new/'${params.userID}'/'${values.start_date}'/'${values.end_date}'/'${values.leave_type}'`)
   const data = await res.json()
 

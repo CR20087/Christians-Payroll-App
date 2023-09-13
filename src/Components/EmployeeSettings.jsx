@@ -31,7 +31,7 @@ function EmployeeSettingsForm() {
             const res = await fetch(`https://cpa-flask.azurewebsites.net/settings/employee/'${params.userID}'`)
             const data = await res.json()
 
-            console.log(data)
+            
 
             setInputValue('userName',data.userName);   
             setInputValue('password',data.password);   
@@ -103,7 +103,7 @@ function EmployeeSettingsForm() {
         
         event.preventDefault()
 
-        console.log(event)
+        
         const newErrors = {};
       
         if (!event.target[0].value) {
