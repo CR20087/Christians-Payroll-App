@@ -67,7 +67,7 @@ function EmployeeTimesheets() {
     .css-80pr5n-MuiPaper-root {width:70vw;} //Table length
 
     .css-1hhu9xl {width:70vw;} //Table length -- Vercel
-    .css-1rs06yn { //Button colours -- Vercel
+    ..css-1hw9j7s { //Button colours -- Vercel
         background-color: #4d6788;
         :hover {
             background-color: #2d4965
