@@ -1122,6 +1122,7 @@ def login_reset(username,password):
                 Where username = {username}
                 """)
         
+        cur.commit()
         cur.close()
     except Exception as e:
         cur.close()

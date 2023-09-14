@@ -85,7 +85,7 @@ function LoginForm() {
             <img src="./Christian-Payroll-App-Logo.svg" alt="logo" />
               <p>Christian's Payroll App</p>
           </Head>
-          <div className={isAuthorised} >
+          <div className={isAuthorised} id="center" >
             <p>User Name</p>
               <input 
                 onChange={(e) => setUserName(e.target.value)}
@@ -106,8 +106,9 @@ function LoginForm() {
           <button type="submit">Login</button>
           <br></br>
           <div>{isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> }</div>
-          <Signup to={"/Register/1"}>Signup/Register</Signup>
-          <Signup to={"/Register/manager/1"}>Manager Register</Signup>
+          <FooterText to={"/Forgot/creds"}>Forgot Password/Username</FooterText>
+          <FooterText to={"/Register/1"}>SignUp/Register</FooterText>
+          <FooterText to={"/Register/manager/1"}>Manager Register</FooterText>
         </Window>      
     )  
   }
@@ -130,6 +131,13 @@ function LoginForm() {
     opacity: 0.92;
     margin-bottom: 2rem;
     padding: 1rem 0rem 2rem 0rem;
+
+    #center {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     h6 {
       color: red;
     }
@@ -166,7 +174,7 @@ function LoginForm() {
     visibility: hidden;
   }`
   
-  const Signup = styled(Link)`
+  const FooterText = styled(Link)`
     text-decoration: none;
     color: #313131;
     font-weight: 700;

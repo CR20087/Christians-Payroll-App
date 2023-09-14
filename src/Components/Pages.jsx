@@ -15,6 +15,7 @@ import EmployeeLeave from '../Pages/EmployeeLeave';
 import ManagerTimesheetView from '../Pages/ManagerTimesheetView'
 import ManagerLeaveView from '../Pages/ManagerLeaveView'
 import ManagerPayRun from '../Pages/ManagerPayRun'
+import ForgotLogin from '../Pages/ForgotLogin'
 
 //Importing all pages of application
 
@@ -40,6 +41,7 @@ function Pages() {
         <Route path="/Portal/manager/:userID/employee-timesheets" element={<ManagerTimesheetView/>} />
         <Route path="/Portal/manager/:userID/leave" element={<ManagerLeaveView/>} />
         <Route path="/Portal/manager/:userID/pay-run" element={<ManagerPayRun/>} />
+        <Route path="/Forgot/:type" element={<ForgotLogin/>} />
     </Routes>
   );
 }
