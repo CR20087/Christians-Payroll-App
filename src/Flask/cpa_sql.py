@@ -1112,3 +1112,19 @@ def login_reset_match(email):
         return False
 
     return True,result[0]
+
+def login_reset(username,password):
+    
+    cur = init()
+    try:
+        cur.execute(f"""Update login set
+                password = {password}
+                Where username = {username}
+                """)
+        
+        cur.close()
+    except Exception as e:
+        cur.close()
+        return 'Failed',e
+
+    return 'Success','n/a','false'

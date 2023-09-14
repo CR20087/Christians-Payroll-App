@@ -337,6 +337,12 @@ def login_reset_match(email: str):
     
     return jsonify(match = str(result[0]),username = 'n/a', code = 'n/a')
 
+@app.route("/login/reset/<string:username>/<string:password>")
+def login_reset(username: str,passsword: str):
+    
+    result = cpa_sql.login_reset(username,passsword)
+
+    return jsonify(success = str(result[0]),error = str(result[1]))
 
 if __name__ == "__main__":
     app.run(debug=True)
