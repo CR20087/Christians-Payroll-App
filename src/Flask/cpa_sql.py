@@ -1086,3 +1086,29 @@ def auth_validate(username, auth_key):
     if result[0] == auth_key:
             return 'Success','n/a','true'
     return 'Success','n/a','false'
+
+def login_reset_match(email):
+    
+    cur = init()
+    cur.execute(f"""select
+                username 
+                
+                from employee
+                where email = '{email}'
+
+                union
+
+                select
+                username 
+                
+                From manager
+                Where email = '{email}'
+                """)
+    result = cur.fetchone()
+        
+    cur.close()
+    
+    if result == None:
+        return False
+
+    return True,result[0]

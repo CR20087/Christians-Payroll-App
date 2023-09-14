@@ -1,6 +1,7 @@
 from flask import Flask, jsonify, render_template, Request, request
 from src.Flask.Payslip_Generator import Payslip_Script
 from src.Flask import cpa_sql
+from src.Flask import Password_Reset
 import random
 
 #Flask App configuration
@@ -319,6 +320,23 @@ def auth_validate(username: str,authKey: str):
     result = cpa_sql.auth_validate(username,authKey)
 
     return jsonify(success = str(result[0]),error = str(result[1]),match = str(result[2]))
+
+@app.route("/login/forgot/<string:email>")
+def login_reset_match(email: str):
     
+    result = cpa_sql.login_reset_match(email)
+
+    if result[0]:
+        
+        code = ''
+        for x in range(0,6): code += str(random.randint(0,9))
+
+        Password_Reset.Reset(result[1],email,code)
+
+        return jsonify(match = str(result[0]),username = str(result[1]), code = code)
+    
+    return jsonify(match = str(result[0]),username = 'n/a', code = 'n/a')
+
+
 if __name__ == "__main__":
     app.run(debug=True)
