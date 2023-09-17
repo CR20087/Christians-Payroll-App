@@ -140,7 +140,7 @@ function CredentialResetForm() {
     return (
         <Window onSubmit={handleSubmit(codeCheck)}>
           <Head>
-            <img src="./Christian-Payroll-App-Logo.svg" alt="logo" />
+            <img src="/Christian-Payroll-App-Logo.svg" alt="logo" />
               <p>Christian's Payroll App</p>
           </Head>
           
