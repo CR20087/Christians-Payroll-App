@@ -824,8 +824,9 @@ def get_payslip_data(id):
       ,[benefits]
   FROM [dbo].[payslip_data] WHERE payslip_id = {id}""")
     
+    results = cur.fetchone()
     cur.close()
-    return cur.fetchone()
+    return results
 
 def get_payslip_leave_entrys(period_end,username):
     cur = init()
