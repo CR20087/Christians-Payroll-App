@@ -1037,11 +1037,12 @@ def pay_run_execute_selected(data_array):
             
                 payslip_ids.append(cur.fetchone()[0])
                 print(payslip_ids)
-            cur.commit()
-            cur.close()
+            
         except Exception as e:
             cur.close()
             return 'Failed',e
+    cur.commit()
+    cur.close()
     return payslip_ids,'n/a'
 
 def auth_add(username, auth_key):
