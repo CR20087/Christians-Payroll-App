@@ -44,11 +44,11 @@ function EmployeeTable() {
         if (event.target.value === "") { //Special validation for comments if empty
           if (cell.column.id !== 'comment') {
           updatedValidationErrors[cell.id] = `${cell.column.columnDef.header} is required`;
-          console.log("STRING")
+
         }} else if (cell.column.id === 'comment') { //Special validation for comments if matching pattern
             if (!cell.column.columnDef.regex.test(event.target.value)) {
           updatedValidationErrors[cell.id] = cell.column.columnDef.helperText;
-          console.log("REGEX") 
+
         }} else if (updatedValidationErrors['min'] > updatedValidationErrors['max']) {
           updatedValidationErrors[cell.id] = cell.column.columnDef.helperText;
         } else {
@@ -69,7 +69,7 @@ function EmployeeTable() {
 
   useEffect(() => {
     // This will run after each render when validationErrors changes
-    console.log('Validation errors updated:', validationErrors);
+
   }, [validationErrors]);
 
   const columns = useMemo( //Timesheet column defenitions
@@ -241,7 +241,6 @@ const DeleteEntry = async (table) => {
 
   if (window.confirm(`Are you sure you want to delete${table.getSelectedRowModel().rows.map((row) => (`\n\t${row.original.date} (Entry ID no.${row.original.timesheet_entry_id})`))}`)) {
 
-    console.log(`${table.getSelectedRowModel().rows.map((row) => (`${row.original.timesheet_entry_id}`))}`)
     const selected_array = `${table.getSelectedRowModel().rows.map((row) => (`${row.original.timesheet_entry_id}`))}`
 
     const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/delete`,{

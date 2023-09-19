@@ -29,22 +29,22 @@ function Support() {
             <h1 /*Registering Section */>Registering</h1>
             <Text>
                 <h4 className="manager-header">Manager</h4>
-                Managers get set-up by first registering. Completing the registration form
+                Managers get set up by first registering. Completing the registration form
                 creates a login based on the username and password entered. Details such as
                 business name, suburb and entity name will be viewed on employee payslips. Personal details
-                such as first, last name and contact details will be available to employees in the payslip email.
+                such as first, and last name and contact details will be available to employees in the payslip email.
                 Contact method may be selected as either email or phone number.
                 <br></br><br></br>
                 To make an employee account manager roles are required to make the account (In the employee view page), and require all relevant pay information.
                 <br></br><br></br>
                 <h4 className="employee-header">Employees</h4>
                 Employees get registered by first receiving login details from their manager. If employees try to login
-                without first registerging their account, they will receive a notifcation explaining to register and 
+                without first registering their account, they will receive a notification explaining how to register and 
                 activate their account by completing the registration form.<br></br>
-                The register form will ask for only personal details, no pay related details. To change your pay details,
-                for example; Student loan, benefits etc, contact your manager. Details requested such as phone number are for
-                managers to use only. All other details; Name, address aand email address are used for payslips.<br></br>
-                Once registered, your given login will now work and you can acces your employee portal. (Note: To change your
+                The register form will ask for only personal details (no pay-related details). To change your pay details,
+                for example; Student loans, benefits, and more, contact your manager. Details requested such as phone number are for
+                managers to use only. All other details; Name, address and email address are used for payslips.<br></br>
+                Once registered, your given login will now work and you can access your employee portal. (Note: To change your
                 default password, edit in settings).
                 <br></br><br></br>
                 <h4>Input Validation</h4>
@@ -76,42 +76,42 @@ function Support() {
             <h1 /*Login Section */>Login</h1>
             <Text>
                 <h4 className="manager-header">Manager</h4>
-                Once a manager have created their account, their login will become functional immediately.
-                When entered manager's will be transported  to the Manager portal.
+                Once a manager has created their account, their login will become functional immediately.
+                When entered managers will be transported to the Manager portal.
                 <br></br><br></br>
                 <h4 className="employee-header">Employee</h4>
-                If you have recentley received a login from your manager you will be required to register the account
-                before you can gain acces to your portal. To register, go to the <a href="/Register/1">Employee Register</a> page.
+                If you have recently received a login from your manager you will be required to register the account
+                before you can gain access to your portal. To register, go to the <a href="/Register/1">Employee Register</a> page.
                 <br></br>
                 Once registered enter your login details and you will be granted access to your portal now. If issues persist, observe
-                the error returned when attempting to login, otherwise contatct your manager.
+                the error returned when attempting to log in, otherwise contact your manager.
             </Text>
 
             <h1 /*Timesheet Section */>Timesheets</h1>
             <Text>
                 <h4 className="manager-header">Manager</h4>
-                Managers can view their employee's timesheets within their portal. This view represent what the employee sees aswell.
-                Maanagers cannot edit an employees timesheet, they will have to contctc the employee to sort the issue. This allows a good model
-                for mangers to manage an employee's work.
+                Managers can view their employee's timesheets within their portal. This view represents what the employee sees as well.
+                Managers cannot edit an employee's timesheet, they will have to contact the employee to sort the issue. This allows a good model
+                for managers to manage an employee's work.
                 <br></br><br></br>
                 <h4 className="employee-header">Employee</h4>
-                Employees can create a new timesheet by creaating a new entry, this will autiomatically create a timesheet.
+                Employees can create a new timesheet by creating a new entry, this will automatically create a timesheet.
                 <br></br>
-                A timesheet entry requires the date of work, the start / end time, and total time of any unpaid break during the start to end time period.
+                A timesheet entry requires the date of work, the start/end time, and the total time of any unpaid break during the start-to-end period.
             </Text>
 
             <h1 /*Leave Section */>Leave</h1> 
             <Text>
                 <h4 className="manager-header">Manager</h4>
-                Managers can view employee leave requests and manage them by either clicking the 'check-mark' action button to aapprove, or the cross to decline the request. 
+                Managers can view employee leave requests and manage them by either clicking the 'check-mark' action button to approve or the cross to decline the request. 
                 <br></br><br></br>
-                Please not that employees are not eligible for paid leave whislt they have worked for less than 1 year (Calculated by account creation date). However special leave such as 'Statutory Holidays' are
-                paid as there is no eligibilty criteria.
-                Employees are paid per leave day, and are paid an average of their hours worked per day.
+                Please note that employees are not eligible for paid leave whilst they have worked for less than 1 year (Calculated by account creation date). However special leave such as 'Statutory Holidays' are
+                paid as there are no eligibility criteria.
+                Employees are paid per leave day and are paid an average of their hours worked per day.
                 <br></br><br></br>
                 <h4 className="employee-header">Employee</h4>
                 Employees can submit leave requests to their manager. The required information for a request is the starting date (starting 12:00AM), ending date (ending 11:59PM) and leave type. You can check the status of your
-                leve request within the leave menu. If accepted, it will be shown on your payslip with calculated wages for the period.
+                leave request within the leave menu. If accepted, it will be shown on your payslip with calculated wages for the period.
 
             </Text>
 
@@ -121,14 +121,14 @@ function Support() {
                 Managers can view the pay-run page, where concise details of the payslip for each employee can be seen. The option to either pay all or selected employees is available and will generate a payslip and send it to the employee
                 during the execution.
                 <br></br><br></br>
-                The pyrun process is once a payrun is executed, the information will become stored in a past payrun table making it immutable. Then a payslip is generated from this information, and emiled to the employees email they have defined.
-                Now the py-run is complete and no further actions are required. 
+                The payrun process is once a payrun is executed, the information will become stored in a past payrun table making it immutable. Then a payslip is generated from this information and emailed to the employee's email they have defined.
+                Now the pay run is complete and no further actions are required. 
             </Text>
 
             <h1 /*Payslip Section */>Payslips</h1>
             <Text>
                 <h4 className="employee-header">Employee</h4>
-                Payslips will include the totl balances of various incomes and dedecutions of which affect your total pay. Ordinary Pay is your total hours paid by your hourly rate. Leave (if taken) can be seen within your payslip with information regarding the dates and pay for your leave. 
+                Payslips will include the total balances of various incomes and deductions which affect your total pay. Ordinary Pay is your total hours paid by your hourly rate. Leave (if taken) can be seen within your payslip with information regarding the dates and pay for your leave. 
             </Text>
             <Footer/>
         </Page>

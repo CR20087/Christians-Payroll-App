@@ -65,7 +65,7 @@ function TimesheetView() {
 
 
   useEffect(() => {
-    console.log("fetch")    
+
     async function fetchData()  {
 
       //Fetching page data

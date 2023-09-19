@@ -20,7 +20,7 @@ function CredentialResetForm() {
     const submitFunc = async (information) => {
 
       if (information.password) {
-        console.log('aas')
+
         if (!password === password2) { //Checking password match each other
           alert('Passwords must match')
           setIsAuthorised('border-red')
@@ -41,7 +41,7 @@ function CredentialResetForm() {
       } else {
       
       //Function is executed on a login attempt
-      console.log(information)
+
       setIsLoading(true)
 
       const res = await fetch(`https://cpa-flask.azurewebsites.net/login/forgot/${information.email}`)

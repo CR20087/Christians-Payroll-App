@@ -1,6 +1,6 @@
 import { useState } from "react"
 import styled from "styled-components"
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Loading from "./Loading"
 
@@ -21,6 +21,7 @@ function EmployeeSettingsForm() {
     const [isAuthorised, setIsAuthorised] = useState("")
     const [errors, setErrors] = useState({});
     let params = useParams()
+    const navigate = useNavigate()
 
     useEffect(() => {
         
@@ -68,6 +69,7 @@ function EmployeeSettingsForm() {
                 alert("Changes updated successfully")
                 setIsAuthorised('border-green')
                 sessionStorage.setItem('userID',getInputValue('userName'))
+                navigate(`/Portal/employee/${getInputValue('userName')}/settings`)
             } else {
 
               //If it was unsuccesful

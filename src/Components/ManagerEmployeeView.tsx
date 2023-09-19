@@ -25,10 +25,10 @@ function EmployeeTable() {
 
         if (event.target.value === "") {
           updatedValidationErrors[cell.id] = `${cell.column.columnDef.header} is required`; //If empty have a required error
-          console.log("STRING")
+
         } else if (!cell.column.columnDef.regex.test(event.target.value)) {
           updatedValidationErrors[cell.id] = cell.column.columnDef.helperText; //When the entered vaalue doesn't match the acceptable regular expressio, error
-          console.log("REGEX")
+
         } else {
           delete updatedValidationErrors[cell.id];
         }
@@ -470,7 +470,6 @@ const validateSubmit = (information) => {
 
     //Checking to see if the sum of percentages is less than 100%
 
-    console.log([information.child_support,information.kiwisaver,information.student_loan].reduce((acc, curr) => acc + parseFloat(curr), 0))
     alert('Kiwisaver, child support, Student loan must be a sum less than 100')
   } else {
     onSubmit(information)

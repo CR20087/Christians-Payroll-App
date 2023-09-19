@@ -67,7 +67,7 @@ function PayTable() {
   );
  
   useEffect(() => {
-    console.log("fetch")    
+ 
     async function fetchData()  {
 
       //Fetching page data
