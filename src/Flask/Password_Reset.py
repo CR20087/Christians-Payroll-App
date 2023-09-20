@@ -1,8 +1,14 @@
 def Reset(username,email,code):
-    from email.mime.application import MIMEApplication
     from email.mime.multipart import MIMEMultipart
     from email.mime.text import MIMEText
     import smtplib
+    from dotenv import load_dotenv
+    import os
+
+    #Get enviroment variables
+
+    load_dotenv('..')
+    gmail_app_key = os.getenv('EMAIL_ACCOUNT_APP_KEY')
 
     #Establish connection
 
@@ -11,7 +17,7 @@ def Reset(username,email,code):
 
     payslip_email_acc = 'payslip.christianspayrollapp@gmail.com'
 
-    server.login(payslip_email_acc,'ezpkrdjwrbvjtzhl')
+    server.login(payslip_email_acc,gmail_app_key)
     msg = MIMEMultipart()
 
     #Generate Messgae

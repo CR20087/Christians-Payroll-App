@@ -4,6 +4,12 @@ def email_sender(username,date,recipient,manager):
     from email.mime.text import MIMEText
     import smtplib
     import os
+    from dotenv import load_dotenv
+
+     #Get enviroment variables
+
+    load_dotenv()
+    gmail_app_key = os.getenv('EMAIL_ACCOUNT_APP_KEY')
 
     #Establish connection
 
@@ -12,7 +18,7 @@ def email_sender(username,date,recipient,manager):
 
     payslip_email_acc = 'payslip.christianspayrollapp@gmail.com'
 
-    server.login(payslip_email_acc,'ezpkrdjwrbvjtzhl')
+    server.login(payslip_email_acc,gmail_app_key)
     msg = MIMEMultipart()
 
     #Generate Messgae

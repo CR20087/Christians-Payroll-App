@@ -1,13 +1,17 @@
 import pyodbc 
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 def init():
 
     #Inizializes connection to CPA SQL Server
 
     database = 'CPA'
-    server = 'cpa-server.database.windows.net'
-    username = 'CReid' 
-    password = 'iKErTyTZupa789@' 
+    server = os.getenv('CPA_SQL_SERVER_ID')
+    username = os.getenv('CPA_SQL_AUTH_ID')
+    password = os.getenv('CPA_SQL_AUTH_KEY')
     driver='{ODBC Driver 18 for SQL Server}'
         
     conn = pyodbc.connect('DRIVER='+driver+';SERVER='+server+';DATABASE='+database+';ENCRYPT=yes;UID='+username+';PWD='+ password)
