@@ -24,14 +24,14 @@ function EmployeeLeave() {
       if (data.match === 'false') {
         setAuthenticated(false)
         if (window.location.pathname !== '/login') {
-        alert("Invalid Authentication Token.\nPlease login agian.")
+        alert("Invalid Authentication Token.\nPlease login again.")
         navigate('/login')}
       }
         }
       catch {
         setAuthenticated(false)
         if (window.location.pathname !== '/login') {
-        alert("Invalid Authentication Token.\nPlease login agian.")
+        alert("Invalid Authentication Token.\nPlease login again.")
         navigate('/login')}
       }
       }

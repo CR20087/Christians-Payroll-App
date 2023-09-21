@@ -783,7 +783,6 @@ def pay_run_execute_all(username):
                     WHERE manager = '{username}'
                     """)
         payslip_data=cur.fetchall()
-        print(payslip_data)
         payslip_ids=[]
         for payslip in payslip_data:
             cur.execute(f"""INSERT INTO payslips(
@@ -843,7 +842,6 @@ def pay_run_execute_all(username):
                         """)
             cur.execute("Select SCOPE_IDENTITY()")
             payslip_ids.append(cur.fetchone()[0])
-            print(payslip_ids)
         cur.commit()
         cur.close()
     except Exception as e:
@@ -1086,7 +1084,6 @@ def pay_run_execute_selected(data_array):
                         WHERE username = '{i[0]}' AND WeekEndDate = '{i[1]}'
                         """)
             payslip_data=cur.fetchall()
-            print(payslip_data)
             payslip_ids=[]
             for payslip in payslip_data:
                 cur.execute(f"""

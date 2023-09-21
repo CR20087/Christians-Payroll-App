@@ -65,7 +65,6 @@ def pdf_generator_from_template(payslip_data):
             else:
                 return ''
         def html_mid(self,f,entry):
-            print(entry)
             if f: 
                 return f"""
             <p class="c4">
@@ -120,7 +119,6 @@ def pdf_generator_from_template(payslip_data):
 
     def leave_html_insert_var(f):
         string = leave.html_start(f)
-        print(leave_entrys)
         for i in leave_entrys:
             string += leave.html_mid(f,i)
         string += leave.html_end(f)
