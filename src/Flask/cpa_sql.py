@@ -1161,7 +1161,7 @@ def auth_add(username,auth_key):
         cur.execute(f"""Delete FROM Auth Where username = {username}""")
         cur.execute(f"""
                     INSERT INTO Auth(
-                    auth_token]
+                    [auth_token]
                     ,[username] )
                     VALUES 
                     ( {auth_key}
