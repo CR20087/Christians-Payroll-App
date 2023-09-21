@@ -1190,7 +1190,7 @@ def auth_validate(username,auth_key):
     except Exception as e:
         cur.close()
         return 'Failed',e,'n/a'
-    if result:
+    if not result:
         return 'Success','n/a','false'
     if result[0] == auth_key:
             return 'Success','n/a','true'
@@ -1212,7 +1212,7 @@ def login_reset_match(email):
                 """)
     result=cur.fetchone()      
     cur.close()  
-    if result:
+    if not result:
         return False
     return True,result[0]
 
