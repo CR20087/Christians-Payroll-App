@@ -927,8 +927,8 @@ def exit_payrun_update(id,bal,username):
     """
     cur=init()
     cur.execute(f"""Select
-                [pay_period_start],[
-                pay_period_end]
+                [pay_period_start],
+                [pay_period_end]
                 FROM payslips WHERE payslip_id = {id}
                 """)
     period=cur.fetchone()
