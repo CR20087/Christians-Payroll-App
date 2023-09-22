@@ -72,7 +72,13 @@ function PayTable() {
 
       //Fetching page data
 
-        const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/'${params.userID}'`)
+        const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({'username' : `'${params.userID}'`})
+        })
         const data = await res.json()
 
         
@@ -90,7 +96,16 @@ const handleAddStatutoryHoliday = async (values) => {
 
   //Functions to add a sttutory holiday
 
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/add-stat/'${values.username}'/'${values.date}'/'${[values.stat_length_hours,values.stat_length_minutes].join(':')}'`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/add-stat`,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({'username' : `'${values.username}'`,
+    'date' : `'${values.date}'`,
+    'stat_length' : `'${[values.stat_length_hours,values.stat_length_minutes].join(':')}'`
+  })
+  })
   const data = await res.json()
 
   if (data.success === 'Success') {
@@ -135,7 +150,13 @@ const PayAllEmployees = async (table) => {
   //Function to pay all employees
 
   if (window.confirm(`Are you sure you want execute payrun(s) for:${table.getRowModel().rows.map((row) => (`\n\t${row.original.name}\nPeriod ending ${row.original.pay_period_end}`))}`)) {
-    const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/execute/all/${params.userID}`)
+    const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/execute/all`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({'username' : `${params.userID}`})
+    })
     const data = await res.json()
 
     if (data.success === 'Success') {

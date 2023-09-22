@@ -15,7 +15,14 @@ function EmployeeLeave() {
   
       async function validate_auth() {
         try {
-      const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/validate/'${params.userID}'/${sessionStorage.getItem('authKey')}`)
+      const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/validate`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({'username' : `'${params.userID}'`,'auth_key' : `${sessionStorage.getItem('authKey')}`
+    })
+})
       const data = await res.json()
   
       if (data.match === 'true') {

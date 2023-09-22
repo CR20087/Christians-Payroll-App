@@ -70,7 +70,13 @@ function TimesheetView() {
 
       //Fetching page data
 
-        const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/timesheets/'${params.userID}'`)
+        const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/timesheets`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({'username' : `'${params.userID}'`})
+        })
         const data = await res.json()
 
         setData(data.results) //Setting data

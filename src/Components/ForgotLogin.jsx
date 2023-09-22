@@ -26,7 +26,13 @@ function CredentialResetForm() {
           setIsAuthorised('border-red')
         } else {
 
-          const res = await fetch(`https://cpa-flask.azurewebsites.net/login/reset/'${sessionStorage.getItem('userID')}'/'${information.password}'`)
+          const res = await fetch(`https://cpa-flask.azurewebsites.net/login/reset`,{
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({'username' : `'${sessionStorage.getItem('userID')}'`,'password' : `'${information.password}'`})
+          })
           const data = await res.json()
 
           if (data.success == 'Success') { //If the new password was set successfully
@@ -44,7 +50,13 @@ function CredentialResetForm() {
 
       setIsLoading(true)
 
-      const res = await fetch(`https://cpa-flask.azurewebsites.net/login/forgot/${information.email}`)
+      const res = await fetch(`https://cpa-flask.azurewebsites.net/login/forgot`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'email' : `${information.email}`})
+      })
       const data = await res.json()
 
       //Returned data contains bool of if login was a match, employee account haas been registered, role of account

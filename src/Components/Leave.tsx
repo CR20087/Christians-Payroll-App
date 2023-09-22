@@ -109,7 +109,13 @@ function EmployeeLeave() {
     //Fetching page data
 
     async function fetchData()  {
-        const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/'${params.userID}'`)
+        const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({'username' : `'${params.userID}'`})
+        })
         const data = await res.json()
 
         setData(data.leave_entrys) //Setting Table data
@@ -126,7 +132,17 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
   //Function for saving a edited row / editing a leave entry
 
   
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/update/'${row.original.leave_entry_id}'/'${values.leave_start_date}'/'${values.leave_end_date}'/'${values.leave_type}'`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/update`,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({'leave_id' :`'${row.original.leave_entry_id}'`,
+    'leave_start_date' :`'${values.leave_start_date}'`,
+    'leave_end_date' :`'${values.leave_end_date}'`,
+    'leave_type' :`'${values.leave_type}'`}
+    )
+  })
   const data = await res.json()
 
   if (data.success === 'Success') {
@@ -149,7 +165,17 @@ const handleNewLeaveEntry = async (values) => {
   //Creating a new row / leave entry
 
   
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/new/'${params.userID}'/'${values.start_date}'/'${values.end_date}'/'${values.leave_type}'`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/new`,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({'username':`'${params.userID}'`,
+    'leave_start_date':`'${values.start_date}'`,
+    'leave_end_date':`'${values.end_date}'`,
+    'leave_type':`'${values.leave_type}'`
+  })
+  })
   const data = await res.json()
 
   if (data.success === 'Success') {

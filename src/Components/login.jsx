@@ -19,7 +19,15 @@ function LoginForm() {
 
       setIsLoading(true)
 
-      const res = await fetch(`https://cpa-flask.azurewebsites.net/login/'${information.userName}'/'${information.password}'`)
+      const res = await fetch(`https://cpa-flask.azurewebsites.net/login`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'username':`'${information.userName}'`,
+        'password':`'${information.password}'`
+      })
+      })
       const data = await res.json()
 
       //Returned data contains bool of if login was a match, employee account haas been registered, role of account
@@ -43,7 +51,15 @@ function LoginForm() {
         sessionStorage.setItem('userID', userID)
         sessionStorage.setItem('role',data.role)
         
-        const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/add/'${userID}'/'${authKey}'`) //Aadding Auth Key to database
+        const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/add`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({'username' : `'${userID}'`,
+          'auth_key':`'${authKey}'`
+        })
+        }) //Adding Auth Key to database
         const auth_data = await res.json()
 
         if (auth_data.success === 'Failed') {

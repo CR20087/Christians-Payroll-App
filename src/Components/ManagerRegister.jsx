@@ -59,7 +59,24 @@ function ManagerRegisterForm() {
       setIsLoading(true)
 
       const res = await 
-        fetch(`https://cpa-flask.azurewebsites.net/registerAccount/manager/'${sessionStorage.getItem('userName')}'/'${sessionStorage.getItem('password')}'/'${sessionStorage.getItem('firstName')}'/'${sessionStorage.getItem('lastName')}'/'${sessionStorage.getItem('email')}'/'${sessionStorage.getItem('address')}'/'${sessionStorage.getItem('suburb')}'/'${sessionStorage.getItem('businessName')}'/'${sessionStorage.getItem('phone')}'/'${sessionStorage.getItem('entityName')}'/'${sessionStorage.getItem('contactMethod')}'`)
+        fetch(`https://cpa-flask.azurewebsites.net/registerAccount/manager`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({'username' :`'${sessionStorage.getItem('userName')}'`,
+          'password' :`'${sessionStorage.getItem('password')}'`,
+          'firstname' :`'${sessionStorage.getItem('firstName')}'`,
+          'lastname' :`'${sessionStorage.getItem('lastName')}'`,
+          'email' :`'${sessionStorage.getItem('email')}'`,
+          'address' :`'${sessionStorage.getItem('address')}'`,
+          'suburb' :`'${sessionStorage.getItem('suburb')}'`,
+          'business_name' :`'${sessionStorage.getItem('businessName')}'`,
+          'phone' :`'${sessionStorage.getItem('phone')}'`,
+          'entity_name' :`'${sessionStorage.getItem('entityName')}'`,
+          'contact_method' :`'${sessionStorage.getItem('contactMethod')}'`
+        })
+        })
       const data = await res.json()
       
 

@@ -45,7 +45,13 @@ function LeaveView() {
     //Fetching page data
 
     async function fetchData()  {
-        const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-leave/'${params.userID}'`)
+        const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-leave`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({'username' : `'${params.userID}'`})
+        })
         const data = await res.json()
 
         setData(data.results) //Setting Table data
@@ -59,7 +65,13 @@ function LeaveView() {
 
     //Function to decline an employee leave request
 
-    const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-leave/decline/'${row.original.leave_entry_id}'`)
+    const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-leave/decline`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({'leave_entry_id' : `'${row.original.leave_entry_id}'`})
+    })
     const data = await res.json()
 
   if (data.success === 'Success') {
@@ -80,7 +92,13 @@ function LeaveView() {
     //Function to accept an employee leave request
 
     
-    const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-leave/accept/'${row.original.leave_entry_id}'`)
+    const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-leave/accept`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({'leave_entry_id' : `'${row.original.leave_entry_id}'`})
+    })
     const data = await res.json()
 
   if (data.success === 'Success') {

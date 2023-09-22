@@ -25,7 +25,13 @@ function ManagerSettingsForm() {
     useEffect(() => {
         
         async function fetchData()  {
-            const res = await fetch(`https://cpa-flask.azurewebsites.net/settings/manager/'${params.userID}'`)
+            const res = await fetch(`https://cpa-flask.azurewebsites.net/settings/manager`,{
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({'username' : `'${params.userID}'`})
+            })
             const data = await res.json()
 
             
@@ -53,8 +59,25 @@ function ManagerSettingsForm() {
         setIsLoading(true)
        
             const res = await fetch(
-                `https://cpa-flask.azurewebsites.net/settings/manager/update/'${sessionStorage.getItem('userID')}'/'${getInputValue('userName')}'/'${getInputValue('password')}'/'${getInputValue('firstName')}'/'${getInputValue('lastName')}'/'${getInputValue('email')}'/'${getInputValue('phone')}'/'${getInputValue('address')}'/'${getInputValue('suburb')}'/'${getInputValue('contactMethod')}'/'${getInputValue('businessName')}'/'${getInputValue('entityName')}'`
-                )
+                `https://cpa-flask.azurewebsites.net/settings/manager/update`,{
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({'username_old' : `'${sessionStorage.getItem('userID')}'`,
+                  'username' : `'${getInputValue('userName')}'`,
+                  'password' : `'${getInputValue('password')}'`,
+                  'firstname' : `'${getInputValue('firstName')}'`,
+                  'lastname' : `'${getInputValue('lastName')}'`,
+                  'email' : `'${getInputValue('email')}'`,
+                  'phone' : `'${getInputValue('phone')}'`,
+                  'address' : `'${getInputValue('address')}'`,
+                  'suburb' : `'${getInputValue('suburb')}'`,
+                  'contact_method' : `'${getInputValue('contactMethod')}'`,
+                  'business_name' : `'${getInputValue('businessName')}'`,
+                  'entity_name' : `'${getInputValue('entityName')}'`
+                })
+                })
             const data = await res.json()
 
             if (data.success === 'Success') {

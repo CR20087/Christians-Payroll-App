@@ -30,7 +30,15 @@ function RegisterForm() {
 
       setIsLoading(true) //Loading symbol
 
-      const res = await fetch(`https://cpa-flask.azurewebsites.net/register/'${information.userName}'/'${information.password}'`)
+      const res = await fetch(`https://cpa-flask.azurewebsites.net/register`,{
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({'username' : `'${information.userName}'`,
+        'password' : `'${information.password}'`
+      })
+      })
       const data = await res.json()
     
       if (data.match === 'True' && data.config === 'False') { 
@@ -87,7 +95,21 @@ function RegisterForm() {
       setIsLoading(true)
 
       const res = await 
-        fetch(`https://cpa-flask.azurewebsites.net/registerAccount/'${sessionStorage.getItem('userName')}'/'${sessionStorage.getItem('firstName')}'/'${sessionStorage.getItem('lastName')}'/'${sessionStorage.getItem('email')}'/'${sessionStorage.getItem('address')}'/'${sessionStorage.getItem('suburb')}'/'${sessionStorage.getItem('postCode')}'/'${sessionStorage.getItem('phone')}'`)
+        fetch(`https://cpa-flask.azurewebsites.net/registerAccount`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({'username' : `'${sessionStorage.getItem('userName')}'`,
+          'firstname' : `'${sessionStorage.getItem('firstName')}'`,
+          'lastname' : `'${sessionStorage.getItem('lastName')}'`,
+          'email' : `'${sessionStorage.getItem('email')}'`,
+          'address' : `'${sessionStorage.getItem('address')}'`,
+          'suburb' : `'${sessionStorage.getItem('suburb')}'`,
+          'postcode' : `'${sessionStorage.getItem('postCode')}'`,
+          'phone' : `'${sessionStorage.getItem('phone')}'`
+        })
+        })
       const data = await res.json()
       
 

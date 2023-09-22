@@ -366,7 +366,13 @@ function EmployeeTable() {
     //Fetching page data
 
     async function fetchData()  {
-        const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/'${params.userID}'`)
+        const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({'username' : `'${params.userID}'`})
+        })
         const data = await res.json()
 
         setData(data.results) //Setting page data
@@ -387,7 +393,33 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
 
   //Function to save edited row / employee
 
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/update/'${values.bank_account}'/'${values.benefits}'/'${values.child_support}'/'${values.email}'/'${values.final_pay}'/'${values.first_name}'/'${values.kiwisaver}'/'${values.last_name}'/'${values.one_off_deduction}'/'${values.pay_rate}'/'${values.phone}'/'${values.student_loan}'/'${values.tax_credit}'/'${values.tax_rate}'/'${values.username}'/'${row.original.username}'/'${values.weekly_allowance}'/'${values.weekly_allowance_nontax}'/'${values.ird_number}'/'${values.tax_code}'`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/update`,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({'bank_account' : `'${values.bank_account}'`,
+    'benefits' : `'${values.benefits}'`,
+    'child_support' : `'${values.child_support}'`,
+    'email' : `'${values.email}'`,
+    'final_pay' : `'${values.final_pay}'`,
+    'first_name' : `'${values.first_name}'`,
+    'kiwisaver' : `'${values.kiwisaver}'`,
+    'last_name' : `'${values.last_name}'`,
+    'one_off_deduction' : `'${values.one_off_deduction}'`,
+    'pay_rate' : `'${values.pay_rate}'`,
+    'phone' : `'${values.phone}'`,
+    'student_loan' : `'${values.student_loan}'`,
+    'tax_credit' : `'${values.tax_credit}'`,
+    'tax_rate' : `'${values.tax_rate}'`,
+    'username' : `'${values.username}'`,
+    'username_old' : `'${row.original.username}'`,
+    'weekly_allowance' : `'${values.weekly_allowance}'`,
+    'weekly_allowance_nontax' : `'${values.weekly_allowance_nontax}'`,
+    'ird_number' : `'${values.ird_number}'`,
+    'tax_code' : `'${values.tax_code}'`
+  })
+  })
   const data = await res.json()
 
   if (data.success === 'Success') {
@@ -408,7 +440,28 @@ const handleCreateNewRow = async (values) => {
 
   //Function to crete new row / employee
 
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/new/'${values.bank_account}'/'${values.benefits}'/'${values.child_support}'/'${values.final_pay}'/'${values.kiwisaver}'/'${values.one_off_deduction}'/'${values.pay_rate}'/'${values.student_loan}'/'${values.tax_credit}'/'${values.tax_rate}'/'${values.username}'/'${values.weekly_allowance}'/'${values.weekly_allowance_nontax}'/'${values.ird_number}'/'${values.tax_code}'/'${params.userID}'`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/new`,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({'bank_account' : `'${values.bank_account}'`,
+    'benefits' : `'${values.benefits}'`,
+    'child_support' : `'${values.child_support}'`,
+    'final_pay' : `'${values.final_pay}'`,
+    'kiwisaver' : `'${values.kiwisaver}'`,
+    'one_off_deduction' : `'${values.one_off_deduction}'`,
+    'pay_rate' : `'${values.pay_rate}'`,
+    'student_loan' : `'${values.student_loan}'`,
+    'tax_credit' : `'${values.tax_credit}'`,
+    'tax_rate' : `'${values.tax_rate}'`,
+    'username' : `'${values.username}'`,
+    'weekly_allowance' : `'${values.weekly_allowance}'`,
+    'weekly_allowance_nontax' : `'${values.weekly_allowance_nontax}'`,
+    'ird_number' : `'${values.ird_number}'`,
+    'tax_code' : `'${values.tax_code}'`,
+    'manager' : `'${params.userID}'`})
+  })
   const data = await res.json()
 
   if (data.success === 'Success') {

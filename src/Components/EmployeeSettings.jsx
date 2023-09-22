@@ -29,7 +29,13 @@ function EmployeeSettingsForm() {
 
           //Fetching stored employee settings data
 
-            const res = await fetch(`https://cpa-flask.azurewebsites.net/settings/employee/'${params.userID}'`)
+            const res = await fetch(`https://cpa-flask.azurewebsites.net/settings/employee`,{
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({'username' : `'${params.userID}'`})
+            })
             const data = await res.json()
 
             
@@ -58,7 +64,24 @@ function EmployeeSettingsForm() {
         setIsLoading(true)
 
             const res = await fetch(
-                `https://cpa-flask.azurewebsites.net/settings/employee/update/'${sessionStorage.getItem('userID')}'/'${getInputValue('userName')}'/'${getInputValue('password')}'/'${getInputValue('firstName')}'/'${getInputValue('lastName')}'/'${getInputValue('email')}'/'${getInputValue('phone')}'/'${getInputValue('address')}'/'${getInputValue('suburb')}'/'${getInputValue('postCode')}'`
+                `https://cpa-flask.azurewebsites.net/settings/employee/update`,{
+                  method: 'POST',
+                  headers: {
+                    'Content-Type': 'application/json'
+                  },
+                  body: JSON.stringify({
+                'username_old' : `'${sessionStorage.getItem('userID')}'`,
+                'username' : `'${getInputValue('userName')}'`,
+                'password' : `'${getInputValue('password')}'`,
+                'firstName' : `'${getInputValue('firstName')}'`,
+                'lastName' : `'${getInputValue('lastName')}'`,
+                'email' : `'${getInputValue('email')}'`,
+                'phone' : `'${getInputValue('phone')}'`,
+                'address' : `'${getInputValue('address')}'`,
+                'suburb' : `'${getInputValue('suburb')}'`,
+                'postCode' : `'${getInputValue('postCode')}'`
+                })
+                }
                 )
             const data = await res.json()
 

@@ -195,12 +195,27 @@ function EmployeeTable() {
     //Fetch page data
 
     async function fetchData()  {
-        const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet/'${params.userID}'`)
+        const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({'username' : `'${params.userID}'`})
+        })
         const data = await res.json()
 
         setData(data.results) //Set timesheet data
 
-        const res2 = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/'${params.userID}'/'${data.entry_start_date}'/'${data.entry_end_date}'`)
+        const res2 = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys`,{
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({'username' : `'${params.userID}'`,
+          'start_date' : `'${data.entry_start_date}'`,
+          'end_date' : `'${data.entry_end_date}'`
+        })
+        })
         const data2 = await res2.json()
 
         setData2(data2.results) //Set timesheet entry data
@@ -217,7 +232,20 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
   //Function to save an edited entry
 
   
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/update/'${row.original.timesheet_entry_id}'/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${values.unpaid_break}'/'${values.pay_type}'/'${values.comment}'`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/update`,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({'timesheet_entry_id' :`'${row.original.timesheet_entry_id}'`,
+    'date' : `'${values.date}'`,
+    'start_time' : `'${values.start_time}'`,
+    'end_time' : `'${values.end_time}'`,
+    'unpaid_break' : `'${values.unpaid_break}'`,
+    'pay_type' : `'${values.pay_type}'`,
+    'comment' : `'${values.comment}'`
+  })
+  })
   const data = await res.json()
 
   if (data.success === 'Success') {
@@ -270,7 +298,19 @@ const handleCreateNewEntry = async (values) => {
 
   //Function to submit a new timesheet entry
 
-  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/new/'${params.userID}'/'${values.date}'/'${values.start_time}'/'${values.end_time}'/'${[values.unpaid_break_hours,values.unpaid_break_minutes].join(':')}'/'${values.pay_type}'/'${values.comment}'`)
+  const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/new`,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({'username' : `'${params.userID}'`,
+    'date' : `'${values.date}'`,
+    'start_time' : `'${values.start_time}'`,
+    'end_time' : `'${values.end_time}'`,
+    'unpaid_break' : `'${[values.unpaid_break_hours,values.unpaid_break_minutes].join(':')}'`,
+    'pay_type' : `'${values.pay_type}'`,
+    'comment' : `'${values.comment}'`})
+  })
   const data = await res.json()
 
   if (data.success === 'Success') {
