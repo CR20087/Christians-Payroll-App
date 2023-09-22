@@ -518,5 +518,16 @@ def login_reset(username:str,password:str):
     result=cpa_sql.login_reset(username,password)
     return jsonify(success=str(result[0]),error=str(result[1]))
 
+@app.route("/testing/postmethod", methods=['POST'])
+def pay_run_execute_selected():
+    data_array = request.get_json()
+    
+    print('Data')
+    print(data_array)
+    print('object')
+    print(data_array['test'])
+    print('object2')
+    print(data_array.test)
+
 if __name__ == "__main__":
     app.run(debug=True)
