@@ -519,7 +519,7 @@ def login_reset(username:str,password:str):
     return jsonify(success=str(result[0]),error=str(result[1]))
 
 @app.route("/testing/postmethod", methods=['POST'])
-def pay_run_execute_selected():
+def testing_postmethod():
     data_array = request.get_json()
     
     print('Data')
