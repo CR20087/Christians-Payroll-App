@@ -968,7 +968,7 @@ def new_manager_employee(password,bank_account,benefits,
         cur.execute(f"""
                     Insert into login(username,password,created_on,role)
                     VALUES ( {username},
-                    '{password}',
+                    {password},
                     CURRENT_TIMESTAMP,
                     'employee' )
                     """)

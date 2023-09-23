@@ -397,13 +397,10 @@ def new_manager_employee():
     """Receives data from new-employee form and executes method to create
     a new employee account.
     
-    Returns success status,temporary password for account and error if present.
+    Returns success status and error if present.
     """
     data=request.get_json()
-    string=list('0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
-    random.shuffle(string)
-    password_string=''.join(string)[:9]
-    result=cpa_sql.new_manager_employee(password_string,data['bank_account'],
+    result=cpa_sql.new_manager_employee(data['password'],data['bank_account'],
                                         data['benefits'],data['child_support'],
                                         data['final_pay'],data['kiwisaver'],
                                         data['one_off_deduction'],data['pay_rate'],
@@ -414,8 +411,7 @@ def new_manager_employee():
                                         data['manager']
                                         )
     return jsonify(success=str(result[0]),
-                   error=str(result[1]),
-                   password=str(result[2])
+                   error=str(result[1])
                    )
 
 @app.route("/manager/pay-run/add-stat",methods=['POST'])

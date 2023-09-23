@@ -51,7 +51,7 @@ function RegisterForm() {
         sessionStorage.setItem('userName',information.userName)
         navigate('/Register/' + (parseInt(params.pagenum)+1).toString()  )
 
-      } else if (match) {
+      } else if (!match) {
 
         //If the login did not match
 
@@ -274,6 +274,7 @@ function RegisterForm() {
           <div>{(isLoading && formPage==='4') || (formPage==='5') ? <button type="submit" hidden >Next</button> : <button type="submit">Next</button>}</div><br></br>
           <div>{isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> }</div>
           <Signup to={"/Login"}>Go to Login Page</Signup>
+          <Signup to={"/Support"}>See support page for valid examples</Signup>
         </Window>      
     )  
   }

@@ -111,6 +111,8 @@ function ManagerRegisterForm() {
       return(
         <div>
             <h5>Welcome to Christian's Payroll App. Please create an account to get started.</h5>
+            <br></br>
+            <h5>For assistance with the registration form, please see the support page.</h5>
               <br></br>
         </div>
       )
@@ -272,6 +274,7 @@ function ManagerRegisterForm() {
           <div>{(isLoading && formPage==='5') || (formPage==='6') ? <button type="submit" hidden >Next</button> : <button type="submit">Next</button> /*Show or hide the button whislt loading */}</div><br></br>
           <div>{isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> /*Show or hide the loading element*/}</div>
           <Signup to={"/Login"}>Go to Login Page</Signup>
+          <Signup to={"/Support"}>See support page for valid examples</Signup>
         </Window>      
     )  
   }

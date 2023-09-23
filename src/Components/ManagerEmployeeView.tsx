@@ -3,6 +3,7 @@ import { MaterialReactTable } from 'material-react-table';
 import { useParams } from 'react-router-dom';
 import { Button,DialogContent,DialogTitle,Stack,TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import bcrypt from 'bcryptjs';
 
 
 function EmployeeTable() {
@@ -440,12 +441,25 @@ const handleCreateNewRow = async (values) => {
 
   //Function to crete new row / employee
 
+  function randomString(length, chars) {
+
+    //Function to generate a random password
+
+    var result = '';
+    for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
+    return result;
+  }
+
+  const tempPassword = randomString(9, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
+  const hashedPassword = await bcrypt.hash(tempPassword, 10)
+
   const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/new`,{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({'bank_account' : `'${values.bank_account}'`,
+    body: JSON.stringify({'password' : `'${hashedPassword}'`,
+    'bank_account' : `'${values.bank_account}'`,
     'benefits' : `'${values.benefits}'`,
     'child_support' : `'${values.child_support}'`,
     'final_pay' : `'${values.final_pay}'`,
