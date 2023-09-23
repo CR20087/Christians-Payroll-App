@@ -2,6 +2,8 @@ import { useState } from "react"
 import styled from "styled-components"
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
+import bcrypt from 'bcryptjs';
+
 function ManagerSettingsForm() {
     const [isLoading, setIsLoading] = useState(false)
     const [inputValues, setInputValues] = useState({ //Setting the default values
@@ -57,7 +59,8 @@ function ManagerSettingsForm() {
 
     const InfoLog = async () => {
         setIsLoading(true)
-       
+
+            const hashedPassword = await bcrypt.hash(getInputValue('password'), 10);
             const res = await fetch(
                 `https://cpa-flask.azurewebsites.net/settings/manager/update`,{
                   method: 'POST',
@@ -66,7 +69,7 @@ function ManagerSettingsForm() {
                   },
                   body: JSON.stringify({'username_old' : `'${sessionStorage.getItem('userID')}'`,
                   'username' : `'${getInputValue('userName')}'`,
-                  'password' : `'${getInputValue('password')}'`,
+                  'password' : `'${hashedPassword}'`,
                   'firstname' : `'${getInputValue('firstName')}'`,
                   'lastname' : `'${getInputValue('lastName')}'`,
                   'email' : `'${getInputValue('email')}'`,

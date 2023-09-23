@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Loading from "./Loading"
+import bcrypt from 'bcryptjs';
 
 function EmployeeSettingsForm() {
     const [isLoading, setIsLoading] = useState(false)
@@ -63,6 +64,8 @@ function EmployeeSettingsForm() {
 
         setIsLoading(true)
 
+            const hashedPassword = await bcrypt.hash(getInputValue('password'), 10);
+
             const res = await fetch(
                 `https://cpa-flask.azurewebsites.net/settings/employee/update`,{
                   method: 'POST',
@@ -72,7 +75,7 @@ function EmployeeSettingsForm() {
                   body: JSON.stringify({
                 'username_old' : `'${sessionStorage.getItem('userID')}'`,
                 'username' : `'${getInputValue('userName')}'`,
-                'password' : `'${getInputValue('password')}'`,
+                'password' : `'${hashedPassword}'`,
                 'firstName' : `'${getInputValue('firstName')}'`,
                 'lastName' : `'${getInputValue('lastName')}'`,
                 'email' : `'${getInputValue('email')}'`,

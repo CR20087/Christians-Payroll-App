@@ -13,7 +13,7 @@ app.config['WKHTMLTOPDF_PATH']='/usr/bin/wkhtmltopdf'
 
 @app.route('/')
 def index():
-    """Default/Home page has aa basic rendered template"""
+    """Default/Home page has a basic rendered template"""
     return render_template('index.html')
 
 @app.route("/login",methods=['POST'])
@@ -31,11 +31,11 @@ def login_verify():
 def register_check():
     """Checks if an employee account is registered.
         
-    Returns bool of whether a match was found, bool of if account is 'setup'.
+    Returns hashed password, bool of if account is 'setup'.
     """
     data=request.get_json()
-    result=cpa_sql.register_check(data['username'],data['password'])
-    return jsonify(match=str(result[0]),config=str(result[1]))
+    result=cpa_sql.register_check(data['username'])
+    return jsonify(password=str(result[0]),config=str(result[1]))
 
 @app.route("/registerAccount",methods=['POST'])
 def register_account():

@@ -38,24 +38,24 @@ def login_verify(username):
         cur.close()
         return [False,'n/a','n/a'] 
     
-def register_check(username,password):
+def register_check(username):
     """Used during login to check if an employee account is registered"""
     cur=init()
-    cur.execute(f"""SELECT username FROM login 
-                WHERE login.username = {username} AND login.password = {password}
+    cur.execute(f"""SELECT password FROM login 
+                WHERE login.username = {username}
                 COLLATE Latin1_General_CS_AS
                 """)
-    login_made=bool(cur.fetchone())
+    results=cur.fetchone()
     cur.execute(f"Select * FROM employee where username = {username}")
     config=bool(cur.fetchone())
     cur.close()
-    return [login_made,config]
+    return [results[0],config]
 
 def register_account(username,firstname,lastname,email,address,suburb,postcode,phone):
     """Used during regsiter process to register a new employee account"""
     cur=init()
     try:
-        cur.execute(f"""InSERT InTO employee(
+        cur.execute(f"""Insert into employee(
                     [username]
                     ,[first_name]
                     ,[last_name]

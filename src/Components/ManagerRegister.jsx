@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { useEffect } from "react";
+import bcrypt from 'bcryptjs';
 
 function ManagerRegisterForm() {
     const navigate = useNavigate()
@@ -35,7 +36,7 @@ function ManagerRegisterForm() {
 
     if (formPage === '1') {navigate('/Register/manager/' + (parseInt(params.pagenum)+1).toString() ) }
 
-    if (formPage === '2') {sessionStorage.setItem('userName',information.userName); sessionStorage.setItem('password',information.password)
+    if (formPage === '2') {sessionStorage.setItem('userName',information.userName); sessionStorage.setItem('password',await bcrypt.hash(information.password, 10))
       navigate('/Register/manager/' + (parseInt(params.pagenum)+1).toString() ) 
     }
 

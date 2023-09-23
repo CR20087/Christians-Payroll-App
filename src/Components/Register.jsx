@@ -5,6 +5,8 @@ import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { useEffect } from "react";
 import { Loading2 as Loading } from './Loading'
+import bcrypt from 'bcryptjs';
+
 function RegisterForm() {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
@@ -35,20 +37,21 @@ function RegisterForm() {
         headers: {
           'Content-Type': 'application/json'
         },
-        body: JSON.stringify({'username' : `'${information.userName}'`,
-        'password' : `'${information.password}'`
+        body: JSON.stringify({'username' : `'${information.userName}'`
       })
       })
       const data = await res.json()
-    
-      if (data.match === 'True' && data.config === 'False') { 
+      
+      const match = await bcrypt.compare(information.password,data.password)
+
+      if (match && data.config === 'False') { 
 
         //If the request returns that the account is a unregistered employee
         
         sessionStorage.setItem('userName',information.userName)
         navigate('/Register/' + (parseInt(params.pagenum)+1).toString()  )
 
-      } else if (data.match === 'False') {
+      } else if (match) {
 
         //If the login did not match
 

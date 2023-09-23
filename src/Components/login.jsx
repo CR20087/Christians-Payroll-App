@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { Loading2 as Loading } from "./Loading";
+import bcrypt from 'bcryptjs';
 
 function LoginForm() {
     const navigate = useNavigate()
@@ -12,27 +13,29 @@ function LoginForm() {
     const [password, setPassword] = useState()
     const [isAuthorised, setIsAuthorised] = useState("")
     const { register, handleSubmit, formState: { errors } } = useForm();
-
     const FetchLogin = async (information) => {
       
       //Function is executed on a login attempt
 
       setIsLoading(true)
 
-      const res = await fetch(`https://cpa-flask.azurewebsites.net/login`,{
+
+      const res = await fetch('https://cpa-flask.azurewebsites.net/login', {
         method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
         },
-        body: JSON.stringify({'username':`'${information.userName}'`,
-        'password':`'${information.password}'`
-      })
-      })
-      const data = await res.json()
+        body: JSON.stringify({
+          username: `'${information.userName}'`
+        }),
+      });
 
-      //Returned data contains bool of if login was a match, employee account haas been registered, role of account
+      const data = await res.json() //Returns hashed password
+
+      const match = await bcrypt.compare(information.password,data.password)
+      //Returned data contains coorect hashed pssword, employee account haas been registered, role of account
     
-      if ((data.match === 'True' && data.role === 'employee' && data.setup ==='True') || (data.match === 'True' && data.role === 'manager')) { 
+      if ((match && data.role === 'employee' && data.setup ==='True') || (match && data.role === 'manager')) { 
         const userID = information.userName
         setIsAuthorised('border-green')
         
@@ -76,7 +79,7 @@ function LoginForm() {
           navigate('/Portal/' +data.role + '/'+ userID )  
         }
 
-      } else if(data.match === 'False') {
+      } else if (match) {
 
         //If there is no match for the specified username and password
 
