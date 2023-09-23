@@ -20,12 +20,12 @@ def index():
 def login_verify():
     """Checks for login match.
     
-    Returns bool of match, role of account, (employee specific) if account
+    Returns hashed password role of account, (employee specific) if account
     has been registered.
     """
     data=request.get_json()
-    result=cpa_sql.login_verify(data['username'],data['password'])
-    return jsonify(match=str(result[0]),role=str(result[1]),setup=str(result[2]))
+    result=cpa_sql.login_verify(data['username'])
+    return jsonify(password=str(result[0]),role=str(result[1]),setup=str(result[2]))
 
 @app.route("/register",methods=['POST'])
 def register_check():

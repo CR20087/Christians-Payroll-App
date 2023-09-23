@@ -16,16 +16,15 @@ def init():
 
 # Functions designed for each specific route to exeecute data actions
 
-def login_verify(username,password):
-    """Used to check against database if the login username / password
-    match stored data."""
+def login_verify(username):
+    """Used to grab hashed paassword from database for a login username."""
     cur=init()
-    cur.execute(f"""SELECT role FROM login 
-                WHERE username = {username} AND password = {password}
+    cur.execute(f"""SELECT password,role FROM login 
+                WHERE username = {username}
                 COLLATE Latin1_General_CS_AS
                 """)
-    role=cur.fetchone()
-    if bool(role):
+    result=cur.fetchone()
+    if result:
         cur.execute(f"""UPDATE login 
                     SET last_login = CURRENT_TIMESTAMP 
                     WHERE username = {username}
@@ -34,7 +33,7 @@ def login_verify(username,password):
         cur.execute(f"SELECT * FROM employee where username = {username}")
         setup=bool(cur.fetchone())
         cur.close()
-        return [bool(role),role[0],setup]
+        return [result[0],result[1],setup]
     else:
         cur.close()
         return [False,'n/a','n/a'] 
