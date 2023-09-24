@@ -1,16 +1,40 @@
-from flask import Flask, jsonify, render_template, Request, request
+from flask import Flask,jsonify,render_template,request,jsonify,make_response
 from src.Flask.Payslip_Generator import Payslip_Script
 from src.Flask import cpa_sql
 from src.Flask import Password_Reset
 import random
+import os
+import jwt
+import datetime
+from dotenv import load_dotenv
 
 # Flask App configuration
-
 app=Flask(__name__, template_folder='src/Flask/templates')
 app.config['WKHTMLTOPDF_PATH']='/usr/bin/wkhtmltopdf' 
 
-# Routes
+# Auth key validation
+def validate_access():
+    try:
+    # Retrieve the auth key from the request cookies
+        auth_key = request.cookies.get('auth_key')
 
+        def validate_auth_key(auth_key):
+            secret_key=os.getenv('AUTH_SECRET_KEY')
+            try:
+                decoded_token=jwt.decode(auth_key,secret_key,algorithms=['HS256'])
+                return True
+            except jwt.ExpiredSignatureError:
+                # Auth key has expired
+                return False
+            except jwt.InvalidTokenError:
+                # Auth key is invalid
+                return False
+            
+        return validate_auth_key(auth_key)
+    except:
+        return False
+    
+# Routes
 @app.route('/')
 def index():
     """Default/Home page has a basic rendered template"""
@@ -455,19 +479,33 @@ def auth_add():
     Returns success status and error if present.
     """
     data=request.get_json()
-    result=cpa_sql.auth_add(data['username'],data['auth_key'])
-    return jsonify(success=str(result[0]),error=str(result[1]))
+    load_dotenv()
+    secret_key=os.getenv('AUTH_SECRET_KEY')
 
-@app.route("/auth/validate",methods=['POST'])
+    def generate_auth_key():
+        expiration_time=datetime.datetime.utcnow()+datetime.timedelta(hours=1)
+        payload={
+            'username':data['username'],
+            'exp':expiration_time,
+        }
+        auth_key=jwt.encode(payload,secret_key,algorithm='HS256')
+        return auth_key.decode('utf-8')
+    
+    auth_key=generate_auth_key(request.json['username'])
+
+    response = make_response(jsonify(success='True',error='n/a'))
+    response.set_cookie('auth_key',auth_key,httponly=True,secure=True,samesite='Strict')
+
+    return response
+
+@app.route("/protected/resource",methods=['POST'])
 def auth_validate():
-    """Validates received data against auth table to check for
-    match.
+    """Validates received cookie with authkey 
 
-    Returns success status, bool of auth match and error if present.
+    Returns accepted status, bool of auth.
     """
-    data=request.get_json()
-    result=cpa_sql.auth_validate(data['username'],data['auth_key'])
-    return jsonify(success=str(result[0]),error=str(result[1]),match=str(result[2]))
+    res = validate_access()
+    return jsonify(status=str(res))
 
 @app.route("/login/forgot",methods=['POST'])
 def login_reset_match():
