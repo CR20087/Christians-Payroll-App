@@ -36,7 +36,11 @@ function ManagerSettingsForm() {
             })
             const data = await res.json()
 
-            
+            if (data.auth === false) {
+              if (window.location.pathname !== '/login') {
+              alert("Invalid Authentication Token.\nPlease login again.")
+              navigate('/login')}
+              }
 
             //Setting the returned values to their fields
 
@@ -82,6 +86,12 @@ function ManagerSettingsForm() {
                 })
                 })
             const data = await res.json()
+
+            if (data.auth === false) {
+              if (window.location.pathname !== '/login') {
+              alert("Invalid Authentication Token.\nPlease login again.")
+              navigate('/login')}
+            }
 
             if (data.success === 'Success') {
 

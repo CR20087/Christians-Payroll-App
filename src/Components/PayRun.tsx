@@ -1,10 +1,11 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button,DialogContent,DialogTitle,Stack } from '@mui/material';
 import { useForm } from 'react-hook-form';
 
 function PayTable() {
+  const navigate = useNavigate()
   let params = useParams()
   const [data, setData] = useState({});
   const [EmpNameArray, setEmpNameArray] = useState([]);
@@ -81,6 +82,11 @@ function PayTable() {
         })
         const data = await res.json()
 
+        if (data.auth === false) {
+          if (window.location.pathname !== '/login') {
+          alert("Invalid Authentication Token.\nPlease login again.")
+          navigate('/login')}
+        }
         
         setData(data.results) //Setting data
         setChange(false)
@@ -108,6 +114,12 @@ const handleAddStatutoryHoliday = async (values) => {
   })
   const data = await res.json()
 
+  if (data.auth === false) {
+    if (window.location.pathname !== '/login') {
+    alert("Invalid Authentication Token.\nPlease login again.")
+    navigate('/login')}
+  }
+
   if (data.success === 'Success') {
     alert(`Successfully added statutory holiday for\n\t${values.username} on ${values.date} (${[values.stat_length_hours,values.stat_length_minutes].join(':')} hrs)`)
     setChange(true)}
@@ -130,6 +142,12 @@ const PaySelectedEmployees = async (table) => {
       body: JSON.stringify(selected_array)
     })
     const data = await res.json()
+
+    if (data.auth === false) {
+      if (window.location.pathname !== '/login') {
+      alert("Invalid Authentication Token.\nPlease login again.")
+      navigate('/login')}
+    }
 
     if (data.success === 'Success') {
 
@@ -158,6 +176,12 @@ const PayAllEmployees = async (table) => {
       body: JSON.stringify({'username' : `${params.userID}`})
     })
     const data = await res.json()
+
+    if (data.auth === false) {
+      if (window.location.pathname !== '/login') {
+      alert("Invalid Authentication Token.\nPlease login again.")
+      navigate('/login')}
+    }
 
     if (data.success === 'Success') {
 

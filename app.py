@@ -76,6 +76,8 @@ def register_account():
 @app.route("/settings/manager",methods=['POST'])
 def get_manager_settings():
     """Returns managers settings from a username"""
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_manager_settings(data['username'])
     return jsonify(userName=str(result[0]),password=str(result[1]),
@@ -92,6 +94,8 @@ def update_manager_settings():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.update_manager_settings(data['username_old'],data['username'],
                                            data['password'],data['firstname'],
@@ -121,7 +125,9 @@ def create_manager():
 
 @app.route("/settings/employee",methods=['POST'])
 def get_employee_settings():
-    """Returns employee settings from username"""
+    """Returns employee settings from username."""
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_employee_settings(data['username'])
     return jsonify(userName=str(result[0]),password=str(result[1]),
@@ -138,6 +144,8 @@ def update_employee_settings():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.update_employee_settings(data['username_old'],data['username'],
                                             data['password'],data['firstname'],
@@ -152,6 +160,8 @@ def get_manager_employees():
     """Returns a list of managed employees and their setting from
     username.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_manager_employees(data['username'])
     class Employee() :
@@ -214,6 +224,8 @@ def update_manager_employee_list():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.update_manager_employee_list(data['bank_account'],data['benefits'],
                                                 data['child_support'],data['email'],
@@ -232,6 +244,8 @@ def update_manager_employee_list():
 def get_timesheet():
     """Returns list of current and active employee timesheet from a username.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_timesheet(data['username'])
     return jsonify(results=result[0],
@@ -244,6 +258,8 @@ def get_timesheet_entry():
     """Returns a list of employee timesheet entrys during the start/end of the
     active timesheet period.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_timesheet_entry(data['username'],data['start_date'],data['end_date'])
     class Timesheet_entry() :
@@ -278,6 +294,8 @@ def update_timesheet_entry():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.update_timesheet_entry(data['timesheet_entry_id'],data['date'],
                                           data['start_time'],data['end_time'],
@@ -292,6 +310,8 @@ def delete_timesheet_entrys():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data_array=request.get_json()
     data_tuple=tuple(data_array.split(','))
     if len(data_tuple) == 1:
@@ -306,6 +326,8 @@ def new_timesheet_entry():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.new_timesheet_entry(data['username'],data['date'],
                                        data['start_time'],data['end_time'],
@@ -319,6 +341,8 @@ def get_employee_timesheets():
     """Returns an array of managed employee timesheets from a
     manager username.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_employee_timesheets(data['username'])
     return jsonify(results=result)
@@ -327,6 +351,8 @@ def get_employee_timesheets():
 def get_employee_leave():
     """Returns employee's leave balance and active/upcoming leave requests.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_employee_leave(data['username'])
     return jsonify(leave_balance=str(result[0]),
@@ -340,6 +366,8 @@ def update_employee_leave():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.update_employee_leave(data['leave_id'],data['leave_start_date'],
                                          data['leave_end_date'],data['leave_type']
@@ -352,6 +380,8 @@ def new_employee_leave_entry():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.new_employee_leave_entry(data['username'],data['leave_start_date'],
                                             data['leave_end_date'],data['leave_type']
@@ -363,6 +393,8 @@ def manager_employee_leave():
     """Returns an array of managed employee's leave entries,
     from a manager username.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.manager_employee_leave(data['username'])
     return jsonify(results=result)
@@ -374,6 +406,8 @@ def manager_employee_leave_decline():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.manager_employee_leave_decline(data['leave_entry_id'])
     return jsonify(success=str(result[0]),error=str(result[1]))
@@ -385,6 +419,8 @@ def manager_employee_leave_accept():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.manager_employee_leave_accept(data['leave_entry_id'])
     return jsonify(success=str(result[0]),error=str(result[1]))
@@ -394,6 +430,8 @@ def pay_run_info():
     """Returns an array of manaaged employee payruns with summarised data,
     from a manager username.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.pay_run_info(data['username'])
     return jsonify(results=result)
@@ -405,6 +443,8 @@ def pay_run_execute_all():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.pay_run_execute_all(data['username'])
     if result[0] == 'Failed':
@@ -421,6 +461,8 @@ def new_manager_employee():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.new_manager_employee(data['password'],data['bank_account'],
                                         data['benefits'],data['child_support'],
@@ -445,6 +487,8 @@ def add_new_stat_day():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.add_new_stat_day(data['username'],data['date'],data['stat_length'])
     return jsonify(success=str(result[0]),error=str(result[1]))
@@ -458,6 +502,8 @@ def pay_run_execute_selected():
     
     Returns success status and error if present.
     """
+    if not validate_access():
+        return jsonify(auth=False)
     data_array=request.get_json()
     list_of_tuples=[tuple(data.split(',')) for data in data_array]
     result=cpa_sql.pay_run_execute_selected(list_of_tuples)

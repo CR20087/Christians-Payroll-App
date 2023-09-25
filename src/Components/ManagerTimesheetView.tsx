@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { MaterialReactTable } from 'material-react-table';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 
 function TimesheetView() {
+  const navigate = useNavigate()
   let params = useParams()
   const [data, setData] = useState({});
 
@@ -78,6 +79,12 @@ function TimesheetView() {
           body: JSON.stringify({'username' : `'${params.userID}'`})
         })
         const data = await res.json()
+
+        if (data.auth === false) {
+          if (window.location.pathname !== '/login') {
+          alert("Invalid Authentication Token.\nPlease login again.")
+          navigate('/login')}
+        }
 
         setData(data.results) //Setting data
     } 

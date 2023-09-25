@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button,DialogContent,DialogTitle,Stack,TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import bcrypt from 'bcryptjs';
 
 
 function EmployeeTable() {
+  const navigate = useNavigate()
   let params = useParams()
   const [data, setData] = useState({});
   const [change, setChange] = useState(false);
@@ -376,6 +377,12 @@ function EmployeeTable() {
         })
         const data = await res.json()
 
+        if (data.auth === false) {
+          if (window.location.pathname !== '/login') {
+          alert("Invalid Authentication Token.\nPlease login again.")
+          navigate('/login')}
+        }
+
         setData(data.results) //Setting page data
     } 
         
@@ -422,6 +429,12 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
   })
   })
   const data = await res.json()
+
+  if (data.auth === false) {
+    if (window.location.pathname !== '/login') {
+    alert("Invalid Authentication Token.\nPlease login again.")
+    navigate('/login')}
+  }
 
   if (data.success === 'Success') {
 
@@ -477,6 +490,12 @@ const handleCreateNewRow = async (values) => {
     'manager' : `'${params.userID}'`})
   })
   const data = await res.json()
+
+  if (data.auth === false) {
+    if (window.location.pathname !== '/login') {
+    alert("Invalid Authentication Token.\nPlease login again.")
+    navigate('/login')}
+  }
 
   if (data.success === 'Success') {
 

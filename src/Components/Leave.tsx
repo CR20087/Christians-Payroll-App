@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button,DialogContent, MenuItem, DialogTitle,Stack } from '@mui/material';
 import { Leave_Type } from './lists'
 import { useForm } from 'react-hook-form';
 
 function EmployeeLeave() {
-
+  const navigate = useNavigate()
   let params = useParams()
   const [data, setData] = useState({});
   const [leaveBalance, setLeaveBalance] = useState('...'); //Placeholder whislt data is fetched
@@ -118,6 +118,12 @@ function EmployeeLeave() {
         })
         const data = await res.json()
 
+        if (data.auth === false) {
+          if (window.location.pathname !== '/login') {
+          alert("Invalid Authentication Token.\nPlease login again.")
+          navigate('/login')}
+        }
+
         setData(data.leave_entrys) //Setting Table data
         setLeaveBalance(data.leave_balance)
         setLeaveBalanceHours(data.leave_balance_hours) //Setting the leave balance display values
@@ -144,6 +150,12 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
     )
   })
   const data = await res.json()
+
+  if (data.auth === false) {
+    if (window.location.pathname !== '/login') {
+    alert("Invalid Authentication Token.\nPlease login again.")
+    navigate('/login')}
+  }
 
   if (data.success === 'Success') {
 
@@ -177,6 +189,12 @@ const handleNewLeaveEntry = async (values) => {
   })
   })
   const data = await res.json()
+
+  if (data.auth === false) {
+    if (window.location.pathname !== '/login') {
+    alert("Invalid Authentication Token.\nPlease login again.")
+    navigate('/login')}
+  }
 
   if (data.success === 'Success') {
     

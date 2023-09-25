@@ -35,6 +35,12 @@ function CredentialResetForm() {
           })
           const data = await res.json()
 
+          if (data.auth === false) {
+            if (window.location.pathname !== '/login') {
+            alert("Invalid Authentication Token.\nPlease login again.")
+            navigate('/login')}
+          }
+
           if (data.success == 'Success') { //If the new password was set successfully
             alert('Password changed successfully')
             navigate('/login')
@@ -58,6 +64,12 @@ function CredentialResetForm() {
         body: JSON.stringify({'email' : `${information.email}`})
       })
       const data = await res.json()
+
+      if (data.auth === false) {
+        if (window.location.pathname !== '/login') {
+        alert("Invalid Authentication Token.\nPlease login again.")
+        navigate('/login')}
+      }
 
       //Returned data contains bool of if login was a match, employee account haas been registered, role of account
     

@@ -2,12 +2,11 @@ import Leave from '../Components/Leave.tsx'
 import SideBar from "../Components/Sidebar"
 import styled from 'styled-components'
 import Footer from '../Components/Footer.jsx'
-import { useParams, useNavigate } from "react-router-dom"
+import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import Loading from "../Components/Loading"
 function EmployeeLeave() {
 
-    let params = useParams()
     const [authenticated,setAuthenticated] = useState(false)
     const navigate = useNavigate()
 
@@ -17,7 +16,7 @@ function EmployeeLeave() {
         try {
           const res = await fetch(`https://cpa-flask.azurewebsites.net/protected/resource`,)
           const data = await res.json()
-              console.log(data)
+              
           if (data.status === 'True') {
             setAuthenticated(true)
           }

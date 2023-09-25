@@ -1,12 +1,13 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 import { MaterialReactTable } from 'material-react-table';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { Button,DialogContent,DialogTitle,Stack,TextField,MenuItem } from '@mui/material';
 import {Times, Pay_Type } from './lists'
 import { useForm } from 'react-hook-form';
 
 
 function EmployeeTable() {
+  const navigate = useNavigate()
   let params = useParams()
   const [data, setData] = useState({}); //Timesheet data
   const [data2, setData2] = useState({}); //Timesheet entry data
@@ -204,6 +205,12 @@ function EmployeeTable() {
         })
         const data = await res.json()
 
+        if (data.auth === false) {
+          if (window.location.pathname !== '/login') {
+          alert("Invalid Authentication Token.\nPlease login again.")
+          navigate('/login')}
+        }
+
         setData(data.results) //Set timesheet data
 
         const res2 = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys`,{
@@ -217,6 +224,12 @@ function EmployeeTable() {
         })
         })
         const data2 = await res2.json()
+
+        if (data2.auth === false) {
+          if (window.location.pathname !== '/login') {
+          alert("Invalid Authentication Token.\nPlease login again.")
+          navigate('/login')}
+        }
 
         setData2(data2.results) //Set timesheet entry data
 
@@ -247,6 +260,12 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
   })
   })
   const data = await res.json()
+
+  if (data.auth === false) {
+    if (window.location.pathname !== '/login') {
+    alert("Invalid Authentication Token.\nPlease login again.")
+    navigate('/login')}
+  }
 
   if (data.success === 'Success') {
 
@@ -279,6 +298,12 @@ const DeleteEntry = async (table) => {
       body: JSON.stringify(selected_array)
     })
     const data = await res.json()
+
+    if (data.auth === false) {
+      if (window.location.pathname !== '/login') {
+      alert("Invalid Authentication Token.\nPlease login again.")
+      navigate('/login')}
+    }
     
     if (data.success === 'Success') {
 
@@ -312,6 +337,12 @@ const handleCreateNewEntry = async (values) => {
     'comment' : `'${values.comment}'`})
   })
   const data = await res.json()
+
+  if (data.auth === false) {
+    if (window.location.pathname !== '/login') {
+    alert("Invalid Authentication Token.\nPlease login again.")
+    navigate('/login')}
+  }
 
   if (data.success === 'Success') {
 
