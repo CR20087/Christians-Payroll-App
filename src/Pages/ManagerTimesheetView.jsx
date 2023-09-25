@@ -19,20 +19,13 @@ function ManagerTimesheetView() {
       //Authentication Process
 
       try {
-    const res = await fetch(`https://cpa-flask.azurewebsites.net/auth/validate`,{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({'username' : `'${params.userID}'`,'auth_key' : `${sessionStorage.getItem('authKey')}`
-    })
-})
+    const res = await fetch(`https://cpa-flask.azurewebsites.net/protected/resource`,)
     const data = await res.json()
-
-    if (data.match === 'true') {
+        console.log(data)
+    if (data.status === 'True') {
       setAuthenticated(true)
     }
-    if (data.match === 'false') {
+    if (data.status === 'False') {
       setAuthenticated(false)
       if (window.location.pathname !== '/login') {
       alert("Invalid Authentication Token.\nPlease login again.")

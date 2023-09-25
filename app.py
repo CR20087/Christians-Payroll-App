@@ -17,7 +17,6 @@ def validate_access():
     try:
     # Retrieve the auth key from the request cookies
         auth_key = request.cookies.get('auth_key')
-
         def validate_auth_key(auth_key):
             secret_key=os.getenv('AUTH_SECRET_KEY')
             try:
@@ -29,7 +28,6 @@ def validate_access():
             except jwt.InvalidTokenError:
                 # Auth key is invalid
                 return False
-            
         return validate_auth_key(auth_key)
     except:
         return False
@@ -488,8 +486,8 @@ def auth_add():
             'username':username,
             'exp':expiration_time,
         }
-        auth_key=jwt.api_jwt.encode(payload,secret_key,algorithm='HS256')
-        return auth_key.decode('utf-8')
+        auth_key=jwt.encode(payload,secret_key,algorithm='HS256')
+        return auth_key
     
     auth_key=generate_auth_key(data['username'])
 
@@ -498,13 +496,13 @@ def auth_add():
 
     return response
 
-@app.route("/protected/resource",methods=['POST'])
+@app.route("/protected/resource")
 def auth_validate():
     """Validates received cookie with authkey 
 
     Returns accepted status, bool of auth.
     """
-    res = validate_access()
+    res=validate_access()
     return jsonify(status=str(res))
 
 @app.route("/login/forgot",methods=['POST'])

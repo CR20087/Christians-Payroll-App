@@ -1150,48 +1150,6 @@ def pay_run_execute_selected(data_array):
     cur.close()
     return payslip_ids,'n/a'
 
-def auth_add(username,auth_key):
-    """Inserts username and authkey into auth table"""
-    cur=init()
-    try:
-        cur.execute(f"""Delete FROM Auth Where username = {username}""")
-        cur.execute(f"""
-                    INSERT INTO Auth(
-                    [auth_token]
-                    ,[username] )
-                    VALUES 
-                    ( {auth_key}
-                    ,{username} )
-                    """)
-        cur.commit()
-        cur.close()
-    except Exception as e:
-        cur.close()
-        return 'Failed',e
-    return 'Success','n/a'
-
-def auth_validate(username,auth_key):
-    """Check auth table for a username, authkey match"""
-    cur=init()
-    try:
-        cur.execute(f"""
-                    SELECT
-                    [auth_token]
-                    FROM Auth
-                    Where username = {username} AND auth_token = '{auth_key}'
-                    COLLATE Latin1_General_CS_AS
-                    """)
-        result=cur.fetchone()    
-        cur.close()
-    except Exception as e:
-        cur.close()
-        return 'Failed',e,'n/a'
-    if not result:
-        return 'Success','n/a','false'
-    if result[0] == auth_key:
-            return 'Success','n/a','true'
-    return 'Success','n/a','false'
-
 def login_reset_match(email):
     """Check to see if email exists and linked to account"""
     cur=init()
