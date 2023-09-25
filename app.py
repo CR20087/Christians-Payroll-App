@@ -488,7 +488,7 @@ def auth_add():
             'username':username,
             'exp':expiration_time,
         }
-        auth_key=jwt.encode(payload,secret_key,algorithm='HS256')
+        auth_key=jwt.api_jwt.encode(payload,secret_key,algorithm='HS256')
         return auth_key.decode('utf-8')
     
     auth_key=generate_auth_key(data['username'])
