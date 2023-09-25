@@ -482,16 +482,16 @@ def auth_add():
     load_dotenv()
     secret_key=os.getenv('AUTH_SECRET_KEY')
 
-    def generate_auth_key():
+    def generate_auth_key(username):
         expiration_time=datetime.datetime.utcnow()+datetime.timedelta(hours=1)
         payload={
-            'username':data['username'],
+            'username':username,
             'exp':expiration_time,
         }
         auth_key=jwt.encode(payload,secret_key,algorithm='HS256')
         return auth_key.decode('utf-8')
     
-    auth_key=generate_auth_key(request.json['username'])
+    auth_key=generate_auth_key(data['username'])
 
     response = make_response(jsonify(success='True',error='n/a'))
     response.set_cookie('auth_key',auth_key,httponly=True,secure=True,samesite='Strict')
