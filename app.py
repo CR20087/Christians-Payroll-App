@@ -1,4 +1,4 @@
-from flask import Flask,jsonify,render_template,request,jsonify,make_response
+from flask import Flask,jsonify,render_template,request,make_response
 from src.Flask.Payslip_Generator import Payslip_Script
 from src.Flask import cpa_sql
 from src.Flask import Password_Reset
@@ -28,8 +28,11 @@ def validate_access():
             except jwt.InvalidTokenError:
                 # Auth key is invalid
                 return False
-        return validate_auth_key(auth_key)
+        x=validate_auth_key(auth_key)
+        print(x)
+        return x
     except:
+        print('excepted')
         return False
     
 # Routes
