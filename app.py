@@ -13,9 +13,10 @@ app=Flask(__name__, template_folder='src/Flask/templates')
 app.config['WKHTMLTOPDF_PATH']='/usr/bin/wkhtmltopdf' 
 
 # Auth key validation
-def validate_access(auth_key,username):
+def validate_access(username):
     try:
-    # Retrieve the auth key from the request cookies
+        # Retrieve the auth key from the request cookies
+        auth_key = request.cookies.get('auth_key')
         def validate_auth_key(auth_key):
             secret_key=str(os.getenv('AUTH_SECRET_KEY'))
             try:
