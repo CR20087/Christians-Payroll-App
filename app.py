@@ -24,13 +24,13 @@ def validate_access():
                 return True
             except jwt.ExpiredSignatureError:
                 # Auth key has expired
+                print('Auth Expired')
                 return False
             except jwt.InvalidTokenError:
                 # Auth key is invalid
+                print('Auth Invalid')
                 return False
-        x=validate_auth_key(auth_key)
-        print(x)
-        return x
+        return validate_auth_key(auth_key)
     except:
         print('excepted')
         return False
