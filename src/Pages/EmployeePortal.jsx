@@ -18,7 +18,13 @@ function EmployeePortal() {
 
     async function validate_auth() {
       try {
-    const res = await fetch(`https://cpa-flask.azurewebsites.net/protected/resource`,)
+    const res = await fetch(`https://cpa-flask.azurewebsites.net/protected/resource`,{
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({username: params.userID})
+    })
     const data = await res.json()
         console.log(data)
     if (data.status === 'True') {

@@ -13,15 +13,19 @@ app=Flask(__name__, template_folder='src/Flask/templates')
 app.config['WKHTMLTOPDF_PATH']='/usr/bin/wkhtmltopdf' 
 
 # Auth key validation
-def validate_access():
+def validate_access(auth_key,username):
     try:
     # Retrieve the auth key from the request cookies
-        auth_key = request.cookies.get('auth_key')
         def validate_auth_key(auth_key):
-            secret_key=os.getenv('AUTH_SECRET_KEY')
+            secret_key=str(os.getenv('AUTH_SECRET_KEY'))
             try:
                 decoded_token=jwt.decode(auth_key,secret_key,algorithms=['HS256'])
-                return True
+                print('decoded_token',decoded_token)
+                if decoded_token['username'] == username:
+                    return True
+                else:
+                    print('Invalid username')
+                    return False
             except jwt.ExpiredSignatureError:
                 # Auth key has expired
                 print('Auth Expired')
@@ -30,9 +34,11 @@ def validate_access():
                 # Auth key is invalid
                 print('Auth Invalid')
                 return False
-        return validate_auth_key(auth_key)
-    except:
-        print('excepted')
+        x= validate_auth_key(auth_key)
+        print(x)
+        return x
+    except Exception as e:
+        print('excepted',e)
         return False
     
 # Routes
@@ -527,7 +533,7 @@ def auth_add():
     """
     data=request.get_json()
     load_dotenv()
-    secret_key=os.getenv('AUTH_SECRET_KEY')
+    secret_key=str(os.getenv('AUTH_SECRET_KEY'))
 
     def generate_auth_key(username):
         expiration_time=datetime.datetime.utcnow()+datetime.timedelta(hours=1)
@@ -539,19 +545,21 @@ def auth_add():
         return auth_key
     
     auth_key=generate_auth_key(data['username'])
+    print('auth_key',auth_key)
 
     response = make_response(jsonify(success='True',error='n/a'))
     response.set_cookie('auth_key',auth_key,httponly=True,secure=True,samesite='Strict')
 
     return response
 
-@app.route("/protected/resource")
+@app.route("/protected/resource",methods=['POST'])
 def auth_validate():
     """Validates received cookie with authkey 
 
     Returns accepted status, bool of auth.
     """
-    res=validate_access()
+    data=request.get_json()
+    res=validate_access(data['username'])
     return jsonify(status=str(res))
 
 @app.route("/login/forgot",methods=['POST'])
