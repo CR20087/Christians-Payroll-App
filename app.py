@@ -550,7 +550,7 @@ def auth_add():
     print('auth_key',auth_key)
 
     response = make_response(jsonify(success='True',error='n/a'))
-    response.set_cookie('auth_key',auth_key,httponly=True,secure=True,samesite='None')
+    response.set_cookie('auth_key',auth_key,httponly=False,secure=False,samesite='None')
 
     return response
 
