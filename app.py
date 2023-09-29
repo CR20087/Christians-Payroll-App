@@ -17,8 +17,10 @@ def validate_access(username):
     try:
         # Retrieve the auth key from the request cookies
         auth_key = request.cookies.get('auth_key')
+        print('auth_key',auth_key)
         def validate_auth_key(auth_key):
             secret_key=str(os.getenv('AUTH_SECRET_KEY'))
+            print('secret_key',secret_key)
             try:
                 decoded_token=jwt.decode(auth_key,secret_key,algorithms=['HS256'])
                 print('decoded_token',decoded_token)
