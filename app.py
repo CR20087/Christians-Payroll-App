@@ -20,7 +20,6 @@ def validate_access(username):
         print('auth_key',auth_key)
         def validate_auth_key(auth_key):
             secret_key=str(os.getenv('AUTH_SECRET_KEY'))
-            print('secret_key',secret_key)
             try:
                 decoded_token=jwt.decode(auth_key,secret_key,algorithms=['HS256'])
                 print('decoded_token',decoded_token)
@@ -551,7 +550,7 @@ def auth_add():
     print('auth_key',auth_key)
 
     response = make_response(jsonify(success='True',error='n/a'))
-    response.set_cookie('auth_key',auth_key,httponly=True,secure=True,samesite='Strict')
+    response.set_cookie('auth_key',auth_key,httponly=True,secure=True,samesite='None')
 
     return response
 
