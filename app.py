@@ -562,6 +562,8 @@ def auth_validate():
     Returns accepted status, bool of auth.
     """
     data=request.get_json()
+    x = request.cookies.get('auth_key')
+    print('Top level cookie grab',x)
     res=validate_access(data['username'])
     return jsonify(status=str(res))
 
