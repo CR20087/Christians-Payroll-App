@@ -551,8 +551,11 @@ def auth_add():
     print('auth_key',auth_key)
 
     response = make_response(jsonify(success='True',error='n/a'))
-    response.set_cookie('auth_key',auth_key,httponly=True,secure=True,samesite='Strict',path='/protected/resource')
-
+    try:
+        response.set_cookie('auth_key',auth_key)
+        print('break-point 1')
+    except:
+        response.set_cookie('auth_key',auth_key,httponly=None,secure=None,samesite='None')
     return response
 
 @app.route("/protected/resource",methods=['POST'])
