@@ -16,7 +16,8 @@ app.config['WKHTMLTOPDF_PATH']='/usr/bin/wkhtmltopdf'
 def validate_access(username):
     try:
         # Retrieve the auth key from the request cookies
-        auth_key = request.cookies['auth_key']
+        auth_key = request.cookies.get('auth_key')
+        print('auth_key',auth_key)
         print('auth_keys',request.cookies)
         def validate_auth_key(auth_key):
             secret_key=str(os.getenv('AUTH_SECRET_KEY'))
