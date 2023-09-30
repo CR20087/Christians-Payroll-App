@@ -21,8 +21,10 @@ function EmployeePortal() {
     const res = await fetch(`https://cpa-flask.azurewebsites.net/protected/resource`,{
       method: 'POST',
       headers: {
+        'Origin': 'https://christians-payroll-app.vercel.app',
         'Content-Type': 'application/json'
       },
+      credentials: 'include',
       body: JSON.stringify({username: params.userID})
     })
     const data = await res.json()

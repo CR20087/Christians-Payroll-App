@@ -7,10 +7,13 @@ import os
 import jwt
 import datetime
 from dotenv import load_dotenv
+from flask_cors import CORS
+
 
 # Flask App configuration
 app=Flask(__name__, template_folder='src/Flask/templates')
 app.config['WKHTMLTOPDF_PATH']='/usr/bin/wkhtmltopdf' 
+CORS(app, resources={r"/*": {"origins": "https://christians-payroll-app.vercel.app"}})
 
 # Auth key validation
 def validate_access(username):
