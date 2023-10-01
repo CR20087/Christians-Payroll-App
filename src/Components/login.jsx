@@ -59,7 +59,7 @@ function LoginForm() {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({'username' : `'${userID}'`,
+          body: JSON.stringify({username : userID,
           'auth_key':`'${authKey}'`
         })
         }) //Adding Auth Key to database

@@ -24,7 +24,7 @@ function EmployeePortal() {
         'Origin': 'https://christians-payroll-app.vercel.app',
         'Content-Type': 'application/json'
       },
-      credentials: 'include',
+      credentials: "same-origin",
       body: JSON.stringify({username: params.userID})
     })
     const data = await res.json()

@@ -13,12 +13,10 @@ from dotenv import load_dotenv
 app=Flask(__name__, template_folder='src/Flask/templates')
 app.config['WKHTMLTOPDF_PATH']='/usr/bin/wkhtmltopdf' 
 
-auth_key = ''
-
 # Auth key validation
 def validate_access(username):
-    global auth_key
     try:
+        auth_key=request.cookies.get('auth_key')
         # Retrieve the auth key from the request cookies
         print('auth_key',auth_key)
         print('auth_keys',request.cookies)
@@ -537,7 +535,6 @@ def auth_add():
     
     Returns success status and error if present.
     """
-    global auth_key
     data=request.get_json()
     load_dotenv()
     secret_key=str(os.getenv('AUTH_SECRET_KEY'))
@@ -559,7 +556,7 @@ def auth_add():
         response.set_cookie('auth_key',auth_key)
         print('break-point 1')
     except:
-        response.set_cookie('auth_key',auth_key,httponly=None,secure=None,samesite='None')
+        response.set_cookie('auth_key',auth_key,httponly=True,secure=True,samesite='Strict')
     return response
 
 @app.route("/protected/resource",methods=['POST'])
