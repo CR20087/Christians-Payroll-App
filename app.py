@@ -7,19 +7,19 @@ import os
 import jwt
 import datetime
 from dotenv import load_dotenv
-from flask_cors import CORS
 
 
 # Flask App configuration
 app=Flask(__name__, template_folder='src/Flask/templates')
 app.config['WKHTMLTOPDF_PATH']='/usr/bin/wkhtmltopdf' 
-CORS(app, resources={r"/*": {"origins": "https://christians-payroll-app.vercel.app"}})
+
+auth_key = ''
 
 # Auth key validation
 def validate_access(username):
+    global auth_key
     try:
         # Retrieve the auth key from the request cookies
-        auth_key = request.cookies.get('auth_key')
         print('auth_key',auth_key)
         print('auth_keys',request.cookies)
         def validate_auth_key(auth_key):
@@ -537,6 +537,7 @@ def auth_add():
     
     Returns success status and error if present.
     """
+    global auth_key
     data=request.get_json()
     load_dotenv()
     secret_key=str(os.getenv('AUTH_SECRET_KEY'))
