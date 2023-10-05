@@ -15,6 +15,10 @@ app.config['WKHTMLTOPDF_PATH']='/usr/bin/wkhtmltopdf'
 
 # Auth key validation
 def validate_access(username, key):
+    """Validates an authentication key.
+    
+    Requires a username.
+    """
     try:
         def validate_auth_key(key):
             secret_key=str(os.getenv('AUTH_SECRET_KEY'))
@@ -94,7 +98,7 @@ def get_manager_settings():
 def update_manager_settings():
     """Recieves data to update managers settings.
     
-    Returns success status and error if present.
+    Returns success status, new auth key and error if present.
     """
     data=request.get_json()
     if not validate_access(data['username_old'],data['auth_key']):
@@ -145,7 +149,7 @@ def update_employee_settings():
     """Receives new data and executes method to update
     employee settings.
     
-    Returns success status and error if present.
+    Returns success status, new auth key and error if present.
     """
     data=request.get_json()
     if not validate_access(data['username_old'],data['auth_key']):
@@ -523,11 +527,9 @@ def pay_run_execute_selected():
 
 @app.route("/auth/add",methods=['POST'])
 def auth_add():
-    """Adds authentication key and username to auth table.
+    """Creates new authentication key.
     
-    Clears all existing auth keys for given username.
-    
-    Returns success status and error if present.
+    Returns success status, auth key and error if present.
     """
     data=request.get_json()
     load_dotenv()
@@ -557,9 +559,9 @@ def auth_add():
 
 @app.route("/protected/resource",methods=['POST'])
 def auth_validate():
-    """Validates received cookie with authkey 
+    """Validates received cookie.
 
-    Returns accepted status, bool of auth.
+    Returns validation status.
     """
     data=request.get_json()
     res=validate_access(data['username'],data['auth_key'])
