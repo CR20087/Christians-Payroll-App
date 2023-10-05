@@ -352,13 +352,13 @@ def get_timesheet(username):
                 ,[sunday_hours_worked]
                 ,[total_hours_worked]
                 FROM [dbo].[timesheet]
-                WHERE username = {username} AND completed = 'false' 
+                WHERE username = '{username}' AND completed = 'false' 
                 ORDER BY WeekStartDate DESC
                 """)
     res=cur.fetchall()
     cur.execute(f"""SELECT [WeekStartDate] 
                 FROM [dbo].[timesheet]
-                WHERE username = {username} AND completed = 'false' 
+                WHERE username = '{username}' AND completed = 'false' 
                 ORDER BY WeekStartDate ASC
                 """)
     try: 
@@ -367,7 +367,7 @@ def get_timesheet(username):
         start_date='' 
     cur.execute(f"""SELECT [WeekEndDate] 
                 FROM [dbo].[timesheet]
-                WHERE username = {username} AND completed = 'false'
+                WHERE username = '{username}' AND completed = 'false'
                 ORDER BY WeekEndDate DESC
                 """)
     try: 
@@ -402,7 +402,7 @@ def get_timesheet_entry(username,start_date,end_date):
                 ,[pay_type]
                 ,[comments]
                 FROM [dbo].[timesheet_entry]
-                WHERE username = {username} 
+                WHERE username = '{username}' 
                 AND date >= {start_date} 
                 AND date <= {end_date} 
                 AND completed = 'false'
