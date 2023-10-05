@@ -85,7 +85,7 @@ def register_account():
 @app.route("/settings/manager",methods=['POST'])
 def get_manager_settings():
     """Returns managers settings from a username"""
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_manager_settings(data['username'])
@@ -103,9 +103,9 @@ def update_manager_settings():
     
     Returns success status and error if present.
     """
-    if not validate_access():
-        return jsonify(auth=False)
     data=request.get_json()
+    if not validate_access(data['username_old'],data['auth_key']):
+        return jsonify(auth=False)
     result=cpa_sql.update_manager_settings(data['username_old'],data['username'],
                                            data['password'],data['firstname'],
                                            data['lastname'],data['email'],
@@ -135,7 +135,7 @@ def create_manager():
 @app.route("/settings/employee",methods=['POST'])
 def get_employee_settings():
     """Returns employee settings from username."""
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_employee_settings(data['username'])
@@ -153,7 +153,7 @@ def update_employee_settings():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    if not validate_access(data['username_old'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.update_employee_settings(data['username_old'],data['username'],
@@ -169,7 +169,7 @@ def get_manager_employees():
     """Returns a list of managed employees and their setting from
     username.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_manager_employees(data['username'])
@@ -233,7 +233,7 @@ def update_manager_employee_list():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    if not validate_access(data['manager_username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.update_manager_employee_list(data['bank_account'],data['benefits'],
@@ -253,7 +253,7 @@ def update_manager_employee_list():
 def get_timesheet():
     """Returns list of current and active employee timesheet from a username.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_timesheet(data['username'])
@@ -267,7 +267,7 @@ def get_timesheet_entry():
     """Returns a list of employee timesheet entrys during the start/end of the
     active timesheet period.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_timesheet_entry(data['username'],data['start_date'],data['end_date'])
@@ -303,7 +303,7 @@ def update_timesheet_entry():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.update_timesheet_entry(data['timesheet_entry_id'],data['date'],
@@ -319,9 +319,11 @@ def delete_timesheet_entrys():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    
+    data=request.get_json()
+    data_array=data['entries']
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
-    data_array=request.get_json()
     data_tuple=tuple(data_array.split(','))
     if len(data_tuple) == 1:
         data_tuple=data_tuple*2
@@ -335,7 +337,7 @@ def new_timesheet_entry():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.new_timesheet_entry(data['username'],data['date'],
@@ -350,7 +352,7 @@ def get_employee_timesheets():
     """Returns an array of managed employee timesheets from a
     manager username.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_employee_timesheets(data['username'])
@@ -360,7 +362,7 @@ def get_employee_timesheets():
 def get_employee_leave():
     """Returns employee's leave balance and active/upcoming leave requests.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.get_employee_leave(data['username'])
@@ -375,7 +377,7 @@ def update_employee_leave():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.update_employee_leave(data['leave_id'],data['leave_start_date'],
@@ -389,7 +391,7 @@ def new_employee_leave_entry():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.new_employee_leave_entry(data['username'],data['leave_start_date'],
@@ -402,7 +404,7 @@ def manager_employee_leave():
     """Returns an array of managed employee's leave entries,
     from a manager username.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.manager_employee_leave(data['username'])
@@ -415,7 +417,7 @@ def manager_employee_leave_decline():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.manager_employee_leave_decline(data['leave_entry_id'])
@@ -428,7 +430,7 @@ def manager_employee_leave_accept():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.manager_employee_leave_accept(data['leave_entry_id'])
@@ -439,7 +441,7 @@ def pay_run_info():
     """Returns an array of manaaged employee payruns with summarised data,
     from a manager username.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.pay_run_info(data['username'])
@@ -452,7 +454,7 @@ def pay_run_execute_all():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.pay_run_execute_all(data['username'])
@@ -470,7 +472,7 @@ def new_manager_employee():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    if not validate_access(data['manager_username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.new_manager_employee(data['password'],data['bank_account'],
@@ -496,7 +498,7 @@ def add_new_stat_day():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
     data=request.get_json()
     result=cpa_sql.add_new_stat_day(data['username'],data['date'],data['stat_length'])
@@ -511,9 +513,10 @@ def pay_run_execute_selected():
     
     Returns success status and error if present.
     """
-    if not validate_access():
+    data=request.get_json()
+    data_array=data['selected']
+    if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
-    data_array=request.get_json()
     list_of_tuples=[tuple(data.split(',')) for data in data_array]
     result=cpa_sql.pay_run_execute_selected(list_of_tuples)
     if result[0] == 'Failed':
