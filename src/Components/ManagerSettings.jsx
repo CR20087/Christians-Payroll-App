@@ -229,8 +229,11 @@ function ManagerSettingsForm() {
               }
 
         setErrors(newErrors);
+        if (!Object.keys(newErrors).length > 0) {
+          InfoLog(); //Function which saves the information if the infomration is acceptable
+        }
       
-        InfoLog(); //Function which saves the information if the infomration is acceptable
+        
       };
       
     

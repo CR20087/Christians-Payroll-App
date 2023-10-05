@@ -228,7 +228,9 @@ function EmployeeSettingsForm() {
       
         setErrors(newErrors);
       
-        InfoLog();
+        if (!Object.keys(newErrors).length > 0) {
+          InfoLog(); //Function which saves the information if the infomration is acceptable
+        }
       };
       
     
@@ -301,7 +303,7 @@ function EmployeeSettingsForm() {
             />{errors.suburb && <h6>{errors.suburb}</h6>}
             <br></br><br></br>
             </div>
-            <div><button type="submit">Save</button></div>
+            <button type="submit">Save</button>
             {isLoading ? <Loading className="Show"/> : <Loading className="Hide"/> }
     </Form>
   )
