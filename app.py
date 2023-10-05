@@ -14,16 +14,12 @@ app=Flask(__name__, template_folder='src/Flask/templates')
 app.config['WKHTMLTOPDF_PATH']='/usr/bin/wkhtmltopdf' 
 
 # Auth key validation
-def validate_access(username):
+def validate_access(username, key):
     try:
-        auth_key=request.cookies.get('auth_key')
-        # Retrieve the auth key from the request cookies
-        print('auth_key',auth_key)
-        print('auth_keys',request.cookies)
-        def validate_auth_key(auth_key):
+        def validate_auth_key(key):
             secret_key=str(os.getenv('AUTH_SECRET_KEY'))
             try:
-                decoded_token=jwt.decode(auth_key,secret_key,algorithms=['HS256'])
+                decoded_token=jwt.decode(key,secret_key,algorithms=['HS256'])
                 print('decoded_token',decoded_token)
                 if decoded_token['username'] == username:
                     return True
@@ -38,7 +34,7 @@ def validate_access(username):
                 # Auth key is invalid
                 print('Auth Invalid')
                 return False
-        x= validate_auth_key(auth_key)
+        x= validate_auth_key(key)
         print(x)
         return x
     except Exception as e:
@@ -563,7 +559,7 @@ def auth_validate():
     Returns accepted status, bool of auth.
     """
     data=request.get_json()
-    res=validate_access(data['username'])
+    res=validate_access(data['username'],data['auth_key'])
     return jsonify(status=str(res))
 
 @app.route("/login/forgot",methods=['POST'])
