@@ -82,7 +82,7 @@ function ManagerSettingsForm() {
                     'Content-Type': 'application/json'
                   },
                   body: JSON.stringify({'username_old' : params.userID,
-                  'username' : `'${getInputValue('userName')}'`,
+                  'username' : getInputValue('userName'),
                   'password' : `'${hashedPassword}'`,
                   'firstname' : `'${getInputValue('firstName')}'`,
                   'lastname' : `'${getInputValue('lastName')}'`,
@@ -108,12 +108,13 @@ function ManagerSettingsForm() {
 
               //If the update was successful
 
-                alert("Changes updated successfully")
+                
                 setIsAuthorised('border-green')
                 sessionStorage.setItem('userID',getInputValue('userName'))
                 Cookies.remove('password')
                 Cookies.remove('auth_key')
                 Cookies.set('auth_key',data.key)
+                alert("Changes updated successfully")
                 navigate(`/Portal/manager/${getInputValue('userName')}/settings`)
             } else {
 

@@ -133,7 +133,7 @@ def update_manager_settings(username_old,username,password,
     cur=init()
     try:
         cur.execute(f"""Update login
-                    SET username = {username},
+                    SET username = '{username}',
                     password = {password}
                     WHERE username = '{username_old}'
                     """)
@@ -150,7 +150,7 @@ def update_manager_settings(username_old,username,password,
                     WHERE username = '{username_old}'
                     """)
         cur.execute(f"""Update employee_manager
-                    SET manager = {username}
+                    SET manager = '{username}'
                     WHERE manager = '{username_old}'
                     """)
         cur.commit()
@@ -243,7 +243,7 @@ def update_employee_settings(username_old,username,password,
     cur=init()
     try:
         cur.execute(f"""Update login
-                    SET username = {username}
+                    SET username = '{username}'
                     ,password = {password}
                     WHERE username = '{username_old}'
                     """)

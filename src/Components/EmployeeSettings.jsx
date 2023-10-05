@@ -86,7 +86,7 @@ function EmployeeSettingsForm() {
                   },
                   body: JSON.stringify({auth_key : auth_key,
                 'username_old' : params.userID,
-                'username' : `'${getInputValue('userName')}'`,
+                'username' : getInputValue('userName'),
                 'password' : `'${hashedPassword}'`,
                 'firstname' : `'${getInputValue('firstName')}'`,
                 'lastname' : `'${getInputValue('lastName')}'`,
