@@ -111,6 +111,9 @@ function ManagerSettingsForm() {
                 alert("Changes updated successfully")
                 setIsAuthorised('border-green')
                 sessionStorage.setItem('userID',getInputValue('userName'))
+                Cookies.remove('password')
+                Cookies.remove('auth_key')
+                Cookies.set('auth_key',data.key)
                 navigate(`/Portal/manager/${getInputValue('userName')}/settings`)
             } else {
 

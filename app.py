@@ -106,7 +106,8 @@ def update_manager_settings():
                                            data['suburb'],data['contact_method'],
                                            data['business_name'],data['entity_name']
                                            )
-    return jsonify(success=str(result[0]),error=str(result[1]))
+    new_auth_key=generate_auth_key(data['username'])
+    return jsonify(success=str(result[0]),error=str(result[1]),key=new_auth_key)
 
 @app.route("/registerAccount/manager",methods=['POST'])
 def create_manager():
@@ -155,7 +156,8 @@ def update_employee_settings():
                                             data['phone'],data['address'],
                                             data['suburb'],data['postcode']
                                             )
-    return jsonify(success=str(result[0]),error=str(result[1]))
+    new_auth_key=generate_auth_key(data['username'])
+    return jsonify(success=str(result[0]),error=str(result[1]),key=new_auth_key)
 
 @app.route("/manager/employee-list",methods=['POST'])
 def get_manager_employees():
@@ -530,9 +532,15 @@ def auth_add():
     data=request.get_json()
     load_dotenv()
     try:
-        secret_key=str(os.getenv('AUTH_SECRET_KEY'))
-
+        global generate_auth_key
         def generate_auth_key(username):
+            """Creates an authentication key.
+
+            Has an expiry of 1 hour after creation.
+
+            Has payload of username authorised to.
+            """
+            secret_key=str(os.getenv('AUTH_SECRET_KEY'))
             expiration_time=datetime.datetime.utcnow()+datetime.timedelta(hours=1)
             payload={
                 'username':username,

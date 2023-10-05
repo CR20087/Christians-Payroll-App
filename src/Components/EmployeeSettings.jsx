@@ -114,6 +114,8 @@ function EmployeeSettingsForm() {
                 setIsAuthorised('border-green')
                 sessionStorage.setItem('userID',getInputValue('userName'))
                 Cookies.remove('password')
+                Cookies.remove('auth_key')
+                Cookies.set('auth_key',data.key)
                 navigate(`/Portal/employee/${getInputValue('userName')}/settings`)
             } else {
 
