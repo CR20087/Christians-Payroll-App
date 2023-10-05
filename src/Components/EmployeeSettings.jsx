@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import Loading from "./Loading"
 import bcrypt from 'bcryptjs';
+import Cookies from 'js-cookie';
 
 function EmployeeSettingsForm() {
     const [isLoading, setIsLoading] = useState(false)
@@ -29,13 +30,13 @@ function EmployeeSettingsForm() {
         async function fetchData()  {
 
           //Fetching stored employee settings data
-
+          const auth_key = Cookies.get('auth_key');
             const res = await fetch(`https://cpa-flask.azurewebsites.net/settings/employee`,{
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({'username' : `'${params.userID}'`})
+              body: JSON.stringify({'username' : params.userID, auth_key : auth_key})
             })
             const data = await res.json()
 
@@ -46,7 +47,7 @@ function EmployeeSettingsForm() {
             }
 
             setInputValue('userName',data.userName);   
-            setInputValue('password',data.password);   
+            setInputValue('password',''); Cookies.set('password',data.password)   
             setInputValue('email',data.email);   
             setInputValue('lastName',data.lastName);   
             setInputValue('firstName',data.firstName);   
@@ -68,25 +69,32 @@ function EmployeeSettingsForm() {
 
         setIsLoading(true)
 
-            const hashedPassword = await bcrypt.hash(getInputValue('password'), 10);
-
+        const getPassword = async () => {
+          if (!getInputValue('password')) {
+            return Cookies.get('password')
+        } else {
+          return await bcrypt.hash(getInputValue('password'), 10);
+        }}
+            const hashedPassword = await getPassword()
+            await hashedPassword
+            const auth_key = Cookies.get('auth_key');
             const res = await fetch(
                 `https://cpa-flask.azurewebsites.net/settings/employee/update`,{
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
                   },
-                  body: JSON.stringify({
-                'username_old' : `'${sessionStorage.getItem('userID')}'`,
+                  body: JSON.stringify({auth_key : auth_key,
+                'username_old' : params.userID,
                 'username' : `'${getInputValue('userName')}'`,
                 'password' : `'${hashedPassword}'`,
-                'firstName' : `'${getInputValue('firstName')}'`,
-                'lastName' : `'${getInputValue('lastName')}'`,
+                'firstname' : `'${getInputValue('firstName')}'`,
+                'lastname' : `'${getInputValue('lastName')}'`,
                 'email' : `'${getInputValue('email')}'`,
                 'phone' : `'${getInputValue('phone')}'`,
                 'address' : `'${getInputValue('address')}'`,
                 'suburb' : `'${getInputValue('suburb')}'`,
-                'postCode' : `'${getInputValue('postCode')}'`
+                'postcode' : `'${getInputValue('postCode')}'`
                 })
                 }
                 )
@@ -105,6 +113,7 @@ function EmployeeSettingsForm() {
                 alert("Changes updated successfully")
                 setIsAuthorised('border-green')
                 sessionStorage.setItem('userID',getInputValue('userName'))
+                Cookies.remove('password')
                 navigate(`/Portal/employee/${getInputValue('userName')}/settings`)
             } else {
 
@@ -152,14 +161,12 @@ function EmployeeSettingsForm() {
               newErrors.userName = 'Username must be valid';
                 }
             }
-          if (!event.target[1].value) {
-          newErrors.password = 'Password cannot be empty';
-          } else {
-            const passwordPattern = /^[a-zA-Z0-9 ]{1,30}$/
-            if (!passwordPattern.test(event.target[1].value)) {
-              newErrors.password = 'Password valid';
-                }
+            if (!event.target[1].value) {
             }
+            else {const passwordPattern = /^[a-zA-Z0-9 ]{1,30}$/
+              if (!passwordPattern.test(event.target[1].value)) {
+                newErrors.password = 'Password must be valid';
+                }}
           if (!event.target[2].value) {
               newErrors.firstName = 'First name cannot be empty';
           } else {
@@ -218,10 +225,6 @@ function EmployeeSettingsForm() {
           }
       
         setErrors(newErrors);
-      
-        if (Object.keys(newErrors).length > 0) {
-          return;
-        }
       
         InfoLog();
       };

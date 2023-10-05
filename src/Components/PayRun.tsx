@@ -3,6 +3,7 @@ import { MaterialReactTable } from 'material-react-table';
 import { useNavigate, useParams } from 'react-router-dom';
 import { Button,DialogContent,DialogTitle,Stack } from '@mui/material';
 import { useForm } from 'react-hook-form';
+import Cookies from 'js-cookie';
 
 function PayTable() {
   const navigate = useNavigate()
@@ -72,13 +73,13 @@ function PayTable() {
     async function fetchData()  {
 
       //Fetching page data
-
+        const auth_key = Cookies.get('auth_key');
         const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({'username' : `'${params.userID}'`})
+          body: JSON.stringify({username : params.userID,auth_key : auth_key})
         })
         const data = await res.json()
 
@@ -101,13 +102,15 @@ function PayTable() {
 const handleAddStatutoryHoliday = async (values) => {
 
   //Functions to add a sttutory holiday
-
+  const auth_key = Cookies.get('auth_key');
   const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/add-stat`,{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({'username' : `'${values.username}'`,
+    body: JSON.stringify({manager_username : params.userID,
+    'username' : `'${values.username}'`,
+    auth_key : auth_key,
     'date' : `'${values.date}'`,
     'stat_length' : `'${[values.stat_length_hours,values.stat_length_minutes].join(':')}'`
   })
@@ -132,14 +135,17 @@ const PaySelectedEmployees = async (table) => {
   //Functions to execute pay run with selected employees
 
   if (window.confirm(`Are you sure you want execute payrun(s) for:${table.getSelectedRowModel().rows.map((row) => (`\n\t${row.original.name}\nPeriod ending ${row.original.pay_period_end}`))}`)) {
-
+    const auth_key = Cookies.get('auth_key');
     const selected_array = table.getSelectedRowModel().rows.map((row) => (`${row.original.username},${row.original.pay_period_end}`))
     const res = await fetch('https://cpa-flask.azurewebsites.net/manager/pay-run/execute/selected',{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(selected_array)
+      body: JSON.stringify({auth_key : auth_key,
+       username : params.userID,
+       'selected': selected_array
+      })
     })
     const data = await res.json()
 
@@ -168,12 +174,13 @@ const PayAllEmployees = async (table) => {
   //Function to pay all employees
 
   if (window.confirm(`Are you sure you want execute payrun(s) for:${table.getRowModel().rows.map((row) => (`\n\t${row.original.name}\nPeriod ending ${row.original.pay_period_end}`))}`)) {
+    const auth_key = Cookies.get('auth_key');
     const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/pay-run/execute/all`,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({'username' : `${params.userID}`})
+      body: JSON.stringify({username : params.userID,auth_key : auth_key})
     })
     const data = await res.json()
 

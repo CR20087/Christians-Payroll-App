@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button,DialogContent, MenuItem, DialogTitle,Stack } from '@mui/material';
 import { Leave_Type } from './lists'
 import { useForm } from 'react-hook-form';
+import Cookies from 'js-cookie';
 
 function EmployeeLeave() {
   const navigate = useNavigate()
@@ -14,7 +15,6 @@ function EmployeeLeave() {
   const [change, setChange] = useState(false);
   const [leaveEntryModalOpen, setLeaveEntryModalOpen] = useState(false);
   const [validationErrors, setValidationErrors] = useState({})
-
   const validateCheck = useCallback(
 
     //Function is executed every change of a cell
@@ -109,12 +109,13 @@ function EmployeeLeave() {
     //Fetching page data
 
     async function fetchData()  {
+      const auth_key = Cookies.get('auth_key');
         const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({'username' : `'${params.userID}'`})
+          body: JSON.stringify({username : params.userID,auth_key : auth_key})
         })
         const data = await res.json()
 
@@ -137,13 +138,15 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
 
   //Function for saving a edited row / editing a leave entry
 
-  
+  const auth_key = Cookies.get('auth_key');
   const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/update`,{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({'leave_id' :`'${row.original.leave_entry_id}'`,
+    body: JSON.stringify({username : params.userID,
+    auth_key : auth_key,
+    'leave_id' :`'${row.original.leave_entry_id}'`,
     'leave_start_date' :`'${values.leave_start_date}'`,
     'leave_end_date' :`'${values.leave_end_date}'`,
     'leave_type' :`'${values.leave_type}'`}
@@ -176,13 +179,14 @@ const handleNewLeaveEntry = async (values) => {
 
   //Creating a new row / leave entry
 
-  
+  const auth_key = Cookies.get('auth_key');
   const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/leave/new`,{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({'username':`'${params.userID}'`,
+    body: JSON.stringify({auth_key : auth_key,
+    username : params.userID,
     'leave_start_date':`'${values.start_date}'`,
     'leave_end_date':`'${values.end_date}'`,
     'leave_type':`'${values.leave_type}'`

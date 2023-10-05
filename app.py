@@ -391,9 +391,9 @@ def new_employee_leave_entry():
     
     Returns success status and error if present.
     """
+    data=request.get_json()
     if not validate_access(data['username'],data['auth_key']):
         return jsonify(auth=False)
-    data=request.get_json()
     result=cpa_sql.new_employee_leave_entry(data['username'],data['leave_start_date'],
                                             data['leave_end_date'],data['leave_type']
                                             )

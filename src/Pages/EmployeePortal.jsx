@@ -5,6 +5,7 @@ import { Link, useNavigate, useParams } from "react-router-dom"
 import { useEffect, useState } from "react"
 import Loading from "../Components/Loading"
 import Footer from "../Components/Footer"
+import Cookies from 'js-cookie';
 
 function EmployeePortal() {
 
@@ -18,14 +19,13 @@ function EmployeePortal() {
 
     async function validate_auth() {
       try {
-    const res = await fetch(`https://cpa-flask.azurewebsites.net/protected/resource`,{
-      method: 'POST',
-      headers: {
-        'Origin': 'https://christians-payroll-app.vercel.app',
-        'Content-Type': 'application/json'
-      },
-      credentials: "same-origin",
-      body: JSON.stringify({username: params.userID})
+        const auth_key = Cookies.get('auth_key');
+    const res = await fetch('https://cpa-flask.azurewebsites.net/protected/resource', {
+        method: 'POST', // Use POST method
+        body: JSON.stringify({ username: params.userID, auth_key: auth_key}),
+        headers: {
+            'Content-Type': 'application/json'
+        }
     })
     const data = await res.json()
         console.log(data)

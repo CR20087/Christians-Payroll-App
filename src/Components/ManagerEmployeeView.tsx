@@ -4,6 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button,DialogContent,DialogTitle,Stack,TextField } from '@mui/material';
 import { useForm } from 'react-hook-form';
 import bcrypt from 'bcryptjs';
+import Cookies from 'js-cookie';
 
 
 function EmployeeTable() {
@@ -368,12 +369,13 @@ function EmployeeTable() {
     //Fetching page data
 
     async function fetchData()  {
+      const auth_key = Cookies.get('auth_key');
         const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({'username' : `'${params.userID}'`})
+          body: JSON.stringify({username : params.userID,auth_key : auth_key})
         })
         const data = await res.json()
 
@@ -400,13 +402,15 @@ const handleCancelRowEdits = () => {
 const handleSaveRow = async ({ exitEditingMode, row, values }) => {
 
   //Function to save edited row / employee
-
+  const auth_key = Cookies.get('auth_key');
   const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/update`,{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({'bank_account' : `'${values.bank_account}'`,
+    body: JSON.stringify({auth_key:auth_key,
+      manager_username : params.userID,
+    'bank_account' : `'${values.bank_account}'`,
     'benefits' : `'${values.benefits}'`,
     'child_support' : `'${values.child_support}'`,
     'email' : `'${values.email}'`,
@@ -465,13 +469,15 @@ const handleCreateNewRow = async (values) => {
 
   const tempPassword = randomString(9, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
   const hashedPassword = await bcrypt.hash(tempPassword, 10)
-
+  const auth_key = Cookies.get('auth_key');
   const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/employee-list/new`,{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({'password' : `'${hashedPassword}'`,
+    body: JSON.stringify({auth_key:auth_key,
+      manager_username : params.userID,
+    'password' : `'${hashedPassword}'`,
     'bank_account' : `'${values.bank_account}'`,
     'benefits' : `'${values.benefits}'`,
     'child_support' : `'${values.child_support}'`,

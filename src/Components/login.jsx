@@ -5,6 +5,7 @@ import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { Loading2 as Loading } from "./Loading";
 import bcrypt from 'bcryptjs';
+import Cookies from 'js-cookie';
 
 function LoginForm() {
     const navigate = useNavigate()
@@ -39,18 +40,7 @@ function LoginForm() {
         const userID = information.userName
         setIsAuthorised('border-green')
         
-        function randomString(length, chars) {
-
-          //Function to generate a random authentication key
-
-          var result = '';
-          for (var i = length; i > 0; --i) result += chars[Math.floor(Math.random() * chars.length)];
-          return result;
-        }
-  
-        const authKey = randomString(32, '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ')
         sessionStorage.clear()
-        sessionStorage.setItem('authKey',authKey)
         sessionStorage.setItem('userID', userID)
         sessionStorage.setItem('role',data.role)
         
@@ -59,9 +49,7 @@ function LoginForm() {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({username : userID,
-          'auth_key':`'${authKey}'`
-        })
+          body: JSON.stringify({username : userID})
         }) //Adding Auth Key to database
         const auth_data = await res.json()
 
@@ -75,11 +63,12 @@ function LoginForm() {
         } else {
 
           //If the authentication was successful
-
+          Cookies.remove('auth_key')
+          Cookies.set('auth_key',auth_data.key)
           navigate('/Portal/' +data.role + '/'+ userID )  
         }
 
-      } else if (match) {
+      } else if (!match) {
 
         //If there is no match for the specified username and password
 

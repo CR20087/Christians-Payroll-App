@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useState } from 'react';
 import { Box, Typography } from '@mui/material';
 import { MaterialReactTable } from 'material-react-table';
 import { useNavigate, useParams } from 'react-router-dom';
+import Cookies from 'js-cookie';
 
 function TimesheetView() {
   const navigate = useNavigate()
@@ -70,13 +71,13 @@ function TimesheetView() {
     async function fetchData()  {
 
       //Fetching page data
-
+      const auth_key = Cookies.get('auth_key');
         const res = await fetch(`https://cpa-flask.azurewebsites.net/manager/timesheets`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({'username' : `'${params.userID}'`})
+          body: JSON.stringify({username : params.userID,auth_key : auth_key})
         })
         const data = await res.json()
 

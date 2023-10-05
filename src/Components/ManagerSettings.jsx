@@ -3,6 +3,7 @@ import styled from "styled-components"
 import { useNavigate, useParams } from "react-router-dom";
 import { useEffect } from "react";
 import bcrypt from 'bcryptjs';
+import Cookies from 'js-cookie';
 
 function ManagerSettingsForm() {
     const [isLoading, setIsLoading] = useState(false)
@@ -27,12 +28,13 @@ function ManagerSettingsForm() {
     useEffect(() => {
         
         async function fetchData()  {
+            const auth_key = Cookies.get('auth_key');
             const res = await fetch(`https://cpa-flask.azurewebsites.net/settings/manager`,{
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
               },
-              body: JSON.stringify({'username' : `'${params.userID}'`})
+              body: JSON.stringify({username : params.userID, auth_key: auth_key})
             })
             const data = await res.json()
 
@@ -45,7 +47,7 @@ function ManagerSettingsForm() {
             //Setting the returned values to their fields
 
             setInputValue('userName',data.userName)  
-            setInputValue('password',data.password)  
+            setInputValue('password',''); Cookies.set('password',data.password)   
             setInputValue('email',data.email)  
             setInputValue('lastName',data.lastName)  
             setInputValue('firstName',data.firstName)  
@@ -64,14 +66,22 @@ function ManagerSettingsForm() {
     const InfoLog = async () => {
         setIsLoading(true)
 
-            const hashedPassword = await bcrypt.hash(getInputValue('password'), 10);
+        const getPassword = async () => {
+          if (!getInputValue('password')) {
+            return Cookies.get('password')
+        } else {
+          return await bcrypt.hash(getInputValue('password'), 10);
+        }}
+            const hashedPassword = await getPassword()
+            await hashedPassword
+            const auth_key = Cookies.get('auth_key');
             const res = await fetch(
                 `https://cpa-flask.azurewebsites.net/settings/manager/update`,{
                   method: 'POST',
                   headers: {
                     'Content-Type': 'application/json'
                   },
-                  body: JSON.stringify({'username_old' : `'${sessionStorage.getItem('userID')}'`,
+                  body: JSON.stringify({'username_old' : params.userID,
                   'username' : `'${getInputValue('userName')}'`,
                   'password' : `'${hashedPassword}'`,
                   'firstname' : `'${getInputValue('firstName')}'`,
@@ -82,7 +92,8 @@ function ManagerSettingsForm() {
                   'suburb' : `'${getInputValue('suburb')}'`,
                   'contact_method' : `'${getInputValue('contactMethod')}'`,
                   'business_name' : `'${getInputValue('businessName')}'`,
-                  'entity_name' : `'${getInputValue('entityName')}'`
+                  'entity_name' : `'${getInputValue('entityName')}'`,
+                  auth_key : auth_key 
                 })
                 })
             const data = await res.json()
@@ -140,13 +151,11 @@ function ManagerSettingsForm() {
                 }
             }
             if (!event.target[1].value) {
-              newErrors.password = 'Password cannot be empty';
-              } else {
-                const passwordPattern = /^[a-zA-Z0-9 ]{1,30}$/
-                if (!passwordPattern.test(event.target[1].value)) {
-                  newErrors.password = 'Password valid';
-                    }
-                }
+            }
+            else {const passwordPattern = /^[a-zA-Z0-9 ]{1,30}$/
+              if (!passwordPattern.test(event.target[1].value)) {
+                newErrors.password = 'Password must be valid';
+                }}
                 if (!event.target[2].value) {
                   newErrors.firstName = 'First name cannot be empty';
               } else {
@@ -236,7 +245,7 @@ function ManagerSettingsForm() {
               <input 
                 onChange={(e) => setInputValue('password', e.target.value)}
                 type="password"
-                placeholder="Password..." 
+                placeholder="Password... (Not Required)" 
                 value={getInputValue('password')}
             />{errors.password && <h6>{errors.password}</h6>}
             <p>First Name:</p>

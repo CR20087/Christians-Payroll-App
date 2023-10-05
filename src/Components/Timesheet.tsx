@@ -4,7 +4,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { Button,DialogContent,DialogTitle,Stack,TextField,MenuItem } from '@mui/material';
 import {Times, Pay_Type } from './lists'
 import { useForm } from 'react-hook-form';
-
+import Cookies from 'js-cookie';
 
 function EmployeeTable() {
   const navigate = useNavigate()
@@ -196,12 +196,13 @@ function EmployeeTable() {
     //Fetch page data
 
     async function fetchData()  {
+      const auth_key = Cookies.get('auth_key');
         const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet`,{
           method: 'POST',
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({'username' : `'${params.userID}'`})
+          body: JSON.stringify({username : params.userID,auth_key : auth_key})
         })
         const data = await res.json()
 
@@ -218,7 +219,8 @@ function EmployeeTable() {
           headers: {
             'Content-Type': 'application/json'
           },
-          body: JSON.stringify({'username' : `'${params.userID}'`,
+          body: JSON.stringify({auth_key : auth_key,
+          username : params.userID,
           'start_date' : `'${data.entry_start_date}'`,
           'end_date' : `'${data.entry_end_date}'`
         })
@@ -244,13 +246,15 @@ const handleSaveRow = async ({ exitEditingMode, row, values }) => {
 
   //Function to save an edited entry
 
-  
+  const auth_key = Cookies.get('auth_key');
   const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/update`,{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({'timesheet_entry_id' :`'${row.original.timesheet_entry_id}'`,
+    body: JSON.stringify({auth_key : auth_key,
+    username : params.userID,
+    'timesheet_entry_id' :`'${row.original.timesheet_entry_id}'`,
     'date' : `'${values.date}'`,
     'start_time' : `'${values.start_time}'`,
     'end_time' : `'${values.end_time}'`,
@@ -289,13 +293,16 @@ const DeleteEntry = async (table) => {
   if (window.confirm(`Are you sure you want to delete${table.getSelectedRowModel().rows.map((row) => (`\n\t${row.original.date} (Entry ID no.${row.original.timesheet_entry_id})`))}`)) {
 
     const selected_array = `${table.getSelectedRowModel().rows.map((row) => (`${row.original.timesheet_entry_id}`))}`
-
+    const auth_key = Cookies.get('auth_key');
     const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/delete`,{
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify(selected_array)
+      body: JSON.stringify({username: params.userID,
+      auth_key: auth_key,
+      'entries' : selected_array
+      })
     })
     const data = await res.json()
 
@@ -322,13 +329,14 @@ const DeleteEntry = async (table) => {
 const handleCreateNewEntry = async (values) => {
 
   //Function to submit a new timesheet entry
-
+  const auth_key = Cookies.get('auth_key');
   const res = await fetch(`https://cpa-flask.azurewebsites.net/employee/timesheet-entrys/new`,{
     method: 'POST',
     headers: {
       'Content-Type': 'application/json'
     },
-    body: JSON.stringify({'username' : `'${params.userID}'`,
+    body: JSON.stringify({auth_key : auth_key,
+    username : params.userID,
     'date' : `'${values.date}'`,
     'start_time' : `'${values.start_time}'`,
     'end_time' : `'${values.end_time}'`,
