@@ -20,25 +20,18 @@ def validate_access(username, key):
             secret_key=str(os.getenv('AUTH_SECRET_KEY'))
             try:
                 decoded_token=jwt.decode(key,secret_key,algorithms=['HS256'])
-                print('decoded_token',decoded_token)
                 if decoded_token['username'] == username:
                     return True
                 else:
-                    print('Invalid username')
                     return False
             except jwt.ExpiredSignatureError:
                 # Auth key has expired
-                print('Auth Expired')
                 return False
             except jwt.InvalidTokenError:
                 # Auth key is invalid
-                print('Auth Invalid')
                 return False
-        x= validate_auth_key(key)
-        print(x)
-        return x
-    except Exception as e:
-        print('excepted',e)
+        return validate_auth_key(key)
+    except:
         return False
     
 # Routes
@@ -549,7 +542,6 @@ def auth_add():
             return auth_key
         
         auth_key=generate_auth_key(data['username'])
-        print('auth_key',auth_key)
     except Exception as e:
         return jsonify(success='False',error=e,key='n/a')
 

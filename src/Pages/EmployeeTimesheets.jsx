@@ -27,7 +27,6 @@ function EmployeeTimesheets() {
             }
         })
           const data = await res.json()
-              console.log(data)
           if (data.status === 'True') {
             setAuthenticated(true)
           }
