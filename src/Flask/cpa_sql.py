@@ -464,7 +464,7 @@ def new_timesheet_entry(username,date,start_time,
                     ,pay_type
                     ,comments )
                     VALUES
-                    ( {username},
+                    ( '{username}',
                     {date},
                     {start_time},
                     {end_time},
