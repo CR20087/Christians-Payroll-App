@@ -117,7 +117,7 @@ def get_manager_settings(username):
                 ,[phone]
                 FROM [dbo].[manager] 
                 INNER JOIN login ON login.username = manager.username 
-                WHERE [login].[username] = {username}
+                WHERE [login].[username] = '{username}'
                 """)
     result=cur.fetchone()
     cur.close()
@@ -135,7 +135,7 @@ def update_manager_settings(username_old,username,password,
         cur.execute(f"""Update login
                     SET username = {username},
                     password = {password}
-                    WHERE username = {username_old}
+                    WHERE username = '{username_old}'
                     """)
         cur.execute(f"""Update manager
                     SET first_name={firstname}
@@ -147,7 +147,7 @@ def update_manager_settings(username_old,username,password,
                     ,entity_name = {entity_name}
                     ,business_address_1 = {address}
                     ,business_address_2 = {suburb} 
-                    WHERE username = {username_old}
+                    WHERE username = '{username_old}'
                     """)
         cur.commit()
         cur.close()
@@ -223,7 +223,7 @@ def get_employee_settings(username):
                 ,[phone]
                 FROM [dbo].[employee] 
                 INNER JOIN login ON login.username = employee.username 
-                WHERE [login].[username] = {username}
+                WHERE [login].[username] = '{username}'
                 """)
     result=cur.fetchone()
     cur.close()
@@ -241,7 +241,7 @@ def update_employee_settings(username_old,username,password,
         cur.execute(f"""Update login
                     SET username = {username}
                     ,password = {password}
-                    WHERE username = {username_old}
+                    WHERE username = '{username_old}'
                     """)
         cur.execute(f"""Update employee
                     SET first_name={firstname}
@@ -251,7 +251,7 @@ def update_employee_settings(username_old,username,password,
                     ,post_code = {postcode}
                     ,address_1 = {address}
                     ,address_2 = {suburb}
-                    WHERE username = {username_old}
+                    WHERE username = '{username_old}'
                     """)
         cur.commit()
         cur.close()
@@ -287,7 +287,7 @@ def get_manager_employees(username):
                 ,[benefits]
                 ,[created_on]
                 FROM [manager_employee_list] 
-                WHERE manager = {username}
+                WHERE manager = '{username}'
                 """)
     result=cur.fetchall()
     cur.close()
@@ -534,7 +534,7 @@ def get_employee_timesheets(username):
     timesheet_response=[]
     cur.execute(f"""SELECT [employee] 
                 FROM employee_manager
-                WHERE [manager] = {username}
+                WHERE [manager] = '{username}'
                 """)
     employee_usernames=cur.fetchall()
     for emp in employee_usernames:
@@ -590,7 +590,7 @@ def get_employee_leave(username):
     cur.execute(f"""SELECT [leave_balance]
                 ,[leave_balance_hours]
                 FROM [leave_details]
-                WHERE username = {username}
+                WHERE username = '{username}'
                 """)
     details=list(cur.fetchone())
     cur.execute(f"""SELECT [leave_entry_id]
@@ -599,7 +599,7 @@ def get_employee_leave(username):
                 ,[leave_type]
                 ,[status]
                 FROM [dbo].[leave_entry]
-                WHERE username = {username}
+                WHERE username = '{username}'
                 AND leave_end_date >= CURRENT_TIMESTAMP
                 """)
     entrys=cur.fetchall()
@@ -642,7 +642,7 @@ def new_employee_leave_entry(username,leave_start,leave_end,leave_type):
                     ,[leave_end_date]
                     ,[leave_type] )
                     VALUES
-                    ( {username}
+                    ( '{username}'
                     ,{leave_start}
                     ,{leave_end}
                     ,{leave_type} )
@@ -667,7 +667,7 @@ def manager_employee_leave(username):
                 ,[status]
                 FROM [dbo].[leave_entry]
                 INNER JOIN employee_manager ON leave_entry.username = employee_manager.employee
-                WHERE manager = {username} AND leave_end_date >= CURRENT_TIMESTAMP
+                WHERE manager = '{username}' AND leave_end_date >= CURRENT_TIMESTAMP
                 """)
     entrys=cur.fetchall()
     response=[]
@@ -728,7 +728,7 @@ def pay_run_info(username):
                 ,[net_pay]
                 ,[username]
                 From pay_run_info
-                WHERE manager = {username}
+                WHERE manager = '{username}'
                 """)
     info=cur.fetchall()
     response=[]
@@ -1007,7 +1007,7 @@ def new_manager_employee(password,bank_account,benefits,
                     ,{tax_code} )
                     """)
         cur.execute(f"""INSERT INTO employee_manager(manager,employee)
-                    VALUES ({manager},{username})""")
+                    VALUES ('{manager}',{username})""")
         cur.commit()
         cur.close()
     except Exception as e:
