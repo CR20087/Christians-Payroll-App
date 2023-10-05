@@ -149,6 +149,10 @@ def update_manager_settings(username_old,username,password,
                     ,business_address_2 = {suburb} 
                     WHERE username = '{username_old}'
                     """)
+        cur.execute(f"""Update employee_manager
+                    SET manager = {username}
+                    WHERE manager = '{username_old}'
+                    """)
         cur.commit()
         cur.close()
     except Exception as e:
