@@ -537,27 +537,24 @@ def auth_add():
     """
     data=request.get_json()
     load_dotenv()
-    secret_key=str(os.getenv('AUTH_SECRET_KEY'))
-
-    def generate_auth_key(username):
-        expiration_time=datetime.datetime.utcnow()+datetime.timedelta(hours=1)
-        payload={
-            'username':username,
-            'exp':expiration_time,
-        }
-        auth_key=jwt.encode(payload,secret_key,algorithm='HS256')
-        return auth_key
-    
-    auth_key=generate_auth_key(data['username'])
-    print('auth_key',auth_key)
-
-    response = make_response(jsonify(success='True',error='n/a'))
     try:
-        response.set_cookie('auth_key',auth_key)
-        print('break-point 1')
-    except:
-        response.set_cookie('auth_key',auth_key,httponly=True,secure=True,samesite='Strict')
-    return response
+        secret_key=str(os.getenv('AUTH_SECRET_KEY'))
+
+        def generate_auth_key(username):
+            expiration_time=datetime.datetime.utcnow()+datetime.timedelta(hours=1)
+            payload={
+                'username':username,
+                'exp':expiration_time,
+            }
+            auth_key=jwt.encode(payload,secret_key,algorithm='HS256')
+            return auth_key
+        
+        auth_key=generate_auth_key(data['username'])
+        print('auth_key',auth_key)
+    except Exception as e:
+        return jsonify(success='False',error=e,key='n/a')
+
+    return jsonify(success='True',error='n/a',key=auth_key)
 
 @app.route("/protected/resource",methods=['POST'])
 def auth_validate():
@@ -566,8 +563,6 @@ def auth_validate():
     Returns accepted status, bool of auth.
     """
     data=request.get_json()
-    x = request.cookies.get('auth_key')
-    print('Top level cookie grab',x)
     res=validate_access(data['username'])
     return jsonify(status=str(res))
 
