@@ -482,7 +482,7 @@ def new_manager_employee():
                                         data['tax_rate'],data['username'],
                                         data['weekly_allowance'],data['weekly_allowance_nontax'],
                                         data['ird_number'],data['tax_code'],
-                                        data['manager']
+                                        data['manager_username']
                                         )
     return jsonify(success=str(result[0]),
                    error=str(result[1])

@@ -492,8 +492,7 @@ const handleCreateNewRow = async (values) => {
     'weekly_allowance' : `'${values.weekly_allowance}'`,
     'weekly_allowance_nontax' : `'${values.weekly_allowance_nontax}'`,
     'ird_number' : `'${values.ird_number}'`,
-    'tax_code' : `'${values.tax_code}'`,
-    'manager' : `'${params.userID}'`})
+    'tax_code' : `'${values.tax_code}'`})
   })
   const data = await res.json()
 

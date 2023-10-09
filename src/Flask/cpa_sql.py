@@ -961,7 +961,7 @@ def new_manager_employee(password,bank_account,benefits,
                          one_off_deduction,pay_rate,student_loan,
                          tax_credit,tax_rate,username,
                          weekly_allowance,weekly_allowance_nontax,ird_number,
-                         tax_code,manager
+                         tax_code,manager_username
                          ):
     """Create new employee account.
     
@@ -1011,7 +1011,7 @@ def new_manager_employee(password,bank_account,benefits,
                     ,{tax_code} )
                     """)
         cur.execute(f"""INSERT INTO employee_manager(manager,employee)
-                    VALUES ('{manager}',{username})""")
+                    VALUES ('{manager_username}',{username})""")
         cur.commit()
         cur.close()
     except Exception as e:
