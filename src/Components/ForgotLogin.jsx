@@ -4,10 +4,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { useForm } from 'react-hook-form';
 import { Loading2 as Loading } from "./Loading";
+import Cookies from 'js-cookie';
 
 function CredentialResetForm() {
     const navigate = useNavigate()
     const [isLoading, setIsLoading] = useState(false)
+    const [attempts, setAttempts] = useState(0)
     const [email, setEmail] = useState()
     const [password, setPassword] = useState()
     const [password2, setPassword2] = useState()
@@ -50,11 +52,17 @@ function CredentialResetForm() {
         }
 
 
-      } else {
+      } else if (Cookies.get('resetAttempt') < Date.now()) {
+        Cookies.remove('resetAttempt')
+      }
+      if(attempts <=2  && !Cookies.get('resetAttempt')) {
       
       //Function is executed on a login attempt
 
       setIsLoading(true)
+      setAttempts(attempts+1)
+      
+      
 
       const res = await fetch(`https://cpa-flask.azurewebsites.net/login/forgot`,{
         method: 'POST',
@@ -74,7 +82,7 @@ function CredentialResetForm() {
       //Returned data contains bool of if login was a match, employee account haas been registered, role of account
     
       if (data.match === 'True') { 
-        alert(`Your username and a one time code have been sent to '${information.email}', please use code to edit paassword or view email for username.`)
+        alert(`Your username and a one time code have been sent to '${information.email}', please use code to edit password or view email for username.`)
         setReturnedOneTimeCode(data.code)
         sessionStorage.setItem('userID',data.username)
       } else if(data.match === 'False') {
@@ -83,6 +91,12 @@ function CredentialResetForm() {
         setIsAuthorised('border-red')
         alert("Email not found, please enter a registered email of an account")
       }
+    } else if (Cookies.get('resetAttempt') > Date.now())  {
+      alert(`Cannot send another code for ${(Cookies.get('resetAttempt')-Date.now())/1000} seconds`)
+    } else{
+      alert("You have exceeded 3 attempts. Please try again in 3 minutes")
+      Cookies.set('resetAttempt',Date.now()+180000)
+      setAttempts(0)
     }
 
       setIsLoading(false)
