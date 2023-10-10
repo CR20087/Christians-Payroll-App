@@ -196,7 +196,7 @@ function EmployeeSettingsForm() {
         if (!event.target[5].value) {
           newErrors.phone = 'Phone cannot be empty';
         } else {
-          const phonePattern = /^[+#]\d{1,13}$/
+          const phonePattern = /^[+#]?\d{1,13}$/
           if (!phonePattern.test(event.target[5].value)) {
             newErrors.phone = 'Phone must be valid';
               }

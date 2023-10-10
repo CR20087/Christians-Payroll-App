@@ -506,7 +506,7 @@ const handleCreateNewRow = async (values) => {
 
     //If the new employee account is successfully created
 
-    alert(`Employee was created successfully\n\tUsername: '${values.username}'\n\tPassword: '${data.password}'`) //Generated password is returned
+    alert(`Employee was created successfully\n\tUsername: '${values.username}'\n\tPassword: '${tempPassword}'`) //Generated password is returned
     setChange(true)
     setNewEmployeeModalOpen(false)
 } else {
