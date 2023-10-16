@@ -21,18 +21,16 @@ function EmployeeTable() {
     //Input Validation
     (cell) => {
 
-      if (cell.column.id === 'start_time' && !validationErrors['start']) {
+      
+      const handleBlur = (event) => {
         
+        //Validation function
+        if (cell.column.id === 'start_time' && !validationErrors['start']) {
         setValidationErrors({...validationErrors, 'min' : new Date(`2000-01-01T${cell.row.original.start_time}`)}) //Saving the entry start to validate against
       } else if (cell.column.id === 'end_time' && !validationErrors['end']) {
         setValidationErrors({...validationErrors, 'max' : new Date(`2000-01-01T${cell.row.original.end_time}`)}) //Saving the entry end to validate against
       }
 
-      const handleBlur = (event) => {
-        
-        //Validation function
-
-        
         const updatedValidationErrors = { ...validationErrors };
 
 
