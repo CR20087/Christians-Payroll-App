@@ -1,5 +1,7 @@
 # Christian's Payroll App
 
+Edit: This application's servers have been discontinued.
+
 This application can be viewed in production [here](https://christians-payroll-app.vercel.app). Powered by [Vercel](https://vercel.com).
 
 This application was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
